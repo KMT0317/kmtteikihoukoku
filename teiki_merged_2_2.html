@@ -491,7 +491,9 @@ textarea{resize:vertical;min-height:48px;}
 
 
 /* ─── SIDEBAR FILTER ─── */
-.sb-filter{padding:7px 10px;border-bottom:1px solid var(--bdr);background:var(--bg2);display:flex;flex-direction:column;gap:6px;}
+.sb-filter{padding:7px 10px;border-bottom:1px solid var(--bdr);background:var(--bg2);display:flex;flex-direction:column;gap:4px;}
+#sbFilterBody{overflow:hidden;transition:max-height .25s ease,opacity .2s;max-height:300px;opacity:1;}
+#sbFilterBody.collapsed{max-height:0;opacity:0;pointer-events:none;}
 .filter-row{display:flex;gap:4px;flex-wrap:nowrap;}
 .filter-btn{flex:1;padding:6px 4px;border-radius:4px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid var(--bdr);background:var(--surf);color:var(--tx3);transition:all .12s;text-align:center;white-space:nowrap;}
 .filter-btn:hover{border-color:var(--grn);background:var(--grn3);color:var(--grn2);}
@@ -1023,28 +1025,36 @@ details > summary > span:first-child { display: inline-block; transition: transf
           <span class="smv c-or" id="stUn" style="font-size:16px;">0</span>
         </div>
       </div>
-      <div class="sb-filter">
-        <div class="filter-lbl">🤝 支援種別で絞り込み</div>
-        <select class="filter-sel" id="filterShien" onchange="renderList()">
-          <option value="">すべての支援種別</option>
-          <option value="kmt">🏢 KMT支援のみ</option>
-          <option value="multi">🤝 複数の支援機関利用</option>
-          <option value="jisha">🏡 自社支援</option>
-        </select>
-        <div class="filter-lbl" style="margin-top:4px;">📌 定期届担当機関で絞り込み</div>
-        <div class="ac-wrap"><input type="text" class="filter-sel srch-inp" id="filterTanto" placeholder="例：株式会社KMT" oninput="acInput('filterTanto',this.value,renderList)" onkeydown="acKeydown(event,'filterTanto')" autocomplete="off" style="padding:6px 9px;"></div>
-        <div class="filter-lbl" style="margin-top:4px;">👤 担当者で絞り込み</div>
-        <select class="filter-sel" id="filterStaff" onchange="renderList()">
-          <option value="">すべての担当者</option>
-        </select>
-        <div style="display:flex;gap:5px;align-items:center;">
-          <select class="filter-sel" id="filterRole" onchange="renderList()" style="flex:1;">
-            <option value="">役割 すべて</option>
-            <option value="ki">🏢 企業担当</option>
-            <option value="jz">👤 サブ担当</option>
-            <option value="sm">📋 総務担当</option>
+      <div class="sb-filter" id="sbFilterWrap">
+        <!-- 絞り込みヘッダー（クリックで開閉） -->
+        <div onclick="toggleSbFilter()" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;padding:2px 0;">
+          <span style="font-size:12px;font-weight:800;color:var(--grn2);">🔍 絞り込み</span>
+          <span id="sbFilterArrow" style="font-size:11px;color:var(--tx3);transition:transform .2s;">▲</span>
+        </div>
+        <!-- 絞り込みコンテンツ（開閉対象） -->
+        <div id="sbFilterBody">
+          <div class="filter-lbl" style="margin-top:6px;">🤝 支援種別で絞り込み</div>
+          <select class="filter-sel" id="filterShien" onchange="renderList()">
+            <option value="">すべての支援種別</option>
+            <option value="kmt">🏢 KMT支援のみ</option>
+            <option value="multi">🤝 複数の支援機関利用</option>
+            <option value="jisha">🏡 自社支援</option>
           </select>
-          <button class="filter-clear" onclick="clearFilters()">✕ クリア</button>
+          <div class="filter-lbl" style="margin-top:4px;">📌 定期届担当機関で絞り込み</div>
+          <div class="ac-wrap"><input type="text" class="filter-sel srch-inp" id="filterTanto" placeholder="例：株式会社KMT" oninput="acInput('filterTanto',this.value,renderList)" onkeydown="acKeydown(event,'filterTanto')" autocomplete="off" style="padding:6px 9px;"></div>
+          <div class="filter-lbl" style="margin-top:4px;">👤 担当者で絞り込み</div>
+          <select class="filter-sel" id="filterStaff" onchange="renderList()">
+            <option value="">すべての担当者</option>
+          </select>
+          <div style="display:flex;gap:5px;align-items:center;margin-top:4px;">
+            <select class="filter-sel" id="filterRole" onchange="renderList()" style="flex:1;">
+              <option value="">役割 すべて</option>
+              <option value="ki">🏢 企業担当</option>
+              <option value="jz">👤 サブ担当</option>
+              <option value="sm">📋 総務担当</option>
+            </select>
+            <button class="filter-clear" onclick="clearFilters()">✕ クリア</button>
+          </div>
         </div>
       </div>
       <div class="co-list" id="coList"></div>
@@ -8145,6 +8155,27 @@ function populateFilterStaff(){
   });
 }
 
+
+function toggleSbFilter(){
+  const body = document.getElementById('sbFilterBody');
+  const arrow = document.getElementById('sbFilterArrow');
+  if (!body) return;
+  const collapsed = body.classList.toggle('collapsed');
+  if (arrow) arrow.style.transform = collapsed ? 'rotate(180deg)' : '';
+  // Save state
+  localStorage.setItem('kmt_filter_open', collapsed ? '0' : '1');
+}
+
+function initSbFilter(){
+  const saved = localStorage.getItem('kmt_filter_open');
+  // Default: open
+  if (saved === '0') {
+    const body = document.getElementById('sbFilterBody');
+    const arrow = document.getElementById('sbFilterArrow');
+    if (body) body.classList.add('collapsed');
+    if (arrow) arrow.style.transform = 'rotate(180deg)';
+  }
+}
 
 function clearFilters(){
   kijunFilter='all';
