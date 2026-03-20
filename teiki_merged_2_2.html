@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:;">
 <title>定期届出 管理システム — 株式会社KMT</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
@@ -1209,23 +1210,34 @@ function buildCsvUrl(input){
 function parseCsvToCompanies(t){return [];}
 function parseCsvLine(l){return l.split(',');}
 
-// gviz fetch取得 — fetchAPI使用（GitHub Pages対応）
+// gviz fetch取得 — 複数方式でフォールバック
 async function fetchGviz(info){
   const tq=encodeURIComponent('SELECT B,F,W');
-  // まずcors modeで試みる
-  const url='https://docs.google.com/spreadsheets/d/'+info.id
-    +'/gviz/tq?tqx=out:json&gid='+info.gid+'&tq='+tq;
+  const baseUrl='https://docs.google.com/spreadsheets/d/'+info.id+'/gviz/tq?gid='+info.gid+'&tq='+tq;
+  
+  // 方式1: JSON形式（CORSヘッダーあり）
   try{
+    const url = baseUrl+'&tqx=out:json';
     const resp = await fetch(url, {mode:'cors', cache:'no-store'});
-    if(!resp.ok) throw new Error('HTTP '+resp.status);
-    const text = await resp.text();
-    // gvizはJSONPレスポンス: google.visualization.Query.setResponse({...});
-    const jsonStr = text.replace(/^[^\(]+\(/, '').replace(/\);\s*$/, '');
-    return JSON.parse(jsonStr);
-  }catch(e1){
-    // cors失敗時はno-corsで試みる（レスポンス読めないので別処理）
-    throw new Error('シートへの接続に失敗しました。シートが「リンクを知っている全員」で公開されているか確認してください。詳細: '+e1.message);
-  }
+    if(resp.ok){
+      const text = await resp.text();
+      const jsonStr = text.replace(/^[\s\S]*?google\.visualization\.Query\.setResponse\(/, '').replace(/\);\s*$/, '');
+      const data = JSON.parse(jsonStr);
+      if(data && data.table) return data;
+    }
+  }catch(e){}
+  
+  // 方式2: CSV形式でフォールバック
+  try{
+    const csvUrl='https://docs.google.com/spreadsheets/d/'+info.id+'/export?format=csv&gid='+info.gid;
+    const resp = await fetch(csvUrl, {mode:'cors', cache:'no-store'});
+    if(resp.ok){
+      const text = await resp.text();
+      return {_csv: text}; // CSVフラグ
+    }
+  }catch(e){}
+  
+  throw new Error('シートへの接続に失敗しました。シートが「リンクを知っている全員」で公開されているか確認してください');
 }
 
 // ── メイン同期関数 (gviz版) ──────────────────────────────
@@ -1237,19 +1249,36 @@ async function syncFromSheets(silent=false){
     const info=parseSheetUrl(url);
     if(!info) throw new Error('URLが無効です');
     const data=await fetchGviz(info);
-    const rows=(data.table&&data.table.rows)||[];
-    if(!rows.length) throw new Error('データが0件 — 在職中列に○があるか確認してください');
     const map={};
-    for(const row of rows){
-      if(!row.c||row.c.length<3) continue;
-      const name  =row.c[0]&&row.c[0].v?String(row.c[0].v).trim():'';
-      const zai   =row.c[1]&&row.c[1].v?String(row.c[1].v).trim():''; // 列F=在職中
-      const zairyu=row.c[2]&&row.c[2].v?String(row.c[2].v).trim():''; // 列W=在留資格
-      if(!name) continue;
-      if(zai!=='○'&&zai!=='〇'&&zai!=='O') continue;
-      if(!map[name]) map[name]={g1:0,g2:0};
-      if(zairyu.includes('2号')||zairyu.includes('２号')) map[name].g2++;
-      else map[name].g1++;
+    
+    if(data._csv){
+      // CSV処理
+      const lines=data._csv.split('\n').map(l=>l.trim()).filter(l=>l);
+      for(let i=1;i<lines.length;i++){
+        const cols=parseCsvLine(lines[i]);
+        if(cols.length<6) continue;
+        const name=(cols[1]||'').trim();
+        const zai=(cols[5]||'').trim();
+        const zairyu=cols.length>22?(cols[22]||'').trim():'';
+        if(!name||( zai!=='○'&&zai!=='〇'&&zai!=='O')) continue;
+        if(!map[name]) map[name]={g1:0,g2:0};
+        if(zairyu.includes('2号')||zairyu.includes('２号')) map[name].g2++;
+        else map[name].g1++;
+      }
+    } else {
+      // JSON処理
+      const rows=(data.table&&data.table.rows)||[];
+      if(!rows.length) throw new Error('データが0件 — 在職中列に○があるか確認してください');
+      for(const row of rows){
+        if(!row.c||row.c.length<3) continue;
+        const name  =row.c[0]&&row.c[0].v?String(row.c[0].v).trim():'';
+        const zai   =row.c[1]&&row.c[1].v?String(row.c[1].v).trim():'';
+        const zairyu=row.c[2]&&row.c[2].v?String(row.c[2].v).trim():'';
+        if(!name||(zai!=='○'&&zai!=='〇'&&zai!=='O')) continue;
+        if(!map[name]) map[name]={g1:0,g2:0};
+        if(zairyu.includes('2号')||zairyu.includes('２号')) map[name].g2++;
+        else map[name].g1++;
+      }
     }
     const result=Object.entries(map).map(([name,c])=>({name,g1:c.g1,g2:c.g2}));
     if(!result.length) throw new Error('在職中○の行が見つかりません');
@@ -1341,18 +1370,32 @@ async function _testSyncUrl(){
     const info=parseSheetUrl(url);
     if(!info) throw new Error('URLが無効です');
     const data=await fetchGviz(info);
-    const rows=(data.table&&data.table.rows)||[];
     const map={};
-    for(const row of rows){
-      if(!row.c||row.c.length<3) continue;
-      const name=row.c[0]&&row.c[0].v?String(row.c[0].v).trim():'';
-      const zai=row.c[1]&&row.c[1].v?String(row.c[1].v).trim():'';
-      const zairyu=row.c[2]&&row.c[2].v?String(row.c[2].v).trim():'';
-      if(!name) continue;
-      if(zai!=='○'&&zai!=='〇'&&zai!=='O') continue;
-      if(!map[name]) map[name]={g1:0,g2:0};
-      if(zairyu.includes('2号')||zairyu.includes('２号')) map[name].g2++;
-      else map[name].g1++;
+    if(data._csv){
+      const lines=data._csv.split('\n').map(l=>l.trim()).filter(l=>l);
+      for(let i=1;i<lines.length;i++){
+        const cols=parseCsvLine(lines[i]);
+        if(cols.length<6) continue;
+        const name=(cols[1]||'').trim();
+        const zai=(cols[5]||'').trim();
+        const zairyu=cols.length>22?(cols[22]||'').trim():'';
+        if(!name||(zai!=='○'&&zai!=='〇'&&zai!=='O')) continue;
+        if(!map[name]) map[name]={g1:0,g2:0};
+        if(zairyu.includes('2号')||zairyu.includes('２号')) map[name].g2++;
+        else map[name].g1++;
+      }
+    } else {
+      const rows=(data.table&&data.table.rows)||[];
+      for(const row of rows){
+        if(!row.c||row.c.length<3) continue;
+        const name=row.c[0]&&row.c[0].v?String(row.c[0].v).trim():'';
+        const zai=row.c[1]&&row.c[1].v?String(row.c[1].v).trim():'';
+        const zairyu=row.c[2]&&row.c[2].v?String(row.c[2].v).trim():'';
+        if(!name||(zai!=='○'&&zai!=='〇'&&zai!=='O')) continue;
+        if(!map[name]) map[name]={g1:0,g2:0};
+        if(zairyu.includes('2号')||zairyu.includes('２号')) map[name].g2++;
+        else map[name].g1++;
+      }
     }
     const result=Object.entries(map).map(([n,c])=>({name:n,g1:c.g1,g2:c.g2}));
     if(result.length>0){
