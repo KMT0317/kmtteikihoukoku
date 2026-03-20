@@ -1211,7 +1211,7 @@ function parseCsvLine(l){return l.split(',');}
 
 // gviz fetch取得 — fetchAPI使用（GitHub Pages対応）
 async function fetchGviz(info){
-  const tq=encodeURIComponent('SELECT B,E,F');
+  const tq=encodeURIComponent('SELECT B,F,W');
   // まずcors modeで試みる
   const url='https://docs.google.com/spreadsheets/d/'+info.id
     +'/gviz/tq?tqx=out:json&gid='+info.gid+'&tq='+tq;
@@ -1243,8 +1243,8 @@ async function syncFromSheets(silent=false){
     for(const row of rows){
       if(!row.c||row.c.length<3) continue;
       const name  =row.c[0]&&row.c[0].v?String(row.c[0].v).trim():'';
-      const zairyu=row.c[1]&&row.c[1].v?String(row.c[1].v).trim():''; // 列E=在留資格
-      const zai   =row.c[2]&&row.c[2].v?String(row.c[2].v).trim():''; // 列F=在職中
+      const zai   =row.c[1]&&row.c[1].v?String(row.c[1].v).trim():''; // 列F=在職中
+      const zairyu=row.c[2]&&row.c[2].v?String(row.c[2].v).trim():''; // 列W=在留資格
       if(!name) continue;
       if(zai!=='○'&&zai!=='〇'&&zai!=='O') continue;
       if(!map[name]) map[name]={g1:0,g2:0};
