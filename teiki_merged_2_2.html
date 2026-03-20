@@ -51,17 +51,17 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--tx);
 /* ─── APP SCREEN ─── */
 #appScreen{display:none;}
 /* HEADER */
-.hdr{background:var(--surf);border-bottom:3px solid var(--grn);padding:10px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 6px rgba(0,0,0,.1);}
-.hdr-l{display:flex;align-items:center;gap:12px;}
+.hdr{background:var(--surf);border-bottom:3px solid var(--grn);padding:8px 16px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:100;box-shadow:0 2px 6px rgba(0,0,0,.1);}
+.hdr-l{display:flex;align-items:center;gap:12px;flex-shrink:0;}
 .logo{width:40px;height:40px;background:var(--grn);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;}
-.hdr-t{font-size:20px;font-weight:900;color:var(--grn);}
-.hdr-s{font-size:13px;color:var(--tx3);}
+.hdr-t{font-size:17px;font-weight:900;color:var(--grn);white-space:nowrap;}
+.hdr-s{font-size:11px;color:var(--tx3);white-space:nowrap;}
 .pbadge{background:var(--grn);color:#fff;padding:7px 16px;border-radius:4px;font-size:13px;font-weight:700;font-family:'JetBrains Mono',monospace;white-space:nowrap;flex-shrink:0;}
 /* USER BADGE in header */
 .hdr-user{display:flex;align-items:center;gap:10px;}
-.hdr-user-icon{font-size:22px;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--grn3);flex-shrink:0;overflow:hidden;}
-.hdr-user-name{font-size:15px;font-weight:700;color:var(--grn2);}
-.hdr-user-role{font-size:12px;color:var(--tx3);}
+.hdr-user-icon{font-size:14px;font-weight:900;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--grn);color:#fff;flex-shrink:0;overflow:hidden;letter-spacing:-0.5px;}
+.hdr-user-name{font-size:14px;font-weight:700;color:var(--grn2);white-space:nowrap;}
+.hdr-user-role{font-size:11px;color:var(--tx3);white-space:nowrap;}
 .btn-logout{padding:6px 13px;border-radius:var(--r);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;background:#ffebee;color:var(--red);border:1px solid #ffcdd2;transition:all .12s;}
 .btn-logout:hover{background:#ffcdd2;}
 
@@ -477,7 +477,7 @@ textarea{resize:vertical;min-height:48px;}
 .nav-btn:hover{background:var(--grn3);border-color:var(--grn);color:var(--grn2);}
 .nav-btn.active{background:var(--grn);border-color:var(--grn);color:#fff;}
 /* 中央ナビ（2倍サイズ） */
-.hdr-center-nav{display:flex;align-items:center;gap:8px;flex-shrink:0;margin:0 auto;}
+.hdr-center-nav{display:flex;align-items:center;gap:8px;flex:1;justify-content:center;}
 .center-nav-btn{
   padding:10px 22px;border-radius:var(--r);font-family:inherit;
   font-size:14px;font-weight:800;cursor:pointer;
@@ -962,7 +962,7 @@ details > summary > span:first-child { display: inline-block; transition: transf
       </button>
     </div>
     <!-- 右：ユーザー情報 -->
-    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+    <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
       <div class="hdr-user">
         <div class="hdr-user-icon" id="hdrUserIcon">👤</div>
         <div>
@@ -974,11 +974,13 @@ details > summary > span:first-child { display: inline-block; transition: transf
         <button id="btnAdminMenu" onclick="openAdminMenu()" style="display:none;padding:6px 13px;border:2px solid rgba(255,255,255,.4);border-radius:6px;background:rgba(255,255,255,.12);color:#fff;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;">⚙️ 管理者メニュー</button>
         <button id="btnGlobalAdmin" onclick="openGlobalAdmin()" style="display:none;padding:6px 13px;border:2px solid rgba(255,255,255,.4);border-radius:6px;background:rgba(255,255,255,.12);color:#fff;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;">🛠 全体管理</button>
       </div>
-      <div id="syncBadge" class="sync-badge idle" onclick="openSyncSettings()" title="Google Sheets同期 — クリックで設定">
-        <span id="syncDot" class="sync-dot idle"></span>
-        <span id="syncLabel">Sheets未設定</span>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
+        <div id="syncBadge" class="sync-badge idle" onclick="openSyncSettings()" title="Google Sheets同期 — クリックで設定" style="font-size:11px;padding:3px 9px;">
+          <span id="syncDot" class="sync-dot idle"></span>
+          <span id="syncLabel">Sheets未設定</span>
+        </div>
+        <button class="btn-logout" onclick="doLogout()" style="padding:4px 12px;font-size:11px;">ログアウト</button>
       </div>
-      <button class="btn-logout" onclick="doLogout()">ログアウト</button>
     </div>
   </div>
   <!-- LAYOUT -->
@@ -1111,6 +1113,10 @@ const STAFF_DB = [
 // Exclude shared accounts from login
 const LOGIN_STAFF = STAFF_DB.filter(s=>!['S030','S031'].includes(s.id));
 
+const PDF_JINZAI_DATA = {"三陸工業商事": [{"name": "CHOEK SONA", "sex": "男", "kokuseki": "カンボジア", "birth": "1990-06-05", "cardNo": "UH92449115EA", "gou": "特定技能1号"}], "Shiraishi有限会社": [{"name": "MUHAMMAD ANAS MUNAJI", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-03-30", "cardNo": "UH26848839EA", "gou": "特定技能1号"}], "(株)エフトリア": [{"name": "VENG OTRY", "sex": "男", "kokuseki": "カンボジア", "birth": "2000-12-31", "cardNo": "UH47183092EA", "gou": "特定活動"}], "株式会社PLANT-A": [{"name": "LUNTHUMMA PHOCHARA", "sex": "男", "kokuseki": "タイ", "birth": "1999-05-24", "cardNo": "UH67161924FA", "gou": "特定技能1号"}], "(株)国見重機工業": [{"name": "DANG VAN TUAN", "sex": "男", "kokuseki": "ベトナム", "birth": "1991-05-04", "cardNo": "LJ16241396EA", "gou": "特定技能1号"}], "(株)英光": [{"name": "ATITA KERKKIART", "sex": "男", "kokuseki": "タイ", "birth": "1990-05-24", "cardNo": "UH68386548EA", "gou": "特定技能1号"}, {"name": "ICHWAN HARDIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-03-30", "cardNo": "SA24543733GA", "gou": "特定技能1号"}, {"name": "MUHAMMAD ZAKARIA ILMI KUSUMA", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-02-11", "cardNo": "UH54768358EA", "gou": "特定技能1号"}, {"name": "ARGO SALOKO", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-03-06", "cardNo": "LJ10605420EA", "gou": "特定技能1号"}, {"name": "ANDIKA RIZQI NUR APRIYAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-04-12", "cardNo": "UH41580673GA", "gou": "特定技能1号"}, {"name": "ANTON IVAN HERMAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-08-23", "cardNo": "UH93828835GA", "gou": "特定技能1号"}], "(株)日新工業所": [{"name": "ILHAM YANWAR", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-01-09", "cardNo": "LJ03423906EA", "gou": "特定技能1号"}, {"name": "JOKO SUPRASETIO", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-08-30", "cardNo": "SA01561602EA", "gou": "特定技能1号"}, {"name": "SEPTIAN PRIAMORO", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-09-23", "cardNo": "UH40915426EA", "gou": "特定技能1号"}, {"name": "DIDE SURYADI", "sex": "男", "kokuseki": "インドネシア", "birth": "1983-12-25", "cardNo": "LJ03423890EA", "gou": "特定技能1号"}, {"name": "ARIS SETYAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-06-03", "cardNo": "UH81990255EA", "gou": "特定技能1号"}, {"name": "WIDODO SANTOSO", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-07-18", "cardNo": "UH51872046GA", "gou": "特定技能1号"}], "(株)忠武建基": [{"name": "TA QUANG LUONG", "sex": "男", "kokuseki": "ベトナム", "birth": "1996-12-11", "cardNo": "LJ10603236EA", "gou": "特定技能2号"}, {"name": "PHAM THANH TUAN", "sex": "男", "kokuseki": "ベトナム", "birth": "1986-06-03", "cardNo": "UH90500756EA", "gou": "特定技能1号"}, {"name": "TRINH QUOC VIET", "sex": "男", "kokuseki": "ベトナム", "birth": "1997-12-10", "cardNo": "UH51061887EA", "gou": "特定技能1号"}, {"name": "TA DUC TIEP", "sex": "男", "kokuseki": "ベトナム", "birth": "1987-11-03", "cardNo": "LJ03067667EA", "gou": "特定技能1号"}, {"name": "TRAN VAN KHANG", "sex": "男", "kokuseki": "ベトナム", "birth": "1985-02-25", "cardNo": "LJ00121747FA", "gou": "特定技能1号"}, {"name": "NGUYEN DINH TIEN", "sex": "男", "kokuseki": "ベトナム", "birth": "1986-05-15", "cardNo": "LJ25409844FA", "gou": "特定技能1号"}], "長山 勝之": [{"name": "NILA UTAMI", "sex": "女", "kokuseki": "インドネシア", "birth": "2000-10-26", "cardNo": "UH99484455EA", "gou": "特定技能1号"}, {"name": "HIMMAWAN THIABJUTHA", "sex": "女", "kokuseki": "タイ", "birth": "1994-04-19", "cardNo": "UH51589018EA", "gou": "特定技能1号"}, {"name": "SONTHONG CHANNARONG", "sex": "男", "kokuseki": "タイ", "birth": "1987-08-21", "cardNo": "UH42034055EA", "gou": "特定技能1号"}, {"name": "PHONGSANIN PHIKUN", "sex": "女", "kokuseki": "タイ", "birth": "1979-08-01", "cardNo": "LJ00681308FA", "gou": "特定技能1号"}, {"name": "PHANTHUKAN SUREERAT", "sex": "女", "kokuseki": "タイ", "birth": "1986-04-12", "cardNo": "LJ01585563EA", "gou": "特定技能1号"}], "(有)兵藤工務店": [{"name": "ACHMAD SYARIFFUDIN HIDAYATULLAH", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-01-15", "cardNo": "LJ73991393RA", "gou": "特定技能1号"}, {"name": "SUGIONO", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-09-23", "cardNo": "UH85665740EA", "gou": "特定技能1号"}, {"name": "KOKO ANDRIAS PUTRA DEWATA", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-04-16", "cardNo": "UH31707638EA", "gou": "特定技能1号"}, {"name": "AHMAD INJAYA AMBAR MUSLIM", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-12-10", "cardNo": "UH56335184EA", "gou": "特定技能1号"}, {"name": "ARIF NURPRATOMO", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-03-11", "cardNo": "UH87807839RD", "gou": "特定技能1号"}], "モスニック株式会社": [{"name": "NGUYEN MINH THANG", "sex": "男", "kokuseki": "ベトナム", "birth": "1998-10-07", "cardNo": "UH72163083EA", "gou": "特定技能1号"}, {"name": "PHAN HOAI TAM", "sex": "男", "kokuseki": "ベトナム", "birth": "1994-01-05", "cardNo": "UH39549827EA", "gou": "特定技能1号"}, {"name": "NGUYEN DINH SONG", "sex": "男", "kokuseki": "ベトナム", "birth": "1989-10-24", "cardNo": "UH93546177EA", "gou": "特定技能1号"}, {"name": "NGUYEN VAN PHUONG", "sex": "男", "kokuseki": "ベトナム", "birth": "1990-05-07", "cardNo": "UH31651910EA", "gou": "特定技能1号"}, {"name": "NGUYEN NGOC HIEU", "sex": "男", "kokuseki": "ベトナム", "birth": "1997-10-14", "cardNo": "UH87428317EA", "gou": "特定技能1号"}, {"name": "VO QUOC NHAT", "sex": "男", "kokuseki": "ベトナム", "birth": "1997-01-25", "cardNo": "UH68061242EA", "gou": "特定技能1号"}, {"name": "CAO QUYET CHIEN", "sex": "男", "kokuseki": "ベトナム", "birth": "1996-04-24", "cardNo": "UH03384188EA", "gou": "特定技能1号"}, {"name": "DANG CONG TIEN", "sex": "男", "kokuseki": "ベトナム", "birth": "1998-01-17", "cardNo": "LJ12503668EA", "gou": "特定技能1号"}, {"name": "PHAN NGOC TIEP", "sex": "男", "kokuseki": "ベトナム", "birth": "1994-09-16", "cardNo": "UH86184535EA", "gou": "特定技能1号"}], "丸喜鋼業(株)": [{"name": "JUNAIDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-10-23", "cardNo": "LJ09854408RA", "gou": "特定技能1号"}, {"name": "MAULFI NADIR", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-02-28", "cardNo": "UH94512123EA", "gou": "特定技能1号"}, {"name": "HAPPY JHENIES AFFANDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-06-29", "cardNo": "UH88040642EA", "gou": "特定技能1号"}, {"name": "ANGGI RESMANI SAEPUDIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-07-08", "cardNo": "UH28458717EA", "gou": "特定技能1号"}], "小笠原克昭": [{"name": "RIZKI SUPRIADI", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-11-11", "cardNo": "UH91640341EA", "gou": "特定技能1号"}], "和総農園株式会社": [{"name": "CORNELIUS NATHANAEL SEMBIRING", "sex": "男", "kokuseki": "インドネシア", "birth": "2005-11-18", "cardNo": "UH80318403FA", "gou": "特定技能1号"}, {"name": "AHMAD FAWZY DWINUROHMAN", "sex": "男", "kokuseki": "インドネシア", "birth": "2002-06-27", "cardNo": "UH35873009EA", "gou": "特定技能1号"}, {"name": "IBNU ILYAS SHOBARI", "sex": "男", "kokuseki": "インドネシア", "birth": "2002-02-20", "cardNo": "UH93957153RF", "gou": "特定技能1号"}], "(株)太田鋳造所": [{"name": "AGUNG WINANTA", "sex": "男", "kokuseki": "インドネシア", "birth": "1981-03-13", "cardNo": "UH64640205RD", "gou": "特定技能1号"}, {"name": "SABDO BINTORO SUDARTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1984-01-08", "cardNo": "LJ00827011RD", "gou": "特定技能1号"}], "大器機械(株)": [{"name": "MOH HUDA NAFII", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-12-20", "cardNo": "LJ14302605EA", "gou": "特定技能1号"}, {"name": "SUCIPTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1984-09-14", "cardNo": "UH24201941EA", "gou": "特定技能1号"}, {"name": "MUHAMAD RIFAI", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-11-30", "cardNo": "UH98286131EA", "gou": "特定技能1号"}, {"name": "CANDRA BAGUS ANDIKA", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-09-11", "cardNo": "UH26209101GA", "gou": "特定技能1号"}, {"name": "BHAKTI ARI FERNANDO", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-06-03", "cardNo": "UH08194384GA", "gou": "特定技能1号"}, {"name": "MOHAMAD FACHRUROZI", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-02-01", "cardNo": "UH18653690GA", "gou": "特定技能1号"}, {"name": "FAIDZOL IKHSAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-03-28", "cardNo": "UH36317656", "gou": "特定技能1号"}], "(株)加藤工業": [{"name": "SURYA HADY PRATAMA", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-10-26", "cardNo": "UH50571900EA", "gou": "特定技能1号"}, {"name": "OKI SATRIA SUBEKTI", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-10-24", "cardNo": "UH55235139EA", "gou": "特定技能1号"}, {"name": "MUHAMMAD HIDAYAT PURNOMO", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-06-22", "cardNo": "UH85015640EA", "gou": "特定技能1号"}], "(株)高栄工務店": [{"name": "DUONG HOAI LINH", "sex": "男", "kokuseki": "ベトナム", "birth": "1989-01-12", "cardNo": "UH06898487EA", "gou": "特定技能1号"}, {"name": "NGUYEN DOAN LINH", "sex": "男", "kokuseki": "ベトナム", "birth": "1998-04-16", "cardNo": "UH79893555EA", "gou": "特定技能1号"}], "第一舗道(株)": [{"name": "ARY ANTON HERMAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1983-07-16", "cardNo": "UH57547549EA", "gou": "特定技能1号"}, {"name": "ALON PANJI SAGITA", "sex": "男", "kokuseki": "インドネシア", "birth": "1985-12-01", "cardNo": "UH12836719EA", "gou": "特定技能1号"}, {"name": "NANDI WIDODO", "sex": "男", "kokuseki": "インドネシア", "birth": "1981-11-01", "cardNo": "UH89344621EA", "gou": "特定技能1号"}, {"name": "HARTANTO PUTRA", "sex": "男", "kokuseki": "インドネシア", "birth": "1987-03-05", "cardNo": "UH27405907EA", "gou": "特定技能1号"}, {"name": "EKO WIDHIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-07-12", "cardNo": "UH89494479EA", "gou": "特定技能1号"}, {"name": "TEGUH IMAM SANTOSO", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-08-18", "cardNo": "UH97215611EA", "gou": "特定技能1号"}, {"name": "PARDAMEAN SINAGA", "sex": "男", "kokuseki": "インドネシア", "birth": "1987-02-13", "cardNo": "UH44240132EA", "gou": "特定技能1号"}, {"name": "DAVIT SUHENDRI", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-06-20", "cardNo": "UH26644963EA", "gou": "特定技能1号"}, {"name": "WAGIANTO SUPRAYOGI", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-08-18", "cardNo": "UH02455957EA", "gou": "特定技能1号"}], "(有)大一": [{"name": "MEAS KIMSAN", "sex": "男", "kokuseki": "カンボジア", "birth": "1991-03-01", "cardNo": "UH78897831EA", "gou": "特定技能1号"}, {"name": "PHOU SOVANN", "sex": "男", "kokuseki": "カンボジア", "birth": "1989-06-06", "cardNo": "UH97762282EA", "gou": "特定技能1号"}, {"name": "BUT THAN", "sex": "男", "kokuseki": "カンボジア", "birth": "1987-08-06", "cardNo": "UH14739542EA", "gou": "特定技能1号"}], "鶴盛工業(株)": [{"name": "HARIS ADY JUNIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-06-19", "cardNo": "UH53220896EA", "gou": "特定技能1号"}, {"name": "IQBAL WIRA YUDHA", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-10-11", "cardNo": "UH91023411EA", "gou": "特定技能1号"}, {"name": "MUHAMMAD AYANI", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-11-23", "cardNo": "UH62710877EA", "gou": "特定技能1号"}, {"name": "ANDI PURWANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-01-15", "cardNo": "UH47453704EA", "gou": "特定技能1号"}, {"name": "KRISNA GUNAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1988-01-15", "cardNo": "UH04764474EA", "gou": "特定技能1号"}, {"name": "ERWIN KUSUMA LIE", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-07-12", "cardNo": "UH73946466EA", "gou": "特定技能1号"}, {"name": "IRHAM BONDAN DAMAR PANGESTU", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-05-07", "cardNo": "UH49490529EA", "gou": "特定技能1号"}, {"name": "HILAL ANNASHIRU LIDINILLAH", "sex": "男", "kokuseki": "インドネシア", "birth": "1987-12-01", "cardNo": "UH46706497EA", "gou": "特定技能1号"}, {"name": "DEDE WAHYUDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-03-23", "cardNo": "UH11890949EA", "gou": "特定技能1号"}, {"name": "DANIL PUTRA", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-04-05", "cardNo": "UH03802142GA", "gou": "特定技能1号"}, {"name": "DEA APRIANA", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-04-03", "cardNo": "LJ62776547EA", "gou": "特定技能1号"}, {"name": "ANDRE ARMENIUS PRIATNA", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-03-18", "cardNo": "UH04446497EA", "gou": "特定技能1号"}, {"name": "HEWA RATHNAYAKAGE SENAKA PRABATH", "sex": "男", "kokuseki": "スリランカ", "birth": "1991-11-02", "cardNo": "UH15969519EA", "gou": "特定技能1号"}], "(株)悠ケン": [{"name": "LONG VEASNA", "sex": "男", "kokuseki": "カンボジア", "birth": "1995-03-05", "cardNo": "UH42974244EA", "gou": "特定技能1号"}, {"name": "SEN KHEANG", "sex": "男", "kokuseki": "カンボジア", "birth": "1996-07-06", "cardNo": "UH83169689EA", "gou": "特定技能1号"}, {"name": "PHAT TOLA", "sex": "男", "kokuseki": "カンボジア", "birth": "1993-10-06", "cardNo": "UH49227024EA", "gou": "特定技能1号"}, {"name": "TOM TOLA", "sex": "男", "kokuseki": "カンボジア", "birth": "1990-12-10", "cardNo": "UH29607962EA", "gou": "特定技能1号"}], "(株)山田鉄建": [{"name": "SEPTIAN MARDI NUGROHO", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-09-04", "cardNo": "UH35477354EA", "gou": "特定技能1号"}, {"name": "WAHYU DWI WIBOWO", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-09-11", "cardNo": "UH12287650EA", "gou": "特定技能1号"}, {"name": "EGA SUGANDIE", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-11-18", "cardNo": "UH75496234EA", "gou": "特定技能1号"}], "(株)松浦工務店": [{"name": "DO VAN CHUC", "sex": "男", "kokuseki": "ベトナム", "birth": "1985-02-21", "cardNo": "SA59901768EA", "gou": "特定技能1号"}, {"name": "DINH VAN MANH", "sex": "男", "kokuseki": "ベトナム", "birth": "1985-11-20", "cardNo": "LJ03423932EA", "gou": "特定技能1号"}], "(株)町田製作所": [{"name": "ANGGA PERMADI", "sex": "男", "kokuseki": "インドネシア", "birth": "2001-04-28", "cardNo": "UH54002150EA", "gou": "特定技能1号"}, {"name": "JEFFRI SETIYADI", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-02-13", "cardNo": "LJ08384074EA", "gou": "特定技能1号"}, {"name": "DIMAS SANGSAKA", "sex": "男", "kokuseki": "インドネシア", "birth": "1985-10-24", "cardNo": "LJ08384083EA", "gou": "特定技能1号"}, {"name": "ARI SETIAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-01-07", "cardNo": "LJ08384047EA", "gou": "特定技能1号"}, {"name": "MARSIGID", "sex": "男", "kokuseki": "インドネシア", "birth": "1988-12-16", "cardNo": "LJ08384151EA", "gou": "特定技能1号"}, {"name": "MOCHAMMAD HELMY ARDIANSYAH", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-03-12", "cardNo": "LJ10605256EA", "gou": "特定活動"}, {"name": "MUHAMAD ZAHRUL ALFIN", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-04-20", "cardNo": "LJ08578320EA", "gou": "特定技能1号"}], "(有)境田かき養殖場": [{"name": "CAO DUC HUNG", "sex": "男", "kokuseki": "ベトナム", "birth": "1993-11-23", "cardNo": "LJ16576498EA", "gou": "特定技能1号"}, {"name": "CAO DUC HUNG", "sex": "男", "kokuseki": "ベトナム", "birth": "1993-11-23", "cardNo": "LJ16576498EA", "gou": "特定技能1号"}], "SKY(株)": [{"name": "GANDI KURNIAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-03-28", "cardNo": "UH65556135EA", "gou": "特定技能1号"}, {"name": "MENARA SUKMA", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-11-26", "cardNo": "UH83323248KA", "gou": "特定技能1号"}, {"name": "GANDI KURNIAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-03-28", "cardNo": "UH65556135EA", "gou": "特定技能1号"}, {"name": "MENARA SUKMA", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-11-26", "cardNo": "UH83323248KA", "gou": "特定技能1号"}], "(有)伊豆合金": [{"name": "IRPAN SITORUS", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-09-27", "cardNo": "UH63454399EA", "gou": "特定技能1号"}, {"name": "ANDRI FAMBUKO", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-09-26", "cardNo": "UH01676822EA", "gou": "特定技能1号"}, {"name": "NATANGSA", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-02-07", "cardNo": "UH25359296EA", "gou": "特定技能1号"}, {"name": "AMIN SUTIKNO", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-04-17", "cardNo": "UH93288092EA", "gou": "特定技能1号"}, {"name": "FERRY ADITIAN PURBA", "sex": "男", "kokuseki": "インドネシア", "birth": "1986-09-16", "cardNo": "UH25359296EA", "gou": "特定技能1号"}, {"name": "FAUZAN HADI PUTRA", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-07-22", "cardNo": "UH89382375EA", "gou": "特定技能1号"}, {"name": "TOMI MARUDUT", "sex": "男", "kokuseki": "インドネシア", "birth": "1986-01-09", "cardNo": "UH53400550EA", "gou": "特定技能1号"}, {"name": "JEFRI SIHOMBING", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-07-29", "cardNo": "UH46498099EA", "gou": "特定技能1号"}, {"name": "AGUNG WIDIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1984-06-02", "cardNo": "UH25292140GA", "gou": "特定技能1号"}, {"name": "REPI YASA", "sex": "男", "kokuseki": "インドネシア", "birth": "1988-07-23", "cardNo": "", "gou": "特定技能1号"}, {"name": "IRPAN SITORUS", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-09-27", "cardNo": "UH63454399EA", "gou": "特定技能1号"}, {"name": "ANDRI FAMBUKO", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-09-26", "cardNo": "UH01676822EA", "gou": "特定技能1号"}, {"name": "NATANGSA", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-02-07", "cardNo": "UH25359296EA", "gou": "特定技能1号"}, {"name": "AMIN SUTIKNO", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-04-17", "cardNo": "UH93288092EA", "gou": "特定技能1号"}, {"name": "FERRY ADITIAN PURBA", "sex": "男", "kokuseki": "インドネシア", "birth": "1986-09-16", "cardNo": "UH25359296EA", "gou": "特定技能1号"}, {"name": "FAUZAN HADI PUTRA", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-07-22", "cardNo": "UH89382375EA", "gou": "特定技能1号"}, {"name": "TOMI MARUDUT", "sex": "男", "kokuseki": "インドネシア", "birth": "1986-01-09", "cardNo": "UH53400550EA", "gou": "特定技能1号"}, {"name": "JEFRI SIHOMBING", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-07-29", "cardNo": "UH46498099EA", "gou": "特定技能1号"}, {"name": "AGUNG WIDIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1984-06-02", "cardNo": "UH25292140GA", "gou": "特定技能1号"}, {"name": "REPI YASA", "sex": "男", "kokuseki": "インドネシア", "birth": "1988-07-23", "cardNo": "", "gou": "特定技能1号"}], "(有)マツエイ": [{"name": "MUKHAMAD FAJAR AJI PRASETYO", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-04-25", "cardNo": "UH92336833EA", "gou": "特定技能1号"}, {"name": "MUKHAMAD FAJAR AJI PRASETYO", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-04-25", "cardNo": "UH92336833EA", "gou": "特定技能1号"}], "(株)しんこう技研": [{"name": "SEEYABUT NATTHAPHONG", "sex": "男", "kokuseki": "タイ", "birth": "1998-03-07", "cardNo": "UH02192316EA", "gou": "特定技能1号"}, {"name": "SEEYABUT NATTHAPHONG", "sex": "男", "kokuseki": "タイ", "birth": "1998-03-07", "cardNo": "UH02192316EA", "gou": "特定技能1号"}], "新妻鋼業(株)": [{"name": "CECEP WIRAHMANA", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-09-15", "cardNo": "UH16144621EA", "gou": "特定技能2号"}, {"name": "YUSEP ADI WICAKSONO", "sex": "男", "kokuseki": "インドネシア", "birth": "1988-08-04", "cardNo": "UH12277026EA", "gou": "特定技能1号"}, {"name": "SUPARJONO", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-07-13", "cardNo": "UH95451133EA", "gou": "特定技能1号"}, {"name": "AYANDA PUTRA", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-08-10", "cardNo": "UH79939845EA", "gou": "特定技能1号"}, {"name": "EDI MULYONO", "sex": "男", "kokuseki": "インドネシア", "birth": "1986-06-04", "cardNo": "UH63739252EA", "gou": "特定技能1号"}, {"name": "MOHAMMAD KHOIRUR ROZIQIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-06-24", "cardNo": "UH23091564EA", "gou": "特定技能1号"}, {"name": "WAHYU SUHARTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-05-29", "cardNo": "UH31543162GA", "gou": "特定技能1号"}, {"name": "CECEP WIRAHMANA", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-09-15", "cardNo": "UH16144621EA", "gou": "特定技能2号"}, {"name": "YUSEP ADI WICAKSONO", "sex": "男", "kokuseki": "インドネシア", "birth": "1988-08-04", "cardNo": "UH12277026EA", "gou": "特定技能1号"}, {"name": "SUPARJONO", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-07-13", "cardNo": "UH95451133EA", "gou": "特定技能1号"}, {"name": "AYANDA PUTRA", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-08-10", "cardNo": "UH79939845EA", "gou": "特定技能1号"}, {"name": "EDI MULYONO", "sex": "男", "kokuseki": "インドネシア", "birth": "1986-06-04", "cardNo": "UH63739252EA", "gou": "特定技能1号"}, {"name": "MOHAMMAD KHOIRUR ROZIQIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-06-24", "cardNo": "UH23091564EA", "gou": "特定技能1号"}, {"name": "WAHYU SUHARTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-05-29", "cardNo": "UH31543162GA", "gou": "特定技能1号"}], "株式会社イワヤノ": [{"name": "MUHAMMAD FAUZI", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-12-26", "cardNo": "UH68956459KA", "gou": "特定技能1号"}, {"name": "DUKI", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-08-09", "cardNo": "UH52150576EA", "gou": "特定技能1号"}, {"name": "MUHAMMAD FAUZI", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-12-26", "cardNo": "UH68956459KA", "gou": "特定技能1号"}, {"name": "DUKI", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-08-09", "cardNo": "UH52150576EA", "gou": "特定技能1号"}], "鈴木茂": [{"name": "TRAN VAN THANG", "sex": "男", "kokuseki": "ベトナム", "birth": "1988-07-26", "cardNo": "UH97672477EA", "gou": "特定技能1号"}, {"name": "TRAN VAN THANG", "sex": "男", "kokuseki": "ベトナム", "birth": "1988-07-26", "cardNo": "UH97672477EA", "gou": "特定技能1号"}], "菊地儀貴": [{"name": "ANARCHI PRAKARSA SUWINDRA", "sex": "男", "kokuseki": "インドネシア", "birth": "2004-05-09", "cardNo": "UH66958334EA", "gou": "特定技能1号"}, {"name": "AHMAD KURNIAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "2001-10-28", "cardNo": "UH66933452FA", "gou": "特定技能1号"}, {"name": "NUR AJI RISZKI TAMA", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-07-27", "cardNo": "H11424634GA", "gou": "特定技能1号"}, {"name": "ANARCHI PRAKARSA SUWINDRA", "sex": "男", "kokuseki": "インドネシア", "birth": "2004-05-09", "cardNo": "UH66958334EA", "gou": "特定技能1号"}, {"name": "ARIF ROMADONI", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-12-30", "cardNo": "UH54285342FA", "gou": "特定技能1号"}, {"name": "DWI SUSILO", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-04-23", "cardNo": "UH68806743FA", "gou": "特定技能1号"}, {"name": "AHMAD KURNIAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "2001-10-28", "cardNo": "UH66933452FA", "gou": "特定技能1号"}, {"name": "NUR AJI RISZKI TAMA", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-07-27", "cardNo": "H11424634GA", "gou": "特定技能1号"}], "(株)岡田鋼材": [{"name": "ELLYA DANIEL SILITONGA", "sex": "男", "kokuseki": "インドネシア", "birth": "1986-04-14", "cardNo": "UH03507451EA", "gou": "特定技能1号"}, {"name": "YOCHANES DIARTOYO", "sex": "男", "kokuseki": "インドネシア", "birth": "1982-06-30", "cardNo": "UH91876870EA", "gou": "特定技能1号"}, {"name": "DEDEN HIDAYAT", "sex": "男", "kokuseki": "インドネシア", "birth": "1988-06-01", "cardNo": "UH81084954EA", "gou": "特定技能1号"}, {"name": "ZAKY MUSYAFA", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-01-26", "cardNo": "UH71176772EA", "gou": "特定技能1号"}, {"name": "APRO APRIAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-01-31", "cardNo": "UH37432681EA", "gou": "特定技能1号"}, {"name": "EKO BUDIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-02-11", "cardNo": "UH14996906EA", "gou": "特定技能1号"}, {"name": "ANDRI PARAWANGSAH", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-09-24", "cardNo": "UH44842257RD", "gou": "特定技能1号"}, {"name": "FEBRI PRATAMA", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-02-07", "cardNo": "UH0896655RD", "gou": "特定技能1号"}, {"name": "YOSEP BUDI KUSUMA", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-06-12", "cardNo": "UH42837471RD", "gou": "特定技能1号"}, {"name": "AJI SETIAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-06-25", "cardNo": "LJ94364138RD", "gou": "特定技能1号"}, {"name": "ELLYA DANIEL SILITONGA", "sex": "男", "kokuseki": "インドネシア", "birth": "1986-04-14", "cardNo": "UH03507451EA", "gou": "特定技能1号"}, {"name": "YOCHANES DIARTOYO", "sex": "男", "kokuseki": "インドネシア", "birth": "1982-06-30", "cardNo": "UH91876870EA", "gou": "特定技能1号"}, {"name": "DEDEN HIDAYAT", "sex": "男", "kokuseki": "インドネシア", "birth": "1988-06-01", "cardNo": "UH81084954EA", "gou": "特定技能1号"}, {"name": "ZAKY MUSYAFA", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-01-26", "cardNo": "UH71176772EA", "gou": "特定技能1号"}, {"name": "APRO APRIAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-01-31", "cardNo": "UH37432681EA", "gou": "特定技能1号"}, {"name": "EKO BUDIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-02-11", "cardNo": "UH14996906EA", "gou": "特定技能1号"}, {"name": "ANDRI PARAWANGSAH", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-09-24", "cardNo": "UH44842257RD", "gou": "特定技能1号"}, {"name": "FEBRI PRATAMA", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-02-07", "cardNo": "UH0896655RD", "gou": "特定技能1号"}, {"name": "YOSEP BUDI KUSUMA", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-06-12", "cardNo": "UH42837471RD", "gou": "特定技能1号"}, {"name": "AJI SETIAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-06-25", "cardNo": "LJ94364138RD", "gou": "特定技能1号"}], "関口産業(株)": [{"name": "OKTAVIAN ADY SANTOSO", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-10-23", "cardNo": "UH80067043EA", "gou": "特定技能1号"}, {"name": "SAIRUDIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-11-30", "cardNo": "UH05088346EA", "gou": "特定技能1号"}, {"name": "AAN KUNAIFI", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-10-23", "cardNo": "UH34807269EA", "gou": "特定技能1号"}, {"name": "MEGA HIDAYATUN NIKMAH", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-01-01", "cardNo": "UH73588641EA", "gou": "特定技能1号"}, {"name": "ANDIKA RAMADHAN", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-01-02", "cardNo": "UH01068703EA", "gou": "特定技能1号"}, {"name": "RIYAN BUDI PRAYOGO", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-01-13", "cardNo": "UH81241765EA", "gou": "特定技能1号"}, {"name": "EDI PURWANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-11-26", "cardNo": "UH48553906EA", "gou": "特定技能1号"}, {"name": "OKTAVIAN ADY SANTOSO", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-10-23", "cardNo": "UH80067043EA", "gou": "特定技能1号"}, {"name": "SAIRUDIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-11-30", "cardNo": "UH05088346EA", "gou": "特定技能1号"}, {"name": "AAN KUNAIFI", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-10-23", "cardNo": "UH34807269EA", "gou": "特定技能1号"}, {"name": "MEGA HIDAYATUN NIKMAH", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-01-01", "cardNo": "UH73588641EA", "gou": "特定技能1号"}, {"name": "ANDIKA RAMADHAN", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-01-02", "cardNo": "UH01068703EA", "gou": "特定技能1号"}, {"name": "RIYAN BUDI PRAYOGO", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-01-13", "cardNo": "UH81241765EA", "gou": "特定技能1号"}, {"name": "EDI PURWANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-11-26", "cardNo": "UH48553906EA", "gou": "特定技能1号"}], "(株)北原製作所": [{"name": "RUDI SUSWANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-06-15", "cardNo": "LJ16258431EA", "gou": "特定技能1号"}, {"name": "PUGUH PRASTIO", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-08-15", "cardNo": "LJ16258422EA", "gou": "特定技能1号"}, {"name": "FRANDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-08-11", "cardNo": "UH82019719EA", "gou": "特定技能1号"}, {"name": "FIFIT SETIYADI", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-02-18", "cardNo": "UH21503814EA", "gou": "特定技能1号"}, {"name": "WAHYONO", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-03-09", "cardNo": "UH32547323EA", "gou": "特定技能1号"}, {"name": "DWI AGUSTYAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-08-28", "cardNo": "UH44421079EA", "gou": "特定技能1号"}, {"name": "YULIANI IKA PUTRI", "sex": "女", "kokuseki": "インドネシア", "birth": "1996-07-28", "cardNo": "UH33208479EA", "gou": "特定技能1号"}, {"name": "RIZKI AGUNG SETIYO BUDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-08-18", "cardNo": "UH59163933EA", "gou": "特定技能1号"}, {"name": "ELLY IMRON", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-11-16", "cardNo": "SA28797300EA", "gou": "特定技能1号"}, {"name": "HARJI SETIAR", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-07-31", "cardNo": "SA04273386GA", "gou": "特定技能1号"}, {"name": "ANGGI ARI FADILLAH", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-09-03", "cardNo": "UH05306895FA", "gou": "特定技能1号"}, {"name": "GILANG ALAN MAULANA", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-05-04", "cardNo": "UH61618629EA", "gou": "特定技能1号"}, {"name": "HENDRA HERBIANA", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-03-22", "cardNo": "UH73364118EA", "gou": "特定技能1号"}, {"name": "EDI SAPUTRO", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-09-23", "cardNo": "UH56010175EA", "gou": "特定技能1号"}, {"name": "ROBI FAUZI", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-11-13", "cardNo": "LJ05852067EA", "gou": "特定活動"}, {"name": "MUHAMAD ALDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-10-27", "cardNo": "LJ05852030EA", "gou": "特定活動"}], "EARTH JOY(株)": [{"name": "KEB SOKSAN", "sex": "男", "kokuseki": "カンボジア", "birth": "1988-09-15", "cardNo": "UH67254324EA", "gou": "特定技能1号"}, {"name": "CHEA CHANN THO", "sex": "男", "kokuseki": "カンボジア", "birth": "1985-10-08", "cardNo": "UH51952298EA", "gou": "特定技能1号"}, {"name": "THON THO", "sex": "男", "kokuseki": "カンボジア", "birth": "1990-10-10", "cardNo": "UH36644168EA", "gou": "特定技能1号"}, {"name": "CHHORK NANG", "sex": "男", "kokuseki": "カンボジア", "birth": "1996-09-01", "cardNo": "LJ02933045LA", "gou": "特定技能1号"}, {"name": "KEB SOKSAN", "sex": "男", "kokuseki": "カンボジア", "birth": "1988-09-15", "cardNo": "UH67254324EA", "gou": "特定技能1号"}, {"name": "CHEA CHANN THO", "sex": "男", "kokuseki": "カンボジア", "birth": "1985-10-08", "cardNo": "UH51952298EA", "gou": "特定技能1号"}, {"name": "THON THO", "sex": "男", "kokuseki": "カンボジア", "birth": "1990-10-10", "cardNo": "UH36644168EA", "gou": "特定技能1号"}, {"name": "CHHORK NANG", "sex": "男", "kokuseki": "カンボジア", "birth": "1996-09-01", "cardNo": "LJ02933045LA", "gou": "特定技能1号"}], "(有)加藤工業": [{"name": "MUHAMMAD EFENDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-11-05", "cardNo": "UH74891082KA", "gou": "特定技能1号"}, {"name": "EKO SUKMANTORO", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-08-06", "cardNo": "UH88569851EA", "gou": "特定技能1号"}, {"name": "MUHAMMAD EFENDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-11-05", "cardNo": "UH74891082KA", "gou": "特定技能1号"}, {"name": "EKO SUKMANTORO", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-08-06", "cardNo": "UH88569851EA", "gou": "特定技能1号"}], "(株)シーエスケイ": [{"name": "MUHAMMAD ANANG SAFII", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-06-13", "cardNo": "UH41082641EA", "gou": "特定技能1号"}, {"name": "HADI TUNGGAL DINATA", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-03-02", "cardNo": "UH48168969EA", "gou": "特定技能1号"}, {"name": "DWI NURYANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1988-02-26", "cardNo": "UH54197932EA", "gou": "特定技能1号"}, {"name": "DENDI PUTRA", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-12-18", "cardNo": "UH03457414EA", "gou": "特定技能1号"}, {"name": "MUHAMAD NADIB ASHARI", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-11-01", "cardNo": "LJ09777498EA", "gou": "特定技能1号"}, {"name": "YUSUF CAHYA FIRMANSYAH", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-08-06", "cardNo": "UH42537853EA", "gou": "特定技能1号"}, {"name": "IYUS MANIZAR", "sex": "男", "kokuseki": "インドネシア", "birth": "1987-11-11", "cardNo": "UH34517335EA", "gou": "特定技能1号"}, {"name": "DENDEN FIRMAN TAUFIK", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-06-12", "cardNo": "UH07589048EA", "gou": "特定技能1号"}, {"name": "RONI WIJAYA", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-01-14", "cardNo": "UH71874118EA", "gou": "特定技能1号"}, {"name": "FANDI PRAKOSO", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-07-24", "cardNo": "UH84851653EA", "gou": "特定技能1号"}, {"name": "AKBAR RAYA", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-02-24", "cardNo": "UH65125639EA", "gou": "特定技能1号"}, {"name": "YODYEAMKRAE KRISANAPAK", "sex": "男", "kokuseki": "タイ", "birth": "1993-12-29", "cardNo": "UH54763048EA", "gou": "特定技能1号"}, {"name": "NGUYEN VAN HOAN", "sex": "男", "kokuseki": "ベトナム", "birth": "1992-05-10", "cardNo": "UH27196142EA", "gou": "特定技能1号"}, {"name": "IMAM SYARIFUDIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-05-20", "cardNo": "LJ06260649EA", "gou": "特定技能1号"}, {"name": "KUUD YULIANTORO", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-06-02", "cardNo": "UH50555785EA", "gou": "特定技能1号"}, {"name": "CHOERUROZIKIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-09-20", "cardNo": "UH65417153EA", "gou": "特定技能1号"}, {"name": "HOANG TRUONG DUC", "sex": "男", "kokuseki": "ベトナム", "birth": "1994-02-20", "cardNo": "UH56091300EA", "gou": "特定技能1号"}, {"name": "ADVENT CRISTIAN MAHENDRA", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-04-25", "cardNo": "UH79950137EA", "gou": "特定技能1号"}, {"name": "VUONG QUOC ANH", "sex": "男", "kokuseki": "ベトナム", "birth": "2001-09-15", "cardNo": "UH72273394EA", "gou": "特定技能1号"}, {"name": "JANPUM KITTIKUN", "sex": "男", "kokuseki": "タイ", "birth": "1993-01-14", "cardNo": "UH71781765EA", "gou": "特定技能1号"}, {"name": "CHONGSUKKLAI NATTAPON", "sex": "男", "kokuseki": "タイ", "birth": "1989-04-24", "cardNo": "UH16543348FA", "gou": "特定技能1号"}, {"name": "YULI GUNAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-07-10", "cardNo": "UH51992283GA", "gou": "特定技能1号"}, {"name": "ASEP NURROKHIM", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-09-07", "cardNo": "UH27300576GA", "gou": "特定技能1号"}, {"name": "MEINAKY RACHA MUNGGARAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-05-06", "cardNo": "UH31956560GA", "gou": "特定技能1号"}, {"name": "MUHAMMAD ANANG SAFII", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-06-13", "cardNo": "UH41082641EA", "gou": "特定技能1号"}, {"name": "HADI TUNGGAL DINATA", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-03-02", "cardNo": "UH48168969EA", "gou": "特定技能1号"}, {"name": "DWI NURYANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1988-02-26", "cardNo": "UH54197932EA", "gou": "特定技能1号"}, {"name": "DENDI PUTRA", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-12-18", "cardNo": "UH03457414EA", "gou": "特定技能1号"}, {"name": "MUHAMAD NADIB ASHARI", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-11-01", "cardNo": "LJ09777498EA", "gou": "特定技能1号"}, {"name": "YUSUF CAHYA FIRMANSYAH", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-08-06", "cardNo": "UH42537853EA", "gou": "特定技能1号"}, {"name": "IYUS MANIZAR", "sex": "男", "kokuseki": "インドネシア", "birth": "1987-11-11", "cardNo": "UH34517335EA", "gou": "特定技能1号"}, {"name": "DENDEN FIRMAN TAUFIK", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-06-12", "cardNo": "UH07589048EA", "gou": "特定技能1号"}, {"name": "RONI WIJAYA", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-01-14", "cardNo": "UH71874118EA", "gou": "特定技能1号"}, {"name": "FANDI PRAKOSO", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-07-24", "cardNo": "UH84851653EA", "gou": "特定技能1号"}, {"name": "AKBAR RAYA", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-02-24", "cardNo": "UH65125639EA", "gou": "特定技能1号"}, {"name": "YODYEAMKRAE KRISANAPAK", "sex": "男", "kokuseki": "タイ", "birth": "1993-12-29", "cardNo": "UH54763048EA", "gou": "特定技能1号"}, {"name": "NGUYEN VAN HOAN", "sex": "男", "kokuseki": "ベトナム", "birth": "1992-05-10", "cardNo": "UH27196142EA", "gou": "特定技能1号"}, {"name": "IMAM SYARIFUDIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-05-20", "cardNo": "LJ06260649EA", "gou": "特定技能1号"}, {"name": "KUUD YULIANTORO", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-06-02", "cardNo": "UH50555785EA", "gou": "特定技能1号"}, {"name": "CHOERUROZIKIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-09-20", "cardNo": "UH65417153EA", "gou": "特定技能1号"}, {"name": "HOANG TRUONG DUC", "sex": "男", "kokuseki": "ベトナム", "birth": "1994-02-20", "cardNo": "UH56091300EA", "gou": "特定技能1号"}, {"name": "ADVENT CRISTIAN MAHENDRA", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-04-25", "cardNo": "UH79950137EA", "gou": "特定技能1号"}, {"name": "VUONG QUOC ANH", "sex": "男", "kokuseki": "ベトナム", "birth": "2001-09-15", "cardNo": "UH72273394EA", "gou": "特定技能1号"}, {"name": "JAVAN EFENDY", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-10-12", "cardNo": "UH63292817EA", "gou": "特定技能1号"}, {"name": "JANPUM KITTIKUN", "sex": "男", "kokuseki": "タイ", "birth": "1993-01-14", "cardNo": "UH71781765EA", "gou": "特定技能1号"}, {"name": "CHONGSUKKLAI NATTAPON", "sex": "男", "kokuseki": "タイ", "birth": "1989-04-24", "cardNo": "UH16543348FA", "gou": "特定技能1号"}, {"name": "YULI GUNAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-07-10", "cardNo": "UH51992283GA", "gou": "特定技能1号"}, {"name": "ASEP NURROKHIM", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-09-07", "cardNo": "UH27300576GA", "gou": "特定技能1号"}, {"name": "MEINAKY RACHA MUNGGARAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-05-06", "cardNo": "UH31956560GA", "gou": "特定技能1号"}], "青野管システム工業(株)": [{"name": "HALIS DWI KURNIAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-03-29", "cardNo": "UH55245654EA", "gou": "特定技能1号"}, {"name": "HALIS DWI KURNIAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-03-29", "cardNo": "UH55245654EA", "gou": "特定技能1号"}], "塩川利樹": [{"name": "LAGIYONO", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-03-22", "cardNo": "LJ14299698EA", "gou": "特定技能1号"}, {"name": "ARI MARYONO", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-03-30", "cardNo": "UH30607849EA", "gou": "特定技能1号"}, {"name": "NIZAM AMRULOH", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-11-26", "cardNo": "LJ11773453FA", "gou": "特定技能1号"}, {"name": "LAGIYONO", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-03-22", "cardNo": "LJ14299698EA", "gou": "特定技能1号"}, {"name": "ARI MARYONO", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-03-30", "cardNo": "UH30607849EA", "gou": "特定技能1号"}, {"name": "NIZAM AMRULOH", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-11-26", "cardNo": "LJ11773453FA", "gou": "特定技能1号"}], "(株)興信建設": [{"name": "RYAN ANDRIYANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-04-13", "cardNo": "UH12076205EA", "gou": "特定技能1号"}, {"name": "MAZILDA ZULFA", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-06-19", "cardNo": "UH26153093EA", "gou": "特定技能1号"}, {"name": "DWI PREHANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-05-21", "cardNo": "SA43872659EA", "gou": "特定技能1号"}, {"name": "FATHUL RIZAL", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-12-11", "cardNo": "SA02220868EA", "gou": "特定技能1号"}, {"name": "RUDI WIDIYANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-08-07", "cardNo": "UH89400160EA", "gou": "特定技能1号"}, {"name": "DEDE ANDRIANSYAH", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-09-30", "cardNo": "UH35548126EA", "gou": "特定技能1号"}, {"name": "AMIRUL MUSLIMIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-04-13", "cardNo": "UH35204391EA", "gou": "特定技能1号"}, {"name": "RAMADHANIL ABRAR", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-02-04", "cardNo": "UH42409037EA", "gou": "特定技能1号"}, {"name": "ZIKKI GANESYA", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-02-13", "cardNo": "UH33963238EA", "gou": "特定技能1号"}, {"name": "JIMMI RINALDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-07-21", "cardNo": "UH21661513EA", "gou": "特定技能1号"}, {"name": "SUPRAYETNO", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-01-19", "cardNo": "UH56204887EA", "gou": "特定技能1号"}, {"name": "RIFQI FAUZI", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-04-02", "cardNo": "UH82270652EA", "gou": "特定技能1号"}, {"name": "SUHIRMAN AZHARI", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-07-26", "cardNo": "UH06566728EA", "gou": "特定技能1号"}, {"name": "JUWONO DWI PURNOMO", "sex": "男", "kokuseki": "インドネシア", "birth": "2001-09-21", "cardNo": "UH58350400EA", "gou": "特定技能1号"}, {"name": "RISKY ANDRIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-01-27", "cardNo": "UH85383339EA", "gou": "特定技能1号"}, {"name": "RYAN ANDRIYANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-04-13", "cardNo": "UH12076205EA", "gou": "特定技能1号"}, {"name": "MAZILDA ZULFA", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-06-19", "cardNo": "UH26153093EA", "gou": "特定技能1号"}, {"name": "DWI PREHANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-05-21", "cardNo": "SA43872659EA", "gou": "特定技能1号"}, {"name": "FATHUL RIZAL", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-12-11", "cardNo": "SA02220868EA", "gou": "特定技能1号"}, {"name": "RUDI WIDIYANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-08-07", "cardNo": "UH89400160EA", "gou": "特定技能1号"}, {"name": "DEDE ANDRIANSYAH", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-09-30", "cardNo": "UH35548126EA", "gou": "特定技能1号"}, {"name": "AMIRUL MUSLIMIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-04-13", "cardNo": "UH35204391EA", "gou": "特定技能1号"}, {"name": "RAMADHANIL ABRAR", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-02-04", "cardNo": "UH42409037EA", "gou": "特定技能1号"}, {"name": "ZIKKI GANESYA", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-02-13", "cardNo": "UH33963238EA", "gou": "特定技能1号"}, {"name": "JIMMI RINALDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-07-21", "cardNo": "UH21661513EA", "gou": "特定技能1号"}, {"name": "SUPRAYETNO", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-01-19", "cardNo": "UH56204887EA", "gou": "特定技能1号"}, {"name": "RIFQI FAUZI", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-04-02", "cardNo": "UH82270652EA", "gou": "特定技能1号"}, {"name": "SUHIRMAN AZHARI", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-07-26", "cardNo": "UH06566728EA", "gou": "特定技能1号"}, {"name": "JUWONO DWI PURNOMO", "sex": "男", "kokuseki": "インドネシア", "birth": "2001-09-21", "cardNo": "UH58350400EA", "gou": "特定技能1号"}, {"name": "RISKY ANDRIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-01-27", "cardNo": "UH85383339EA", "gou": "特定技能1号"}], "(株)中村建設": [{"name": "KIEU QUANG HIEU", "sex": "男", "kokuseki": "ベトナム", "birth": "1989-09-12", "cardNo": "UH64557979EA", "gou": "特定技能1号"}, {"name": "NGUYEN DUC NHAN", "sex": "男", "kokuseki": "ベトナム", "birth": "1998-08-01", "cardNo": "LJ16258459EA", "gou": "特定技能1号"}, {"name": "VU VAN LOI", "sex": "男", "kokuseki": "ベトナム", "birth": "1995-03-27", "cardNo": "LJ26927919EA", "gou": "特定技能1号"}, {"name": "TAN POVPISEY", "sex": "男", "kokuseki": "カンボジア", "birth": "2000-02-08", "cardNo": "UH76221574EA", "gou": "特定技能1号"}, {"name": "CHHEAL PHEARUN", "sex": "男", "kokuseki": "カンボジア", "birth": "1992-09-14", "cardNo": "UH87169785EA", "gou": "特定技能1号"}, {"name": "TAN PISETH", "sex": "男", "kokuseki": "カンボジア", "birth": "1998-05-19", "cardNo": "LJ06260621EA", "gou": "特定技能1号"}, {"name": "KIEU QUANG HIEU", "sex": "男", "kokuseki": "ベトナム", "birth": "1989-09-12", "cardNo": "UH64557979EA", "gou": "特定技能1号"}, {"name": "NGUYEN DUC NHAN", "sex": "男", "kokuseki": "ベトナム", "birth": "1998-08-01", "cardNo": "LJ16258459EA", "gou": "特定技能1号"}, {"name": "VU VAN LOI", "sex": "男", "kokuseki": "ベトナム", "birth": "1995-03-27", "cardNo": "LJ26927919EA", "gou": "特定技能1号"}, {"name": "TAN POVPISEY", "sex": "男", "kokuseki": "カンボジア", "birth": "2000-02-08", "cardNo": "UH76221574EA", "gou": "特定技能1号"}, {"name": "CHHEAL PHEARUN", "sex": "男", "kokuseki": "カンボジア", "birth": "1992-09-14", "cardNo": "UH87169785EA", "gou": "特定技能1号"}, {"name": "TAN PISETH", "sex": "男", "kokuseki": "カンボジア", "birth": "1998-05-19", "cardNo": "LJ06260621EA", "gou": "特定技能1号"}], "(株)隆盛": [{"name": "PHAM QUANG HOAI", "sex": "男", "kokuseki": "ベトナム", "birth": "1989-07-11", "cardNo": "LJ03067717EA", "gou": "特定技能2号"}, {"name": "NGUYEN ANH TUAN", "sex": "男", "kokuseki": "ベトナム", "birth": "1985-11-21", "cardNo": "UH61062248EA", "gou": "特定技能1号"}, {"name": "PHAM QUANG HOAI", "sex": "男", "kokuseki": "ベトナム", "birth": "1989-07-11", "cardNo": "LJ03067717EA", "gou": "特定技能2号"}, {"name": "NGUYEN ANH TUAN", "sex": "男", "kokuseki": "ベトナム", "birth": "1985-11-21", "cardNo": "UH61062248EA", "gou": "特定技能1号"}], "双葉鉄工(株)": [{"name": "NGUYEN DINH THAO", "sex": "男", "kokuseki": "ベトナム", "birth": "1995-05-18", "cardNo": "UH65355120EA", "gou": "特定技能1号"}, {"name": "PHAM VAN CUONG", "sex": "男", "kokuseki": "ベトナム", "birth": "1997-06-15", "cardNo": "SA74780145FA", "gou": "特定技能1号"}, {"name": "NGUYEN DINH THAO", "sex": "男", "kokuseki": "ベトナム", "birth": "1995-05-18", "cardNo": "UH65355120EA", "gou": "特定技能1号"}, {"name": "PHAM VAN CUONG", "sex": "男", "kokuseki": "ベトナム", "birth": "1997-06-15", "cardNo": "SA74780145FA", "gou": "特定技能1号"}], "(有)吉田興業": [{"name": "LA MANH HUNG", "sex": "男", "kokuseki": "ベトナム", "birth": "1990-08-09", "cardNo": "UH14305423EA", "gou": "特定技能2号"}, {"name": "TRAN XUAN THANG", "sex": "男", "kokuseki": "ベトナム", "birth": "1993-11-01", "cardNo": "UH95339803EA", "gou": "特定技能1号"}, {"name": "TRAN XUAN THANG", "sex": "男", "kokuseki": "ベトナム", "birth": "1993-11-01", "cardNo": "UH95339803EA", "gou": "特定技能1号"}], "株式会社Fリミテッド": [{"name": "LE TIEN DUY", "sex": "男", "kokuseki": "ベトナム", "birth": "1998-04-27", "cardNo": "UH18662488EA", "gou": "特定技能1号"}, {"name": "LE TIEN DUY", "sex": "男", "kokuseki": "ベトナム", "birth": "1998-04-27", "cardNo": "UH18662488EA", "gou": "特定技能1号"}], "(有)ハリマ": [{"name": "SHEIKH JAHED", "sex": "男", "kokuseki": "バングラデシュ", "birth": "2001-02-02", "cardNo": "UH00816751FA", "gou": "特定技能1号"}, {"name": "IMRAN", "sex": "男", "kokuseki": "バングラデシュ", "birth": "2002-02-01", "cardNo": "UH82781884FA", "gou": "特定技能1号"}, {"name": "SHEIKH JAHED", "sex": "男", "kokuseki": "バングラデシュ", "birth": "2001-02-02", "cardNo": "UH00816751FA", "gou": "特定技能1号"}, {"name": "IMRAN", "sex": "男", "kokuseki": "バングラデシュ", "birth": "2002-02-01", "cardNo": "UH82781884FA", "gou": "特定技能1号"}], "蒲谷工業(株)": [{"name": "CATRA RULLYA MARDANI", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-12-12", "cardNo": "UH34916255EA", "gou": "特定技能1号"}, {"name": "TOTY SUHENDRA", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-07-23", "cardNo": "LJ09146665EA", "gou": "特定技能1号"}, {"name": "AGUNG RAHMAT GUMELAR", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-06-07", "cardNo": "UH36583180JA", "gou": "特定技能1号"}, {"name": "CATRA RULLYA MARDANI", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-12-12", "cardNo": "UH34916255EA", "gou": "特定技能1号"}, {"name": "TOTY SUHENDRA", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-07-23", "cardNo": "LJ09146665EA", "gou": "特定技能1号"}, {"name": "AGUNG RAHMAT GUMELAR", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-06-07", "cardNo": "UH36583180JA", "gou": "特定技能1号"}], "(株)サスダイ水産": [{"name": "ERLANDO YOGA ADI SAPUTRO", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-06-23", "cardNo": "UH18934122EA", "gou": "特定技能1号"}, {"name": "ERLANDO YOGA ADI SAPUTRO", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-06-23", "cardNo": "UH18934122EA", "gou": "特定技能1号"}], "石橋豊": [{"name": "DO THI NGOC ANH", "sex": "女", "kokuseki": "ベトナム", "birth": "1993-12-07", "cardNo": "LJ13547552EA", "gou": "特定技能1号"}, {"name": "NGUYEN THI HUYEN", "sex": "女", "kokuseki": "ベトナム", "birth": "1989-01-25", "cardNo": "LJ11494868EA", "gou": "特定活動"}], "(株)牧添業務店": [{"name": "SUWITO", "sex": "男", "kokuseki": "インドネシア", "birth": "1983-08-29", "cardNo": "UH20150005EA", "gou": "特定技能1号"}, {"name": "CAHYA ARDHI WIBOWO", "sex": "男", "kokuseki": "インドネシア", "birth": "1986-12-09", "cardNo": "UH60199076KA", "gou": "特定技能1号"}, {"name": "RIYAN WIDIGDO", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-08-27", "cardNo": "UH70694322KA", "gou": "特定技能1号"}, {"name": "SUWITO", "sex": "男", "kokuseki": "インドネシア", "birth": "1983-08-29", "cardNo": "UH20150005EA", "gou": "特定技能1号"}, {"name": "CAHYA ARDHI WIBOWO", "sex": "男", "kokuseki": "インドネシア", "birth": "1986-12-09", "cardNo": "UH60199076KA", "gou": "特定技能1号"}, {"name": "RIYAN WIDIGDO", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-08-27", "cardNo": "UH70694322KA", "gou": "特定技能1号"}], "上田鍍金工業(株)": [{"name": "LE NHAT TRUONG", "sex": "男", "kokuseki": "ベトナム", "birth": "1991-09-12", "cardNo": "UH79842037EA", "gou": "特定技能1号"}, {"name": "NGUYEN LINH TAM", "sex": "男", "kokuseki": "ベトナム", "birth": "1995-01-08", "cardNo": "LJ06527777EA", "gou": "特定技能1号"}, {"name": "PHAN THANH DUNG", "sex": "男", "kokuseki": "ベトナム", "birth": "1991-07-28", "cardNo": "UH71176772EA", "gou": "特定技能1号"}, {"name": "LE NHAT TRUONG", "sex": "男", "kokuseki": "ベトナム", "birth": "1991-09-12", "cardNo": "UH79842037EA", "gou": "特定技能1号"}, {"name": "NGUYEN LINH TAM", "sex": "男", "kokuseki": "ベトナム", "birth": "1995-01-08", "cardNo": "LJ06527777EA", "gou": "特定技能1号"}, {"name": "PHAN THANH DUNG", "sex": "男", "kokuseki": "ベトナム", "birth": "1991-07-28", "cardNo": "UH71176772EA", "gou": "特定技能1号"}], "(株)名徳興産": [{"name": "JUSMAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1978-03-14", "cardNo": "UH86113194EA", "gou": "特定技能1号"}, {"name": "SUONG SALONG", "sex": "男", "kokuseki": "カンボジア", "birth": "1998-03-18", "cardNo": "UH76865533EA", "gou": "特定技能1号"}, {"name": "SYAMSUL FALAKH", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-01-18", "cardNo": "LJ50469665KA", "gou": "特定技能1号"}, {"name": "JUSMAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1978-03-14", "cardNo": "UH86113194EA", "gou": "特定技能1号"}, {"name": "SUONG SALONG", "sex": "男", "kokuseki": "カンボジア", "birth": "1998-03-18", "cardNo": "UH76865533EA", "gou": "特定技能1号"}, {"name": "SYAMSUL FALAKH", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-01-18", "cardNo": "LJ50469665KA", "gou": "特定技能1号"}], "(株)内村組": [{"name": "ARIF MUFLIKHIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1983-04-29", "cardNo": "UH79616097EA", "gou": "特定技能1号"}, {"name": "PUNTO SRI KUNCORO", "sex": "男", "kokuseki": "インドネシア", "birth": "1985-09-15", "cardNo": "UH35174373EA", "gou": "特定技能1号"}, {"name": "NGUYEN TIEN HUY", "sex": "男", "kokuseki": "ベトナム", "birth": "1991-10-10", "cardNo": "SA26720596EA", "gou": "特定技能1号"}, {"name": "DAO HUU RON", "sex": "男", "kokuseki": "ベトナム", "birth": "1993-04-16", "cardNo": "UH93533335EA", "gou": "特定技能1号"}, {"name": "ARIF MUFLIKHIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1983-04-29", "cardNo": "UH79616097EA", "gou": "特定技能1号"}, {"name": "PUNTO SRI KUNCORO", "sex": "男", "kokuseki": "インドネシア", "birth": "1985-09-15", "cardNo": "UH35174373EA", "gou": "特定技能1号"}, {"name": "NGUYEN TIEN HUY", "sex": "男", "kokuseki": "ベトナム", "birth": "1991-10-10", "cardNo": "SA26720596EA", "gou": "特定技能1号"}, {"name": "DO HOANG MINH", "sex": "男", "kokuseki": "ベトナム", "birth": "1984-07-18", "cardNo": "LJ16576444EA", "gou": "特定技能1号"}, {"name": "DAO HUU RON", "sex": "男", "kokuseki": "ベトナム", "birth": "1993-04-16", "cardNo": "UH93533335EA", "gou": "特定技能1号"}, {"name": "KIEU VAN HUY", "sex": "男", "kokuseki": "ベトナム", "birth": "1981-08-20", "cardNo": "UH54686178FA", "gou": "特定技能1号"}, {"name": "NGUYEN VIET DU", "sex": "男", "kokuseki": "ベトナム", "birth": "1985-04-15", "cardNo": "UH642570135FA", "gou": "特定技能1号"}], "(有)埼玉型枠工事": [{"name": "DARIWONG THANAPHON", "sex": "男", "kokuseki": "タイ", "birth": "1996-07-15", "cardNo": "UH58615700EA", "gou": "特定技能1号"}, {"name": "DIM DENG", "sex": "男", "kokuseki": "カンボジア", "birth": "1991-09-10", "cardNo": "UH21708187EA", "gou": "特定技能1号"}, {"name": "PHEAB PHIRAT", "sex": "男", "kokuseki": "カンボジア", "birth": "1992-02-16", "cardNo": "UH85403450EA", "gou": "特定技能1号"}, {"name": "PHON SAO HORN", "sex": "男", "kokuseki": "カンボジア", "birth": "1984-06-04", "cardNo": "LJ03067709EA", "gou": "特定技能1号"}, {"name": "PUSSAKEAW SUMIT", "sex": "男", "kokuseki": "タイ", "birth": "1990-09-07", "cardNo": "UH20395717EA", "gou": "特定技能1号"}, {"name": "DARIWONG THANAPHON", "sex": "男", "kokuseki": "タイ", "birth": "1996-07-15", "cardNo": "UH58615700EA", "gou": "特定技能1号"}, {"name": "DIM DENG", "sex": "男", "kokuseki": "カンボジア", "birth": "1991-09-10", "cardNo": "UH21708187EA", "gou": "特定技能1号"}, {"name": "PHEAB PHIRAT", "sex": "男", "kokuseki": "カンボジア", "birth": "1992-02-16", "cardNo": "UH85403450EA", "gou": "特定技能1号"}, {"name": "PHON SAO HORN", "sex": "男", "kokuseki": "カンボジア", "birth": "1984-06-04", "cardNo": "LJ03067709EA", "gou": "特定技能1号"}, {"name": "PUSSAKEAW SUMIT", "sex": "男", "kokuseki": "タイ", "birth": "1990-09-07", "cardNo": "UH20395717EA", "gou": "特定技能1号"}, {"name": "NUON RITH", "sex": "男", "kokuseki": "カンボジア", "birth": "1997-03-01", "cardNo": "UH86966878EA", "gou": "特定活動"}], "桑田健二": [{"name": "I NENGAH PUTRA SANJAYA", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-05-20", "cardNo": "LJ13951408FA", "gou": "特定技能1号"}, {"name": "I NENGAH PUTRA SANJAYA", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-05-20", "cardNo": "LJ13951408FA", "gou": "特定技能1号"}], "(有)大野組": [{"name": "AMAN DERMAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-12-17", "cardNo": "UH67179267EA", "gou": "特定技能1号"}, {"name": "DIYAR JAMHARU", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-07-05", "cardNo": "UH25193824EA", "gou": "特定技能1号"}, {"name": "AMAN DERMAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-12-17", "cardNo": "UH67179267EA", "gou": "特定技能1号"}, {"name": "DIYAR JAMHARU", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-07-05", "cardNo": "UH25193824EA", "gou": "特定技能1号"}], "(有)埼建工務店": [{"name": "TRAN THE THANG", "sex": "男", "kokuseki": "ベトナム", "birth": "1988-02-03", "cardNo": "UH01587816EA", "gou": "特定技能1号"}, {"name": "TRAN THE THANG", "sex": "男", "kokuseki": "ベトナム", "birth": "1988-02-03", "cardNo": "UH01587816EA", "gou": "特定技能1号"}], "小山猛": [{"name": "RAGIL YULIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-07-01", "cardNo": "UH75013954EA", "gou": "特定技能1号"}, {"name": "BAYU SETIADI", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-12-16", "cardNo": "UH03391075EA", "gou": "特定技能1号"}, {"name": "MUHAMAD KURNIAWAN NURVIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-11-12", "cardNo": "LJ06335181EA", "gou": "特定技能1号"}, {"name": "GESANG HASTUNGKORO", "sex": "男", "kokuseki": "インドネシア", "birth": "2001-06-08", "cardNo": "LJ16258405EA", "gou": "特定技能1号"}, {"name": "RAGIL YULIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-07-01", "cardNo": "UH75013954EA", "gou": "特定技能1号"}, {"name": "BAYU SETIADI", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-12-16", "cardNo": "UH03391075EA", "gou": "特定技能1号"}, {"name": "MUHAMAD KURNIAWAN NURVIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-11-12", "cardNo": "LJ06335181EA", "gou": "特定技能1号"}, {"name": "GESANG HASTUNGKORO", "sex": "男", "kokuseki": "インドネシア", "birth": "2001-06-08", "cardNo": "LJ16258405EA", "gou": "特定技能1号"}], "(株)伊東製作所": [{"name": "MUHAMMAD MUTASHIM", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-07-05", "cardNo": "SA40173163EA", "gou": "特定技能1号"}, {"name": "ERWIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-11-29", "cardNo": "LJ11655542EA", "gou": "特定技能1号"}, {"name": "PHROMCHANTHAN THODSAPHON", "sex": "男", "kokuseki": "タイ", "birth": "1995-11-06", "cardNo": "UH57783127EA", "gou": "特定技能1号"}, {"name": "HOANG VAN SAM", "sex": "男", "kokuseki": "ベトナム", "birth": "1994-02-06", "cardNo": "UH04335313EA", "gou": "特定技能1号"}, {"name": "MOH FATKHUR ROHMAN FANANI", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-08-06", "cardNo": "UH73362170EA", "gou": "特定技能1号"}, {"name": "DIYAN ROBY PRASETYO", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-03-08", "cardNo": "UH62079352EA", "gou": "特定技能1号"}, {"name": "MUHAMMAD MUTASHIM", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-07-05", "cardNo": "SA40173163EA", "gou": "特定技能1号"}, {"name": "ERWIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-11-29", "cardNo": "LJ11655542EA", "gou": "特定技能1号"}, {"name": "PHROMCHANTHAN THODSAPHON", "sex": "男", "kokuseki": "タイ", "birth": "1995-11-06", "cardNo": "UH57783127EA", "gou": "特定技能1号"}, {"name": "HOANG VAN SAM", "sex": "男", "kokuseki": "ベトナム", "birth": "1994-02-06", "cardNo": "UH04335313EA", "gou": "特定技能1号"}, {"name": "MOH FATKHUR ROHMAN FANANI", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-08-06", "cardNo": "UH73362170EA", "gou": "特定技能1号"}, {"name": "DIYAN ROBY PRASETYO", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-03-08", "cardNo": "UH62079352EA", "gou": "特定技能1号"}], "力丸鋼機(株)": [{"name": "IKHSAN PURNOMO", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-07-16", "cardNo": "LJ16665613RA", "gou": "特定技能1号"}, {"name": "SAEFUL UMAR", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-05-05", "cardNo": "UH59170712RD", "gou": "特定技能1号"}, {"name": "IKHSAN PURNOMO", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-07-16", "cardNo": "LJ16665613RA", "gou": "特定技能1号"}, {"name": "SAEFUL UMAR", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-05-05", "cardNo": "UH59170712RD", "gou": "特定技能1号"}], "(株)北本装飾": [{"name": "NUR ACHMAD RIFAI", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-07-08", "cardNo": "UH79970826EA", "gou": "特定技能1号"}, {"name": "IN BUNTHEA", "sex": "男", "kokuseki": "カンボジア", "birth": "1990-03-04", "cardNo": "UH03934947EA", "gou": "特定技能1号"}, {"name": "LONG LA MONG", "sex": "男", "kokuseki": "カンボジア", "birth": "1998-10-10", "cardNo": "LJ09146707EA", "gou": "特定技能1号"}, {"name": "NUR ACHMAD RIFAI", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-07-08", "cardNo": "UH79970826EA", "gou": "特定技能1号"}, {"name": "IN BUNTHEA", "sex": "男", "kokuseki": "カンボジア", "birth": "1990-03-04", "cardNo": "UH03934947EA", "gou": "特定技能1号"}, {"name": "LONG LA MONG", "sex": "男", "kokuseki": "カンボジア", "birth": "1998-10-10", "cardNo": "LJ09146707EA", "gou": "特定技能1号"}], "(株)羽田工作所": [{"name": "ADI YOGA NUGROHO", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-05-22", "cardNo": "UH94595925EA", "gou": "特定技能1号"}, {"name": "HADI ISWANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-01-05", "cardNo": "UH34904852EA", "gou": "特定技能1号"}, {"name": "ADI YOGA NUGROHO", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-05-22", "cardNo": "UH94595925EA", "gou": "特定技能1号"}, {"name": "HADI ISWANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-01-05", "cardNo": "UH34904852EA", "gou": "特定技能1号"}], "(株)本繁型枠": [{"name": "I MADE MUSTIKA", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-07-02", "cardNo": "UH37382828EA", "gou": "特定技能1号"}, {"name": "I MADE MUSTIKA", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-07-02", "cardNo": "UH37382828EA", "gou": "特定技能1号"}], "(有)アイ・エイ・シー": [{"name": "YE MYAT MIN", "sex": "男", "kokuseki": "ミャンマー", "birth": "1995-11-08", "cardNo": "LJ06415209EA", "gou": "特定技能1号"}, {"name": "YE MYAT MIN", "sex": "男", "kokuseki": "ミャンマー", "birth": "1995-11-08", "cardNo": "LJ06415209EA", "gou": "特定技能1号"}], "株式会社小木曽製作所": [{"name": "ANDI SETIAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-10-10", "cardNo": "UH30300164EA", "gou": "特定技能1号"}, {"name": "HERDI SUHERDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-12-07", "cardNo": "UH98629223EA", "gou": "特定技能1号"}, {"name": "ANDI SETIAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-10-10", "cardNo": "UH30300164EA", "gou": "特定技能1号"}, {"name": "HERDI SUHERDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-12-07", "cardNo": "UH98629223EA", "gou": "特定技能1号"}], "二幸建設(株)": [{"name": "YOHANES", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-02-28", "cardNo": "UH02519641EA", "gou": "特定技能1号"}, {"name": "NGUYEN HUU DINH", "sex": "男", "kokuseki": "ベトナム", "birth": "1990-10-02", "cardNo": "LJ11126365EA", "gou": "特定技能2号"}, {"name": "BUI NGOC PHUNG", "sex": "男", "kokuseki": "ベトナム", "birth": "1985-09-17", "cardNo": "UH25316433EA", "gou": "特定技能1号"}, {"name": "NGUYEN DUY HANH", "sex": "男", "kokuseki": "ベトナム", "birth": "1998-06-03", "cardNo": "UH94761575EA", "gou": "特定技能1号"}, {"name": "NGUYEN NGUYEN THONG", "sex": "男", "kokuseki": "ベトナム", "birth": "1988-05-03", "cardNo": "UH67485098EA", "gou": "特定技能1号"}, {"name": "PHAN VAN TAN", "sex": "男", "kokuseki": "ベトナム", "birth": "1998-10-16", "cardNo": "LJ07593677EA", "gou": "特定技能1号"}, {"name": "LE CONG MINH", "sex": "男", "kokuseki": "ベトナム", "birth": "1996-05-12", "cardNo": "UH94740986EA", "gou": "特定技能1号"}, {"name": "THACH THANG", "sex": "男", "kokuseki": "ベトナム", "birth": "1991-08-21", "cardNo": "UH78558313EA", "gou": "特定技能1号"}, {"name": "PHAM THE THUONG", "sex": "男", "kokuseki": "ベトナム", "birth": "1988-10-25", "cardNo": "UH58484906EA", "gou": "特定技能1号"}, {"name": "NGUYEN HAI NINH", "sex": "男", "kokuseki": "ベトナム", "birth": "1995-01-29", "cardNo": "UH23862176EA", "gou": "特定技能1号"}, {"name": "MA VAN NGU", "sex": "男", "kokuseki": "ベトナム", "birth": "1985-10-22", "cardNo": "UH79122882EA", "gou": "特定技能1号"}, {"name": "HOANG NGOC DUONG", "sex": "男", "kokuseki": "ベトナム", "birth": "1995-04-19", "cardNo": "UH96051990EA", "gou": "特定技能1号"}, {"name": "TRAN NGOC DUNG", "sex": "男", "kokuseki": "ベトナム", "birth": "1986-10-02", "cardNo": "LJ07593668EA", "gou": "特定技能1号"}, {"name": "MUH EDO BEKTI SETIAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-10-27", "cardNo": "UH44890566EA", "gou": "特定技能1号"}, {"name": "LY VAN DUC", "sex": "男", "kokuseki": "ベトナム", "birth": "1990-02-27", "cardNo": "LJ11876171EA", "gou": "特定活動"}, {"name": "YOHANES", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-02-28", "cardNo": "UH02519641EA", "gou": "特定技能1号"}, {"name": "NGUYEN HUU DINH", "sex": "男", "kokuseki": "ベトナム", "birth": "1990-10-02", "cardNo": "LJ11126365EA", "gou": "特定技能2号"}, {"name": "BUI NGOC PHUNG", "sex": "男", "kokuseki": "ベトナム", "birth": "1985-09-17", "cardNo": "UH25316433EA", "gou": "特定技能1号"}, {"name": "NGUYEN DUY HANH", "sex": "男", "kokuseki": "ベトナム", "birth": "1998-06-03", "cardNo": "UH94761575EA", "gou": "特定技能1号"}, {"name": "NGUYEN NGUYEN THONG", "sex": "男", "kokuseki": "ベトナム", "birth": "1988-05-03", "cardNo": "UH67485098EA", "gou": "特定技能1号"}, {"name": "PHAN VAN TAN", "sex": "男", "kokuseki": "ベトナム", "birth": "1998-10-16", "cardNo": "LJ07593677EA", "gou": "特定技能1号"}, {"name": "LE CONG MINH", "sex": "男", "kokuseki": "ベトナム", "birth": "1996-05-12", "cardNo": "UH94740986EA", "gou": "特定技能1号"}, {"name": "THACH THANG", "sex": "男", "kokuseki": "ベトナム", "birth": "1991-08-21", "cardNo": "UH78558313EA", "gou": "特定技能1号"}, {"name": "PHAM THE THUONG", "sex": "男", "kokuseki": "ベトナム", "birth": "1988-10-25", "cardNo": "UH58484906EA", "gou": "特定技能1号"}, {"name": "NGUYEN HAI NINH", "sex": "男", "kokuseki": "ベトナム", "birth": "1995-01-29", "cardNo": "UH23862176EA", "gou": "特定技能1号"}, {"name": "MA VAN NGU", "sex": "男", "kokuseki": "ベトナム", "birth": "1985-10-22", "cardNo": "UH79122882EA", "gou": "特定技能1号"}, {"name": "HOANG NGOC DUONG", "sex": "男", "kokuseki": "ベトナム", "birth": "1995-04-19", "cardNo": "UH96051990EA", "gou": "特定技能1号"}, {"name": "TRAN NGOC DUNG", "sex": "男", "kokuseki": "ベトナム", "birth": "1986-10-02", "cardNo": "LJ07593668EA", "gou": "特定技能1号"}, {"name": "MUH EDO BEKTI SETIAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-10-27", "cardNo": "UH44890566EA", "gou": "特定技能1号"}, {"name": "LY VAN DUC", "sex": "男", "kokuseki": "ベトナム", "birth": "1990-02-27", "cardNo": "LJ11876171EA", "gou": "特定活動"}], "(株)高和製作所": [{"name": "WAHYU RIYANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1982-09-26", "cardNo": "UH21262752EA", "gou": "特定技能1号"}, {"name": "HERY SUCIPTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1985-03-08", "cardNo": "UH21262752EA", "gou": "特定技能1号"}, {"name": "YANA SUPYANA", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-05-26", "cardNo": "UH31479373EA", "gou": "特定技能1号"}, {"name": "RULIANSYAH", "sex": "男", "kokuseki": "インドネシア", "birth": "1988-07-09", "cardNo": "UH75565899EA", "gou": "特定技能1号"}, {"name": "TUGIMIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1988-04-23", "cardNo": "UH23108012EA", "gou": "特定技能1号"}, {"name": "KAKAN SUKANDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1988-09-07", "cardNo": "LJ14205066EA", "gou": "特定技能1号"}, {"name": "WAHYU RIYANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1982-09-26", "cardNo": "UH21262752EA", "gou": "特定技能1号"}, {"name": "HERY SUCIPTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1985-03-08", "cardNo": "UH21262752EA", "gou": "特定技能1号"}, {"name": "YANA SUPYANA", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-05-26", "cardNo": "UH31479373EA", "gou": "特定技能1号"}, {"name": "RULIANSYAH", "sex": "男", "kokuseki": "インドネシア", "birth": "1988-07-09", "cardNo": "UH75565899EA", "gou": "特定技能1号"}, {"name": "TUGIMIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1988-04-23", "cardNo": "UH23108012EA", "gou": "特定技能1号"}, {"name": "KAKAN SUKANDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1988-09-07", "cardNo": "LJ14205066EA", "gou": "特定技能1号"}], "有馬七郎": [{"name": "NAMRACH APICHAYAPRON", "sex": "女", "kokuseki": "タイ", "birth": "1989-11-30", "cardNo": "UH45601132EA", "gou": "特定技能1号"}, {"name": "JAIBOON SUPUKSORN", "sex": "男", "kokuseki": "タイ", "birth": "1987-07-25", "cardNo": "UH28688514EA", "gou": "特定技能1号"}, {"name": "WANTA PORNSAWAN", "sex": "女", "kokuseki": "タイ", "birth": "1998-02-07", "cardNo": "UH99021315EA", "gou": "特定技能1号"}, {"name": "SAIPONKRANG SUMITTRA", "sex": "女", "kokuseki": "タイ", "birth": "1986-08-15", "cardNo": "UH70888101EA", "gou": "特定技能1号"}, {"name": "DEVANGGA HARTATO", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-10-29", "cardNo": "LJ12503091EA", "gou": "特定技能1号"}, {"name": "INDAH YULIANI", "sex": "女", "kokuseki": "インドネシア", "birth": "1996-07-13", "cardNo": "LJ12503107EA", "gou": "特定技能1号"}, {"name": "IFAT FATHUL JANNAH", "sex": "女", "kokuseki": "インドネシア", "birth": "1995-06-14", "cardNo": "UH98327816FA", "gou": "特定技能1号"}, {"name": "SREEKATTHANNAPROM SUDARAT", "sex": "女", "kokuseki": "タイ", "birth": "1993-11-07", "cardNo": "LJ00103061FA", "gou": "特定技能1号"}, {"name": "NAMRACH APICHAYAPRON", "sex": "女", "kokuseki": "タイ", "birth": "1989-11-30", "cardNo": "UH45601132EA", "gou": "特定技能1号"}, {"name": "JAIBOON SUPUKSORN", "sex": "男", "kokuseki": "タイ", "birth": "1987-07-25", "cardNo": "UH28688514EA", "gou": "特定技能1号"}, {"name": "WANTA PORNSAWAN", "sex": "女", "kokuseki": "タイ", "birth": "1998-02-07", "cardNo": "UH99021315EA", "gou": "特定技能1号"}, {"name": "SAIPONKRANG SUMITTRA", "sex": "女", "kokuseki": "タイ", "birth": "1986-08-15", "cardNo": "UH70888101EA", "gou": "特定技能1号"}, {"name": "DEVANGGA HARTATO", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-10-29", "cardNo": "LJ12503091EA", "gou": "特定技能1号"}, {"name": "INDAH YULIANI", "sex": "女", "kokuseki": "インドネシア", "birth": "1996-07-13", "cardNo": "LJ12503107EA", "gou": "特定技能1号"}, {"name": "IFAT FATHUL JANNAH", "sex": "女", "kokuseki": "インドネシア", "birth": "1995-06-14", "cardNo": "UH98327816FA", "gou": "特定技能1号"}, {"name": "SREEKATTHANNAPROM SUDARAT", "sex": "女", "kokuseki": "タイ", "birth": "1993-11-07", "cardNo": "LJ00103061FA", "gou": "特定技能1号"}], "吉田寛之": [{"name": "SUSANTI", "sex": "女", "kokuseki": "インドネシア", "birth": "1990-08-31", "cardNo": "LJ16241403EA", "gou": "特定技能1号"}, {"name": "MUH DONY HARIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-04-23", "cardNo": "LJ03575094EA", "gou": "特定技能1号"}, {"name": "MUTYA MARGARETA", "sex": "女", "kokuseki": "インドネシア", "birth": "2004-01-06", "cardNo": "UH16941411GA", "gou": "特定技能1号"}, {"name": "SRI NURHIDAYATI", "sex": "女", "kokuseki": "インドネシア", "birth": "2001-09-17", "cardNo": "UH89853548EA", "gou": "特定技能1号"}, {"name": "TITI NURYANI", "sex": "女", "kokuseki": "インドネシア", "birth": "2005-05-17", "cardNo": "UH54005679EA", "gou": "特定技能1号"}, {"name": "YOGA PRAMUDIA", "sex": "男", "kokuseki": "インドネシア", "birth": "2001-07-18", "cardNo": "UH24472910EA", "gou": "特定技能1号"}, {"name": "NITA LUPITA SARI", "sex": "女", "kokuseki": "インドネシア", "birth": "1999-04-10", "cardNo": "UH48356278EA", "gou": "特定活動"}, {"name": "RIHADATUL AISYI", "sex": "女", "kokuseki": "インドネシア", "birth": "2004-06-14", "cardNo": "LJ10605247EA", "gou": "特定活動"}, {"name": "SUSANTI", "sex": "女", "kokuseki": "インドネシア", "birth": "1990-08-31", "cardNo": "LJ16241403EA", "gou": "特定技能1号"}, {"name": "MUH DONY HARIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-04-23", "cardNo": "LJ03575094EA", "gou": "特定技能1号"}, {"name": "MUTYA MARGARETA", "sex": "女", "kokuseki": "インドネシア", "birth": "2004-01-06", "cardNo": "UH16941411GA", "gou": "特定技能1号"}, {"name": "SRI NURHIDAYATI", "sex": "女", "kokuseki": "インドネシア", "birth": "2001-09-17", "cardNo": "UH89853548EA", "gou": "特定技能1号"}, {"name": "TITI NURYANI", "sex": "女", "kokuseki": "インドネシア", "birth": "2005-05-17", "cardNo": "UH54005679EA", "gou": "特定技能1号"}, {"name": "YOGA PRAMUDIA", "sex": "男", "kokuseki": "インドネシア", "birth": "2001-07-18", "cardNo": "UH24472910EA", "gou": "特定技能1号"}, {"name": "NITA LUPITA SARI", "sex": "女", "kokuseki": "インドネシア", "birth": "1999-04-10", "cardNo": "UH48356278EA", "gou": "特定活動"}, {"name": "RIHADATUL AISYI", "sex": "女", "kokuseki": "インドネシア", "birth": "2004-06-14", "cardNo": "LJ10605247EA", "gou": "特定活動"}, {"name": "MUH DONY HARIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-04-23", "cardNo": "LJ03575094EA", "gou": "特定技能1号"}, {"name": "HANA FITRIANI", "sex": "男", "kokuseki": "インドネシア", "birth": "2002-06-04", "cardNo": "UH78756621EA", "gou": "特定技能1号"}, {"name": "ARINDA PITALOKA SUGIARTI", "sex": "女", "kokuseki": "インドネシア", "birth": "1997-05-21", "cardNo": "UH11007767EA", "gou": "特定技能1号"}], "(有)鬼澤商事": [{"name": "MOHAMAD ASFURI", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-07-13", "cardNo": "UH04580813EA", "gou": "特定技能1号"}, {"name": "ACHMAD MUDDAFIQUL HAFIDZ", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-08-03", "cardNo": "UH04580813EA", "gou": "特定技能1号"}, {"name": "MOHAMAD ASFURI", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-07-13", "cardNo": "UH04580813EA", "gou": "特定技能1号"}, {"name": "ACHMAD MUDDAFIQUL HAFIDZ", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-08-03", "cardNo": "UH04580813EA", "gou": "特定技能1号"}], "丸栄工業(株)": [{"name": "AL ARTHUR MUHAMMAD SIAHAAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-03-11", "cardNo": "SA16471089EA", "gou": "特定技能1号"}, {"name": "FRANS GEORGE MANALU", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-01-30", "cardNo": "UH15489334EA", "gou": "特定技能1号"}, {"name": "RAHMAN CAHYO NUGROHO", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-12-28", "cardNo": "UH23127717EA", "gou": "特定技能1号"}, {"name": "RIDWAN AL NUR", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-12-19", "cardNo": "UH51290300GA", "gou": "特定技能1号"}, {"name": "FAHMI FAHRIZAL SOPWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "", "cardNo": "UH07494419EA", "gou": "特定技能1号"}, {"name": "AL ARTHUR MUHAMMAD SIAHAAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-03-11", "cardNo": "SA16471089EA", "gou": "特定技能1号"}, {"name": "FRANS GEORGE MANALU", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-01-30", "cardNo": "UH15489334EA", "gou": "特定技能1号"}, {"name": "RAHMAN CAHYO NUGROHO", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-12-28", "cardNo": "UH23127717EA", "gou": "特定技能1号"}, {"name": "RIDWAN AL NUR", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-12-19", "cardNo": "UH51290300GA", "gou": "特定技能1号"}, {"name": "FAHMI FAHRIZAL SOPWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "", "cardNo": "UH07494419EA", "gou": "特定技能1号"}], "(株)一ノ坪製作所": [{"name": "BILLY ANDRIAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-05-24", "cardNo": "UH17653345EA", "gou": "特定技能1号"}, {"name": "RACHMAT RAMADHAN ROMANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-12-19", "cardNo": "LJ10605396EA", "gou": "特定技能1号"}, {"name": "AGUNG BACHTIAR", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-10-14", "cardNo": "UH89753834EA", "gou": "特定技能1号"}, {"name": "PANJI HADI PRASETYO", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-06-10", "cardNo": "UH56701491EA", "gou": "特定技能1号"}, {"name": "KRISWANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-04-10", "cardNo": "UH91607553MA", "gou": "特定技能1号"}, {"name": "DIDI ARYADI", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-01-21", "cardNo": "UH13432282MA", "gou": "特定技能1号"}, {"name": "WILLY DANAYA", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-11-07", "cardNo": "UH67611552MA", "gou": "特定技能1号"}, {"name": "ARIF HIDAYAT", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-11-16", "cardNo": "UH98320886MA", "gou": "特定技能1号"}, {"name": "BILLY ANDRIAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-05-24", "cardNo": "UH17653345EA", "gou": "特定技能1号"}, {"name": "RACHMAT RAMADHAN ROMANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-12-19", "cardNo": "LJ10605396EA", "gou": "特定技能1号"}, {"name": "AGUNG BACHTIAR", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-10-14", "cardNo": "UH89753834EA", "gou": "特定技能1号"}, {"name": "PANJI HADI PRASETYO", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-06-10", "cardNo": "UH56701491EA", "gou": "特定技能1号"}, {"name": "KRISWANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-04-10", "cardNo": "UH91607553MA", "gou": "特定技能1号"}, {"name": "DIDI ARYADI", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-01-21", "cardNo": "UH13432282MA", "gou": "特定技能1号"}, {"name": "WILLY DANAYA", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-11-07", "cardNo": "UH67611552MA", "gou": "特定技能1号"}, {"name": "ARIF HIDAYAT", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-11-16", "cardNo": "UH98320886MA", "gou": "特定技能1号"}], "(株)YSK": [{"name": "SOYSON MONSIT", "sex": "男", "kokuseki": "タイ", "birth": "1997-11-13", "cardNo": "UH21980832EA", "gou": "特定技能1号"}, {"name": "SAENSUK WONGSAKON", "sex": "男", "kokuseki": "タイ", "birth": "1998-05-04", "cardNo": "UH73858137EA", "gou": "特定技能1号"}, {"name": "KAWAI RITTIKEAT", "sex": "男", "kokuseki": "タイ", "birth": "1996-08-21", "cardNo": "UH59137952EA", "gou": "特定技能1号"}, {"name": "KANGKORN SUTICHAI", "sex": "男", "kokuseki": "タイ", "birth": "1993-06-01", "cardNo": "UH95599998EA", "gou": "特定技能1号"}, {"name": "SANIN PITAYA", "sex": "男", "kokuseki": "タイ", "birth": "1994-11-16", "cardNo": "LJ06527819EA", "gou": "特定技能1号"}, {"name": "CHONGTHEP THATSANA", "sex": "男", "kokuseki": "タイ", "birth": "1994-02-15", "cardNo": "UH54821199EA", "gou": "特定技能1号"}, {"name": "KHOTCHAWONG RATMANU", "sex": "男", "kokuseki": "タイ", "birth": "1992-12-10", "cardNo": "LJ03173738EA", "gou": "特定技能1号"}, {"name": "GUIRAM THINAKORN", "sex": "男", "kokuseki": "タイ", "birth": "2000-09-27", "cardNo": "LJ03173729EA", "gou": "特定技能1号"}, {"name": "MANOWAN PORAMET", "sex": "男", "kokuseki": "タイ", "birth": "1998-12-03", "cardNo": "LJ03173747EA", "gou": "特定技能1号"}, {"name": "NETSAENGSI KIDSAKORN", "sex": "男", "kokuseki": "タイ", "birth": "1995-02-20", "cardNo": "UH43441505EA", "gou": "特定技能1号"}, {"name": "KAENPHUKHIAO CHAKKRIT", "sex": "男", "kokuseki": "タイ", "birth": "1996-04-15", "cardNo": "UH52118384EA", "gou": "特定技能1号"}, {"name": "WANKEAO APHIWAT", "sex": "男", "kokuseki": "タイ", "birth": "1987-02-01", "cardNo": "UH16606567EA", "gou": "特定技能1号"}, {"name": "PHOOKAMA KITTISAK", "sex": "男", "kokuseki": "タイ", "birth": "1991-06-07", "cardNo": "UH10095224EA", "gou": "特定技能1号"}, {"name": "SEELE NATTIPHON", "sex": "男", "kokuseki": "タイ", "birth": "1996-10-18", "cardNo": "UH43397399EA", "gou": "特定技能1号"}, {"name": "WANGKEEREE TANET", "sex": "男", "kokuseki": "タイ", "birth": "1993-03-23", "cardNo": "UH72298476EA", "gou": "特定活動"}, {"name": "WONGANU PHIRASAK", "sex": "男", "kokuseki": "タイ", "birth": "1997-11-12", "cardNo": "LJ16258353EA", "gou": "特定技能1号"}, {"name": "MUNGSALAKLANG PANUWAT", "sex": "男", "kokuseki": "タイ", "birth": "2002-06-13", "cardNo": "UH3161148EA", "gou": "特定活動"}, {"name": "PANNANON WATCHARAKORN", "sex": "男", "kokuseki": "タイ", "birth": "1999-03-09", "cardNo": "UH75494319EA", "gou": "特定技能1号"}], "(株) 北原製作所": [{"name": "RUDI SUSWANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-06-15", "cardNo": "LJ16258431EA", "gou": "特定技能1号"}, {"name": "PUGUH PRASTIO", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-08-15", "cardNo": "LJ16258422EA", "gou": "特定技能1号"}, {"name": "FRANDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-08-11", "cardNo": "UH82019719EA", "gou": "特定技能1号"}, {"name": "FIFIT SETIYADI", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-02-18", "cardNo": "UH21503814EA", "gou": "特定技能1号"}, {"name": "WAHYONO", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-03-09", "cardNo": "UH32547323EA", "gou": "特定技能1号"}, {"name": "DWI AGUSTYAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-08-28", "cardNo": "UH44421079EA", "gou": "特定技能1号"}, {"name": "YULIANI IKA PUTRI", "sex": "女", "kokuseki": "インドネシア", "birth": "1996-07-28", "cardNo": "UH33208479EA", "gou": "特定技能1号"}, {"name": "RIZKI AGUNG SETIYO BUDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-08-18", "cardNo": "UH59163933EA", "gou": "特定技能1号"}, {"name": "ELLY IMRON", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-11-16", "cardNo": "SA28797300EA", "gou": "特定技能1号"}, {"name": "HARJI SETIAR", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-07-31", "cardNo": "SA04273386GA", "gou": "特定技能1号"}, {"name": "ANGGI ARI FADILLAH", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-09-03", "cardNo": "UH05306895FA", "gou": "特定技能1号"}, {"name": "GILANG ALAN MAULANA", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-05-04", "cardNo": "UH61618629EA", "gou": "特定技能1号"}, {"name": "HENDRA HERBIANA", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-03-22", "cardNo": "UH73364118EA", "gou": "特定技能1号"}, {"name": "EDI SAPUTRO", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-09-23", "cardNo": "UH56010175EA", "gou": "特定技能1号"}, {"name": "ROBI FAUZI", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-11-13", "cardNo": "LJ05852067EA", "gou": "特定活動"}, {"name": "MUHAMAD ALDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-10-27", "cardNo": "LJ05852030EA", "gou": "特定活動"}], "久保グループGUMMA(株)": [{"name": "BAYU SANTOSO", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-08-03", "cardNo": "UH27948026EA", "gou": "特定技能1号"}], "(株)平山組": [{"name": "MEDI TRIO EFFENDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1987-05-16", "cardNo": "UH63999828EA", "gou": "特定技能1号"}, {"name": "RIVAL SEPTIANA", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-09-13", "cardNo": "UH52196438EA", "gou": "特定技能1号"}, {"name": "IMAN SUMARDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-11-09", "cardNo": "UH56352830RD", "gou": "特定技能1号"}], "(株)大甲": [{"name": "BIN SEN", "sex": "男", "kokuseki": "カンボジア", "birth": "1992-04-10", "cardNo": "UH94655336EA", "gou": "特定技能1号"}], "(株)ATL": [{"name": "SUKSABAI PRICHA", "sex": "男", "kokuseki": "タイ", "birth": "1994-07-03", "cardNo": "UH07555712EA", "gou": "特定技能1号"}], "井戸口産業(株)": [{"name": "ADI SAPUTRO", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-03-27", "cardNo": "UH63154568EA", "gou": "特定技能1号"}, {"name": "AINUN MAULANA ACHSAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-04-15", "cardNo": "UH02584455EA", "gou": "特定技能1号"}, {"name": "BADRUN MUSTOFA", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-09-16", "cardNo": "UH24877498EA", "gou": "特定技能1号"}], "(有)後藤工務店": [{"name": "SARJANG", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-11-07", "cardNo": "UH99955883EA", "gou": "特定技能1号"}, {"name": "ALDIN NURUZAMNI", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-05-31", "cardNo": "UH49109609KA", "gou": "特定技能1号"}], "吉岡工業(株)": [{"name": "MAI THANH TOAN", "sex": "男", "kokuseki": "ベトナム", "birth": "1999-05-24", "cardNo": "LJ10605265EA", "gou": "特定活動"}], "(株)イケ": [{"name": "CHANGRUEANKUL CHOMTHEP", "sex": "男", "kokuseki": "タイ", "birth": "1994-11-14", "cardNo": "UH66631186EA", "gou": "特定技能1号"}, {"name": "KUMTIRUM SUNTIPAP", "sex": "男", "kokuseki": "タイ", "birth": "1994-12-30", "cardNo": "UH96602487EA", "gou": "特定技能1号"}], "(株)SKILL": [{"name": "TA DUY HUONG", "sex": "男", "kokuseki": "ベトナム", "birth": "1992-08-16", "cardNo": "UH39730102EA", "gou": "特定技能1号"}], "山﨑裕正": [{"name": "ISNENTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-07-07", "cardNo": "UH25860000FA", "gou": "特定技能1号"}, {"name": "MOCH ZAENUDIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-07-23", "cardNo": "UH65874614GA", "gou": "特定技能1号"}, {"name": "IZZA DWI ARDIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-08-01", "cardNo": "UH95170054GA", "gou": "特定技能1号"}], "(株)オカモト": [{"name": "TRAN TAN SANG", "sex": "男", "kokuseki": "ベトナム", "birth": "2001-06-19", "cardNo": "UH16012117EA", "gou": "特定技能1号"}], "旭食品工業(株)": [{"name": "RACHMAT KURNIAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-05-15", "cardNo": "UH57879707EA", "gou": "特定技能1号"}], "須藤晃": [{"name": "MUHAMAD HISBI SULAEMAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-02-13", "cardNo": "UH59737559GA", "gou": "特定技能1号"}], "大番工業(株)": [{"name": "NHOEB CHANSIPHA", "sex": "男", "kokuseki": "カンボジア", "birth": "1998-11-11", "cardNo": "UH34800298EA", "gou": "特定技能1号"}, {"name": "OL SAMORN", "sex": "男", "kokuseki": "カンボジア", "birth": "1996-05-06", "cardNo": "UH29641543EA", "gou": "特定技能1号"}, {"name": "RONG PHEAK", "sex": "男", "kokuseki": "カンボジア", "birth": "1991-04-06", "cardNo": "UH60919848EA", "gou": "特定技能1号"}, {"name": "RUOS KHOM", "sex": "男", "kokuseki": "カンボジア", "birth": "1987-05-04", "cardNo": "UH60769060EA", "gou": "特定技能1号"}, {"name": "HENG SARIN", "sex": "男", "kokuseki": "カンボジア", "birth": "1995-02-07", "cardNo": "UH37719370EA", "gou": "特定技能1号"}, {"name": "VANNAK KIMHAK", "sex": "男", "kokuseki": "カンボジア", "birth": "2000-02-06", "cardNo": "UH06347876EA", "gou": "特定技能1号"}, {"name": "YOGI MARANTIKA", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-06-05", "cardNo": "LJ12503694EA", "gou": "特定技能1号"}, {"name": "ELGIS MULYANA", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-07-11", "cardNo": "LJ12503677EA", "gou": "特定技能1号"}, {"name": "ON VONG", "sex": "男", "kokuseki": "カンボジア", "birth": "1992-02-03", "cardNo": "UH23173018EA", "gou": "特定技能1号"}], "(株)大功": [{"name": "NGUYEN THANH QUY", "sex": "男", "kokuseki": "ベトナム", "birth": "1993-04-04", "cardNo": "UH64320083EA", "gou": "特定技能1号"}, {"name": "NGUYEN THE TAI", "sex": "男", "kokuseki": "ベトナム", "birth": "1993-08-30", "cardNo": "UH23164520EA", "gou": "特定技能1号"}, {"name": "KING RITH", "sex": "男", "kokuseki": "カンボジア", "birth": "1993-02-01", "cardNo": "UH70926892EA", "gou": "特定技能1号"}, {"name": "BOU CHHUNNA", "sex": "男", "kokuseki": "カンボジア", "birth": "1991-07-15", "cardNo": "UH89875375EA", "gou": "特定技能1号"}, {"name": "PUM POV", "sex": "男", "kokuseki": "カンボジア", "birth": "1989-09-10", "cardNo": "UH11601965EA", "gou": "特定技能1号"}, {"name": "VO QUOC MANH", "sex": "男", "kokuseki": "ベトナム", "birth": "1996-04-14", "cardNo": "UH01518688EA", "gou": "特定技能1号"}, {"name": "VAN SOVAN", "sex": "男", "kokuseki": "カンボジア", "birth": "1986-06-06", "cardNo": "UH74137446EA", "gou": "特定技能1号"}, {"name": "PHAM VAN KHAI", "sex": "男", "kokuseki": "ベトナム", "birth": "1999-10-09", "cardNo": "UH65222227EA", "gou": "特定技能1号"}, {"name": "RIZIK AKROM", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-03-29", "cardNo": "UH17483598EA", "gou": "特定技能1号"}, {"name": "ANDIK SUSANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-10-07", "cardNo": "UH78067448EA", "gou": "特定技能1号"}], "(株)塚越鉄筋工業": [{"name": "ANGGI VIO VERNANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-08-14", "cardNo": "LJ03173702EA", "gou": "特定技能1号"}], "(株)鈴木ダイカスト製作所": [{"name": "ASEP SANTOSO", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-06-11", "cardNo": "UH53941951EA", "gou": "特定技能1号"}], "(株)ナチュラル": [{"name": "MUHAMAD ROSADI", "sex": "男", "kokuseki": "インドネシア", "birth": "2002-06-09", "cardNo": "UH88879495EA", "gou": "特定技能1号"}, {"name": "AMIR LATHIF AL AZIZ", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-04-23", "cardNo": "UH90324658EA", "gou": "特定技能1号"}, {"name": "RIFKI MARWAN HADI", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-08-27", "cardNo": "UH87072160EA", "gou": "特定技能1号"}], "(株)宝泉プレシジョン": [{"name": "TUBAGUS ARIADI", "sex": "男", "kokuseki": "インドネシア", "birth": "2001-08-18", "cardNo": "UH37380487JA", "gou": "特定技能1号"}, {"name": "KUSWARI", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-11-10", "cardNo": "UH53762273GA", "gou": "特定技能1号"}], "大登工業株式会社": [{"name": "MEESRI JATURONG", "sex": "男", "kokuseki": "タイ", "birth": "1997-12-28", "cardNo": "LJ06527731EA", "gou": "特定技能1号"}], "(株)マスゼン": [{"name": "KAMHONGSA WARAPORN", "sex": "女", "kokuseki": "タイ", "birth": "1999-02-10", "cardNo": "UH39973580EA", "gou": "特定技能1号"}, {"name": "HOA VAN DAI", "sex": "男", "kokuseki": "ベトナム", "birth": "2000-08-27", "cardNo": "UH52739474EA", "gou": "特定技能1号"}, {"name": "PHAM ANH TUAN", "sex": "男", "kokuseki": "ベトナム", "birth": "1990-08-20", "cardNo": "UH97616858EA", "gou": "特定技能1号"}], "佐藤忠雄": [{"name": "HARI NUGRAHA", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-06-08", "cardNo": "UH12914430FA", "gou": "特定技能1号"}, {"name": "BAGIS ZUNANTA", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-03-05", "cardNo": "UH90633605EA", "gou": "特定技能1号"}, {"name": "NGUYEN VAN NAM", "sex": "男", "kokuseki": "ベトナム", "birth": "1999-01-08", "cardNo": "UH85267000EA", "gou": "特定技能1号"}, {"name": "THAI THI HUONG GIANG", "sex": "男", "kokuseki": "ベトナム", "birth": "1999-01-08", "cardNo": "SA62096722EA", "gou": "特定技能1号"}], "(有)カネブン": [{"name": "SANGUANNAM SAMART", "sex": "男", "kokuseki": "タイ", "birth": "1985-01-14", "cardNo": "UH99315252EA", "gou": "特定技能1号"}], "株式会社大真": [{"name": "QUACH VAN CHUC", "sex": "男", "kokuseki": "ベトナム", "birth": "1992-01-09", "cardNo": "UH09796554EA", "gou": "特定技能1号"}, {"name": "NGUYEN VIET HAI", "sex": "男", "kokuseki": "ベトナム", "birth": "1994-02-02", "cardNo": "UH17612163EA", "gou": "特定技能1号"}, {"name": "THAI NGOC PHUONG", "sex": "男", "kokuseki": "ベトナム", "birth": "1988-02-23", "cardNo": "UH07136071EA", "gou": "特定技能1号"}], "(株)ノダコウ": [{"name": "POV CHHORNN", "sex": "男", "kokuseki": "カンボジア", "birth": "1990-07-06", "cardNo": "UH53547592EA", "gou": "特定技能1号"}], "(株)ペアウェル": [{"name": "MALAWEERA ARACHCHIGE THANUJ MADHUSHAN", "sex": "男", "kokuseki": "スリランカ", "birth": "1998-06-06", "cardNo": "UH92785554EA", "gou": "特定技能1号"}], "(株)ミサト工業": [{"name": "DINH THI HUE", "sex": "女", "kokuseki": "ベトナム", "birth": "2000-10-22", "cardNo": "UH92558997EA", "gou": "特定技能1号"}], "(有)スマイルケア": [{"name": "SAW FRIDAY TOO", "sex": "男", "kokuseki": "ミャンマー", "birth": "1997-10-23", "cardNo": "UH54916184EA", "gou": "特定技能1号"}], "(株)桜梅桃里": [{"name": "DENISA HERLINA", "sex": "女", "kokuseki": "インドネシア", "birth": "1997-12-22", "cardNo": "LJ26998984EA", "gou": "特定技能1号"}, {"name": "ERLINA KUSUMAWATI", "sex": "女", "kokuseki": "インドネシア", "birth": "2001-08-31", "cardNo": "UH74194133EA", "gou": "特定技能1号"}, {"name": "CICI NORA MAHDALENA TAMBA", "sex": "女", "kokuseki": "インドネシア", "birth": "2001-03-08", "cardNo": "UH53740494EA", "gou": "特定技能1号"}, {"name": "PHOO PWINT WAI", "sex": "女", "kokuseki": "ミャンマー", "birth": "1998-05-10", "cardNo": "UH05897328EA", "gou": "特定技能1号"}, {"name": "SOE SOE KHAING", "sex": "女", "kokuseki": "ミャンマー", "birth": "2001-03-29", "cardNo": "UH39745302EA", "gou": "特定技能1号"}, {"name": "HNIN EI KHING", "sex": "女", "kokuseki": "ミャンマー", "birth": "2004-05-01", "cardNo": "UH80646860MA", "gou": "特定技能1号"}], "美斉津　澄武": [{"name": "MARLAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-09-16", "cardNo": "UH95747998EA", "gou": "特定技能1号"}, {"name": "YUSUF WEDHAYANA SADHONO", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-03-27", "cardNo": "UH14183695EA", "gou": "特定技能1号"}, {"name": "MUH ULIL ALBAB IKROMULLOH", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-12-21", "cardNo": "UH29843722EA", "gou": "特定技能1号"}, {"name": "AGUS DEDY PARIARTHA", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-08-23", "cardNo": "UH85142406EA", "gou": "特定技能1号"}], "(株)フードイノベーション": [{"name": "NWE NI OO", "sex": "女", "kokuseki": "ミャンマー", "birth": "1996-04-06", "cardNo": "LJ09242521EA", "gou": "特定技能1号"}, {"name": "ZIN MI MI NAING", "sex": "女", "kokuseki": "ミャンマー", "birth": "1997-05-27", "cardNo": "LJ09146656EA", "gou": "特定技能1号"}], "(有)石川プレス工業": [{"name": "ANDRI WIDOYOKO", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-06-01", "cardNo": "UH10202253EA", "gou": "特定技能1号"}, {"name": "NOVIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-11-14", "cardNo": "UH24025206EA", "gou": "特定技能1号"}], "(株)カワイ": [{"name": "MEESUK SUNTHON", "sex": "男", "kokuseki": "タイ", "birth": "1990-09-24", "cardNo": "SA13950776EA", "gou": "特定技能1号"}, {"name": "PANMEE NAWIN", "sex": "男", "kokuseki": "タイ", "birth": "1992-07-12", "cardNo": "UH66317797EA", "gou": "特定技能1号"}, {"name": "PROMSODA KITCHANUT", "sex": "男", "kokuseki": "タイ", "birth": "1990-05-22", "cardNo": "UH69381723EA", "gou": "特定技能1号"}, {"name": "SRIKULWONG CHAIRAT", "sex": "男", "kokuseki": "タイ", "birth": "1996-10-22", "cardNo": "UH97448804EA", "gou": "特定技能1号"}], "中部鍛工(株)": [{"name": "ILPAD MUTAQIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-10-23", "cardNo": "UH20009219EA", "gou": "特定技能1号"}, {"name": "MUHAMAD TUBAGUS SUSANDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-08-17", "cardNo": "UH84179741EA", "gou": "特定技能1号"}, {"name": "DEDE SUHERLAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1987-10-29", "cardNo": "UH18821303KA", "gou": "特定技能1号"}, {"name": "RIZAL MUTAKIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-01-06", "cardNo": "LJ78983371KA", "gou": "特定技能1号"}], "掛川 悟": [{"name": "HAYATUN AFIAH", "sex": "女", "kokuseki": "インドネシア", "birth": "1992-04-08", "cardNo": "UH85669780EA", "gou": "特定技能1号"}], "伊藤 宏敬": [{"name": "SADHAM LILI FELAYATI", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-10-25", "cardNo": "UH59856517EA", "gou": "特定技能1号"}], "(有)八幡漁業": [{"name": "TADI", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-07-22", "cardNo": "UH89398846EA", "gou": "特定技能1号"}, {"name": "EFJULI YUSMAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-07-24", "cardNo": "UH54895639EA", "gou": "特定技能1号"}, {"name": "YOGI PONIAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-08-17", "cardNo": "UH07379300EA", "gou": "特定技能1号"}], "株式会社Greenland保泉": [{"name": "SRIHANART SUNISA", "sex": "女", "kokuseki": "タイ", "birth": "1991-02-26", "cardNo": "LJ08219222EA", "gou": "特定技能1号"}, {"name": "MUNGMA ARNCHANA", "sex": "女", "kokuseki": "タイ", "birth": "1992-11-04", "cardNo": "UH71251376FA", "gou": "特定技能1号"}, {"name": "SANGTHONG SUCHADA", "sex": "女", "kokuseki": "タイ", "birth": "1993-06-25", "cardNo": "UH84480236EA", "gou": "特定技能2号"}], "株式会社澤幡製作所": [{"name": "ARIF SUGIHARTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-06-11", "cardNo": "LJ09566147EA", "gou": "特定技能1号"}, {"name": "SYAMSUDIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1985-10-20", "cardNo": "UH50747165EA", "gou": "特定技能1号"}], "(株)藤": [{"name": "ANDRI PRAMONO", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-12-25", "cardNo": "IJ10757941EA", "gou": "特定技能1号"}, {"name": "JENI HARYONO", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-06-20", "cardNo": "UH78988611EA", "gou": "特定技能1号"}, {"name": "RUPADI", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-10-08", "cardNo": "UH23021824EA", "gou": "特定技能1号"}], "三浦　暁": [{"name": "ERLINA DIAH SABILA", "sex": "女", "kokuseki": "インドネシア", "birth": "2000-06-01", "cardNo": "UH60066455EA", "gou": "特定技能1号"}, {"name": "SINTA NIA MEYLINDA", "sex": "女", "kokuseki": "インドネシア", "birth": "2005-03-02", "cardNo": "UH03455850EA", "gou": "特定技能1号"}, {"name": "DESI SURYATI", "sex": "女", "kokuseki": "インドネシア", "birth": "2003-12-05", "cardNo": "UH17756086GA", "gou": "特定技能1号"}, {"name": "LINDA HIDAYAH", "sex": "女", "kokuseki": "インドネシア", "birth": "2000-03-07", "cardNo": "UH61287302GA", "gou": "特定技能1号"}, {"name": "RAHMA NABILA AZZAHRA", "sex": "女", "kokuseki": "インドネシア", "birth": "2005-10-07", "cardNo": "UH60496164GA", "gou": "特定技能1号"}, {"name": "HANIK FORTUNA QUROTAAYUN", "sex": "女", "kokuseki": "インドネシア", "birth": "2005-08-26", "cardNo": "LJ05556430EA", "gou": "特定技能1号"}, {"name": "NILAM PERMATASARI", "sex": "女", "kokuseki": "インドネシア", "birth": "2003-06-12", "cardNo": "UH04512083EA", "gou": "特定技能1号"}, {"name": "CANDRA WELLANINGSIH", "sex": "女", "kokuseki": "インドネシア", "birth": "2000-12-04", "cardNo": "LJ08578339EA", "gou": "特定活動"}, {"name": "INDRA SAPUTRA TRI WIBOWO", "sex": "男", "kokuseki": "インドネシア", "birth": "2002-03-25", "cardNo": "UH76445964EA", "gou": "特定活動"}], "株式会社塚越製作所": [{"name": "ALEXANDER ARTHA VERYANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-05-06", "cardNo": "UH88239536EA", "gou": "特定技能1号"}, {"name": "ANDREE ELIANSKI MENDE", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-06-13", "cardNo": "UH05193050EA", "gou": "特定技能1号"}, {"name": "INDRA GUNAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-01-29", "cardNo": "UH53028699EA", "gou": "特定技能1号"}, {"name": "KRISNA PRASETYA UTAMA", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-06-11", "cardNo": "UH41912403EA", "gou": "特定技能1号"}, {"name": "BAGUS SUTRISNO", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-01-23", "cardNo": "LJ16190350EA", "gou": "特定技能1号"}, {"name": "WANDOYO", "sex": "男", "kokuseki": "インドネシア", "birth": "1987-10-06", "cardNo": "LJ74784781EA", "gou": "特定技能1号"}, {"name": "ERIK BRONTAKA", "sex": "男", "kokuseki": "インドネシア", "birth": "1985-08-05", "cardNo": "LJ03423914EA", "gou": "特定技能1号"}, {"name": "PRAWIDANA GILANG DHARMALAKSANA", "sex": "男", "kokuseki": "インドネシア", "birth": "2001-01-28", "cardNo": "UH43159616EA", "gou": "特定技能1号"}, {"name": "GALIH RAGIL ASMORO", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-11-12", "cardNo": "UH45692658EA", "gou": "特定技能1号"}, {"name": "YEPTA EPTA PRADITUS", "sex": "男", "kokuseki": "インドネシア", "birth": "1988-02-29", "cardNo": "UH50021650GA", "gou": "特定技能1号"}, {"name": "INATIUS WALOKO", "sex": "男", "kokuseki": "インドネシア", "birth": "1985-12-16", "cardNo": "UH87881472GA", "gou": "特定技能1号"}], "鳥羽律雄": [{"name": "DECKY ORNALDO", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-12-07", "cardNo": "SA19040795EA", "gou": "特定技能1号"}, {"name": "DADANG ABIDIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-12-14", "cardNo": "UH16858407EA", "gou": "特定技能1号"}, {"name": "RANGGA ADHI PRATAMA", "sex": "男", "kokuseki": "インドネシア", "birth": "2002-05-10", "cardNo": "LJ06097468GA", "gou": "特定技能1号"}], "(株)グリーンポートリー": [{"name": "FITRA MAULANA", "sex": "男", "kokuseki": "インドネシア", "birth": "2002-09-03", "cardNo": "UH54518065EA", "gou": "特定技能1号"}, {"name": "WINDA PRIHANDA", "sex": "男", "kokuseki": "インドネシア", "birth": "1990-05-22", "cardNo": "UH42640816EA", "gou": "特定技能1号"}, {"name": "ROBBI RIZQY MAULANA", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-06-04", "cardNo": "UH00932111EA", "gou": "特定技能1号"}, {"name": "AJID", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-10-05", "cardNo": "UH74573188EA", "gou": "特定技能1号"}, {"name": "MUNANDAR", "sex": "男", "kokuseki": "インドネシア", "birth": "1966-12-18", "cardNo": "LJ09146733EA", "gou": "特定技能1号"}, {"name": "LUTFAN ASNGADI", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-08-19", "cardNo": "UH28118225EA", "gou": "特定技能1号"}, {"name": "MOHAMMAD ILYAS SETIAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-06-14", "cardNo": "UH55971950EA", "gou": "特定技能1号"}, {"name": "MUHAMMAD IBNU RIZKI", "sex": "男", "kokuseki": "インドネシア", "birth": "2001-07-26", "cardNo": "UH46137498EA", "gou": "特定技能1号"}, {"name": "FEBRIA FRANTA MUKTI", "sex": "男", "kokuseki": "インドネシア", "birth": "1988-02-15", "cardNo": "UH38249074EA", "gou": "特定技能1号"}, {"name": "RIO WICAKSONO", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-02-17", "cardNo": "UH30061585EA", "gou": "特定技能1号"}, {"name": "MUHAMAD ALVIN HANIS", "sex": "男", "kokuseki": "インドネシア", "birth": "2001-01-05", "cardNo": "UH70296518QD", "gou": "特定技能1号"}, {"name": "MUHAMMAD SHOLEH", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-02-11", "cardNo": "UH15362109EA", "gou": "特定技能1号"}], "株式会社Queen Holstein": [{"name": "WAHYUDDIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-07-30", "cardNo": "SA50571676EA", "gou": "特定技能1号"}], "(有)小口熱研": [{"name": "PRAYITNO HADI SANTOSO", "sex": "男", "kokuseki": "インドネシア", "birth": "1980-09-29", "cardNo": "UH73336144EA", "gou": "特定技能1号"}], "(有)大畠農産": [{"name": "AZLAN GALANG KYNDAR AJI", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-09-04", "cardNo": "UH98603685EA", "gou": "特定技能1号"}], "根岸知弘": [{"name": "SOLIKHIN", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-11-24", "cardNo": "LJ03067658EA", "gou": "特定技能1号"}, {"name": "YUBAL MALING", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-12-12", "cardNo": "UH82841100EA", "gou": "特定技能1号"}, {"name": "AHMAD SOHIBURROHIM", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-03-20", "cardNo": "UH03020621GA", "gou": "特定技能1号"}, {"name": "WILDAN IRSYADUL UMAM", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-05-19", "cardNo": "UH16440724GA", "gou": "特定技能1号"}], "塩川隆雄": [{"name": "VRENGKI", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-03-17", "cardNo": "SA84334578EA", "gou": "特定技能1号"}, {"name": "ANGGIT LINANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-12-04", "cardNo": "SA55990085EA", "gou": "特定技能1号"}, {"name": "WITDADI SUWITO", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-09-13", "cardNo": "UH54841648GA", "gou": "特定技能1号"}, {"name": "RUDIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-04-28", "cardNo": "IJ88212085GA", "gou": "特定技能1号"}], "(株)モリイ食品": [{"name": "NGUYEN THI HANG", "sex": "女", "kokuseki": "ベトナム", "birth": "1993-12-04", "cardNo": "UH05575227EA", "gou": "特定技能1号"}, {"name": "PHAM VAN THANH", "sex": "男", "kokuseki": "ベトナム", "birth": "1993-04-09", "cardNo": "UH25075529EA", "gou": "特定技能1号"}], "岡田工業(株)": [{"name": "EKO PRAYITNO", "sex": "男", "kokuseki": "インドネシア", "birth": "1986-11-02", "cardNo": "UH39166267EAA", "gou": "特定技能1号"}], "(株)新和工業": [{"name": "KOMAK WITTHAYA", "sex": "男", "kokuseki": "タイ", "birth": "1998-12-19", "cardNo": "UH07827323EA", "gou": "特定技能1号"}, {"name": "KHEMTHONG CHANA", "sex": "男", "kokuseki": "タイ", "birth": "1998-10-14", "cardNo": "UH50424838EA", "gou": "特定技能1号"}, {"name": "CESACHON JAKKAPHONG", "sex": "男", "kokuseki": "タイ", "birth": "2001-04-22", "cardNo": "LJ16258371EA", "gou": "特定技能1号"}, {"name": "KONKAEO CHANAPHON", "sex": "男", "kokuseki": "タイ", "birth": "1996-02-13", "cardNo": "LJ16258362EA", "gou": "特定技能1号"}], "(有)メタルコート": [{"name": "PRADAPPHET ADISAK", "sex": "男", "kokuseki": "タイ", "birth": "1992-02-15", "cardNo": "UH33914893EA", "gou": "特定技能1号"}], "埼玉機器(株)": [{"name": "PIMSON SAMART", "sex": "男", "kokuseki": "タイ", "birth": "1993-05-01", "cardNo": "UH98999640EA", "gou": "特定技能1号"}, {"name": "PRATOOMMAT SIRIMONGKON", "sex": "男", "kokuseki": "タイ", "birth": "1992-07-17", "cardNo": "UH62368056EA", "gou": "特定技能1号"}, {"name": "KAEWTA PONGPIT", "sex": "男", "kokuseki": "タイ", "birth": "1987-05-15", "cardNo": "UH90186260EA", "gou": "特定技能1号"}], "佐藤和幸": [{"name": "DANI WAHYU RIZALDI", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-11-30", "cardNo": "UH34700776EA", "gou": "特定技能1号"}, {"name": "ERI NANANG PRATAMA", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-10-26", "cardNo": "UH37377750EA", "gou": "特定技能1号"}], "(株)宮本組": [{"name": "PURNOMO", "sex": "男", "kokuseki": "インドネシア", "birth": "1979-12-25", "cardNo": "LJ08384056EA", "gou": "特定技能1号"}], "(有)古橋ファーム": [{"name": "OKE AGUS SETIANA", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-08-02", "cardNo": "UH77634168EA", "gou": "特定技能1号"}, {"name": "TRI WIJAYANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1995-05-05", "cardNo": "UH11018265EA", "gou": "特定技能1号"}], "(株)あらい工業": [{"name": "PHAM VAN DUONG", "sex": "男", "kokuseki": "ベトナム", "birth": "1991-03-02", "cardNo": "UH43027088EA", "gou": "特定技能1号"}, {"name": "NGUYEN THANH LUAN", "sex": "男", "kokuseki": "ベトナム", "birth": "1993-12-05", "cardNo": "LJ16576480EA", "gou": "特定技能1号"}], "(株)タイシン工業": [{"name": "DIMAS HENDRATA", "sex": "男", "kokuseki": "インドネシア", "birth": "1988-04-14", "cardNo": "UH14709129EA", "gou": "特定技能1号"}, {"name": "AYI RACHMAT HIDAYAT", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-09-27", "cardNo": "UH82658227GA", "gou": "特定技能1号"}, {"name": "NANA PUTRA PURNAMA", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-01-01", "cardNo": "UH61120469EA", "gou": "特定技能1号"}], "株式会社林総事": [{"name": "IMAM ABDUL AZIS", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-05-27", "cardNo": "LJ09777521EA", "gou": "特定技能1号"}, {"name": "MUHAMMAD GHANY NURIKHWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "2000-05-13", "cardNo": "LJ09777504EA", "gou": "特定技能1号"}], "(有)山﨑自動車整備工場": [{"name": "DIDIK RAFSANJANI", "sex": "男", "kokuseki": "インドネシア", "birth": "1991-03-10", "cardNo": "UH61989906EA", "gou": "特定技能1号"}], "(株)フクブル": [{"name": "LE QUOC HUNG", "sex": "男", "kokuseki": "ベトナム", "birth": "1990-06-01", "cardNo": "UH03415948EA", "gou": "特定技能1号"}], "塚原農場株式会社": [{"name": "AHMAD SAKOWI", "sex": "男", "kokuseki": "インドネシア", "birth": "1986-02-15", "cardNo": "UH09596952EA", "gou": "特定技能1号"}], "淀川鐵工株式会社": [{"name": "WAHAB MUBAROK", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-01-11", "cardNo": "LJ54190570EA", "gou": "特定技能1号"}], "株式会社INSIST": [{"name": "NGUYEN DUC THO", "sex": "男", "kokuseki": "ベトナム", "birth": "1985-01-12", "cardNo": "UH20292461EA", "gou": "特定技能1号"}, {"name": "TRAN ANH QUAN", "sex": "男", "kokuseki": "ベトナム", "birth": "1999-10-26", "cardNo": "UH72088093EA", "gou": "特定技能1号"}, {"name": "VU VAN NHUONG", "sex": "男", "kokuseki": "ベトナム", "birth": "1983-09-29", "cardNo": "UH11118084EA", "gou": "特定技能1号"}, {"name": "HA VAN VINH", "sex": "男", "kokuseki": "ベトナム", "birth": "1992-09-22", "cardNo": "UH10403815EA", "gou": "特定技能1号"}], "平和工業株式会社": [{"name": "ATTABATHUL GHULAM", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-08-01", "cardNo": "LJ13547570EA", "gou": "特定技能1号"}, {"name": "ABDUL WAHAB SAKRONI", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-12-20", "cardNo": "UH23070037GA", "gou": "特定技能1号"}, {"name": "MULYONO", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-04-13", "cardNo": "UH29252312EA", "gou": "特定技能1号"}, {"name": "SAMAI", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-07-03", "cardNo": "UH49204461EA", "gou": "特定技能1号"}, {"name": "RIZKY ABDULLAH TAMAMI", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-11-22", "cardNo": "UH93254461EA", "gou": "特定技能1号"}], "株式会社緑信": [{"name": "NGUYEN VAN HUY", "sex": "男", "kokuseki": "ベトナム", "birth": "1990-09-01", "cardNo": "UH72931135EA", "gou": "特定技能1号"}, {"name": "PHAN TU TAI", "sex": "男", "kokuseki": "ベトナム", "birth": "1997-03-06", "cardNo": "LJ60441334FA", "gou": "特定技能1号"}], "株式会社若芝": [{"name": "HTET LIN NAING", "sex": "男", "kokuseki": "ミャンマー", "birth": "2004-07-11", "cardNo": "UH85825547MA", "gou": "特定技能1号"}, {"name": "FATAH RADZKA WARDHANI", "sex": "男", "kokuseki": "インドネシア", "birth": "2003-03-11", "cardNo": "LJ00983469MA", "gou": "特定技能1号"}], "柿沼富之": [{"name": "SARDIMAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1994-08-20", "cardNo": "LJ11824428EA", "gou": "特定技能1号"}], "有限会社三協自動車商会": [{"name": "KROUCH VANDEN", "sex": "男", "kokuseki": "カンボジア", "birth": "1996-08-09", "cardNo": "UH16688834EA", "gou": "特定技能1号"}, {"name": "TOB BOPHORN", "sex": "男", "kokuseki": "カンボジア", "birth": "1996-05-25", "cardNo": "UH701508058EA", "gou": "特定技能1号"}], "（有）石川プレス工業": [{"name": "ANDRI WIDOYOKO", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-06-01", "cardNo": "UH10202253EA", "gou": "特定技能1号"}, {"name": "NOVIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1989-11-14", "cardNo": "UH24025206EA", "gou": "特定技能1号"}], "株式会社ワイプアウト": [{"name": "ELPIS ELIK SIADARI", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-10-24", "cardNo": "LJ05852021EA", "gou": "特定活動"}, {"name": "EKO FEBRIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-02-14", "cardNo": "UH38776501EA", "gou": "特定活動"}], "株式会社肉の大公": [{"name": "TRINH VAN SU", "sex": "男", "kokuseki": "ベトナム", "birth": "2000-05-12", "cardNo": "UH16638745EA", "gou": "特定技能1号"}, {"name": "PHAM THUA SON", "sex": "男", "kokuseki": "ベトナム", "birth": "2000-05-05", "cardNo": "UH86189786EA", "gou": "特定技能1号"}], "株式会社セイテック": [{"name": "TRINH TRONG THINH", "sex": "男", "kokuseki": "ベトナム", "birth": "1985-01-12", "cardNo": "UH43492037EA", "gou": "特定技能1号"}, {"name": "VU VAN HAO", "sex": "男", "kokuseki": "ベトナム", "birth": "1999-10-26", "cardNo": "UH11084540EA", "gou": "特定技能1号"}, {"name": "NGUYEN VAN TUYEN", "sex": "男", "kokuseki": "ベトナム", "birth": "1989-07-04", "cardNo": "UH34336704EA", "gou": "特定技能1号"}], "荒井芳光": [{"name": "DIMAS NUR TRI AJI PAMUNGKAS", "sex": "男", "kokuseki": "インドネシア", "birth": "2003-12-03", "cardNo": "UH86953344FA", "gou": "特定技能1号"}, {"name": "DWI NUR SANTOSO NUGROHO", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-10-23", "cardNo": "UH04086813EH", "gou": "特定技能1号"}], "篠原友紀": [{"name": "OKI NANA HIDAYAT", "sex": "男", "kokuseki": "インドネシア", "birth": "1997-11-01", "cardNo": "UH76966988EH", "gou": "特定技能1号"}], "小宮山政男": [{"name": "LUTFI ANWAR FAUZI", "sex": "男", "kokuseki": "インドネシア", "birth": "1996-08-01", "cardNo": "UH14450330EH", "gou": "特定技能1号"}], "市村初仁": [{"name": "QAMARANDA", "sex": "男", "kokuseki": "インドネシア", "birth": "1998-06-07", "cardNo": "UH03217639FA", "gou": "特定技能1号"}, {"name": "ANGGA DWI JULIANTO", "sex": "男", "kokuseki": "インドネシア", "birth": "2001-07-01", "cardNo": "UH43212917FA", "gou": "特定技能1号"}], "藤巻剛志": [{"name": "ABDUL WAHID", "sex": "男", "kokuseki": "インドネシア", "birth": "1993-09-10", "cardNo": "UH00650363EH", "gou": "特定技能1号"}], "株式会社上原工業": [{"name": "ARDI SAKA PENDAWA", "sex": "男", "kokuseki": "インドネシア", "birth": "1999-06-18", "cardNo": "LJ01442149EA", "gou": "特定活動"}], "有限会社Y＆H": [{"name": "LATIF SETIAWAN", "sex": "男", "kokuseki": "インドネシア", "birth": "1992-01-22", "cardNo": "UH11728917EA", "gou": "特定技能1号"}], "株式会社フジワラアグリコルトゥーラ": [{"name": "DAO NGOC THUC", "sex": "男", "kokuseki": "ベトナム", "birth": "2003-10-08", "cardNo": "LJ34232202EA", "gou": "特定技能1号"}], "未築建設株式会社": [{"name": "PHAM VIET VINH", "sex": "男", "kokuseki": "ベトナム", "birth": "1998-05-13", "cardNo": "UH60723836HA", "gou": "特定技能1号"}]};
+
+
+
 let currentUser = null;
 
 // ─── Populate login dropdown ───
@@ -1154,6 +1160,39 @@ function togglePw(){
 // Google Sheets 自動同期
 // ═══════════════════════════════════════════════════════
 const GAS_URL_KEY = 'kmt_gas_url';
+
+function getHdrInitials(nameJa) {
+  if (!nameJa) return '?';
+  // カタカナ名の場合は最初の2文字
+  const clean = nameJa.replace(/\s+/g, '');
+  return clean.length >= 2 ? clean.slice(0,2) : clean;
+}
+function getHdrBgColor(icon) {
+  // アイコンの絵文字からカラーを決定
+  const colorMap = {
+    '🦊':'#e65100','🏛️':'#1b5e20','🌿':'#2e7d32','🌸':'#c2185b',
+    '🌺':'#c62828','🐯':'#e65100','🌻':'#f57f17','🦅':'#1565c0',
+    '🐆':'#6a1b9a','🦚':'#00695c','🌾':'#558b2f','⚡':'#f9a825',
+    '🐻':'#4e342e','🐉':'#b71c1c','🦋':'#7b1fa2','🌷':'#e91e63',
+    '🦎':'#388e3c','🦜':'#0097a7','🦁':'#e65100','🐊':'#2e7d32',
+    '🌼':'#f06292','🍂':'#d84315','🐘':'#546e7a','🎯':'#c62828',
+  };
+  return colorMap[icon] || '#2e7d32';
+}
+function updateHdrIcon(el, s) {
+  if (!el) return;
+  if (s.icon && s.icon.startsWith('data:')) {
+    el.innerHTML = '<img src="' + s.icon + '" style="width:38px;height:38px;border-radius:50%;object-fit:cover;">';
+    el.style.fontSize = '0';
+    el.style.background = 'transparent';
+  } else {
+    const initials = getHdrInitials(s.nameJa);
+    el.textContent = initials;
+    el.style.fontSize = initials.length > 2 ? '11px' : '14px';
+    el.style.background = getHdrBgColor(s.icon);
+    el.style.color = '#fff';
+  }
+}
 
 function getGasUrl(){
   return localStorage.getItem(GAS_URL_KEY)||'';
@@ -1283,9 +1322,14 @@ async function syncFromSheets(silent=false){
     const result=Object.entries(map).map(([name,c])=>({name,g1:c.g1,g2:c.g2}));
     if(!result.length) throw new Error('在職中○の行が見つかりません');
     let updated=0;
+    const newCompanies=[]; // Sheetsにあるがシステム未登録の企業
     for(const item of result){
       const co=findCoByName(item.name);
-      if(!co) continue;
+      if(!co){
+        // システムに存在しない企業 → 通知リストに追加
+        newCompanies.push(item.name);
+        continue;
+      }
       const p1=co.g1,p2=co.g2;
       co.g1=item.g1;co.g2=item.g2;co.kmt=item.g1+item.g2;
       if(p1!==item.g1||p2!==item.g2) updated++;
@@ -1298,12 +1342,883 @@ async function syncFromSheets(silent=false){
     const now=new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'});
     setSyncState('ok',`同期済 ${now} (${updated}社更新)`);
     localStorage.setItem('kmt_sync_last',new Date().toISOString());
-    if(!silent) showToast(`✅ Sheets同期完了 — ${updated}社の人数を更新しました`,3000);
+    // 新規企業の通知
+    if(newCompanies.length>0){
+      localStorage.setItem('kmt_sync_newcos', JSON.stringify(newCompanies));
+      if(!silent) showNewCompanyAlert(newCompanies);
+    } else {
+      localStorage.removeItem('kmt_sync_newcos');
+    }
+    if(!silent) showToast(`✅ Sheets同期完了 — ${updated}社更新${newCompanies.length>0?' / ⚠️ 未登録'+newCompanies.length+'社':''}`,4000);
   }catch(e){
     setSyncState('err','同期エラー');
     if(!silent) showToast('❌ Sheets同期失敗: '+e.message,5000);
     console.error('Sheets sync error:',e);
   }
+}
+
+// 新規企業アラートモーダル
+function showNewCompanyAlert(companies){
+  // 既存モーダルがあれば削除
+  document.getElementById('_newCoModal')?.remove();
+  const modal = document.createElement('div');
+  modal.id = '_newCoModal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9100;display:flex;align-items:center;justify-content:center;';
+  const list = companies.map(n=>`<li style="padding:4px 0;border-bottom:1px solid var(--bdr);font-size:13px;">📍 ${n}</li>`).join('');
+  modal.innerHTML = `
+    <div style="background:var(--surf);border-radius:10px;padding:24px;width:520px;max-width:95vw;box-shadow:0 8px 32px rgba(0,0,0,.2);max-height:80vh;overflow-y:auto;">
+      <div style="font-size:16px;font-weight:900;color:var(--org);margin-bottom:4px;">⚠️ Sheetsに未登録企業があります</div>
+      <div style="font-size:12px;color:var(--tx3);margin-bottom:14px;">以下の企業がSheetsにありますが、システムにまだ登録されていません。<br>「企業を追加」から手動で登録してください。</div>
+      <div style="background:var(--bg2);border:1px solid var(--bdr);border-radius:6px;padding:8px 12px;margin-bottom:16px;">
+        <ul style="list-style:none;margin:0;padding:0;">${list}</ul>
+      </div>
+      <div style="font-size:11px;color:var(--tx3);margin-bottom:14px;">合計 ${companies.length}社 — サイドバーの「＋ 企業を追加」ボタンから登録できます</div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;">
+        <button onclick="document.getElementById('_newCoModal').remove()" 
+          style="padding:8px 20px;border:1.5px solid var(--bdr);border-radius:6px;background:var(--surf2);font-family:inherit;font-size:13px;cursor:pointer;">
+          閉じる
+        </button>
+        <button onclick="document.getElementById('_newCoModal').remove();showScreen('main');" 
+          style="padding:8px 20px;border:none;border-radius:6px;background:var(--grn);color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;">
+          企業管理へ →
+        </button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e=>{ if(e.target===modal) modal.remove(); });
+}
+
+// ログイン後に未登録企業通知を確認
+function checkPendingNewCompanies(){
+  const saved = localStorage.getItem('kmt_sync_newcos');
+  if(!saved) return;
+  try{
+    const companies = JSON.parse(saved);
+    if(companies && companies.length>0){
+      // バッジに未登録企業数を表示
+      const badge = document.getElementById('syncBadge');
+      if(badge){
+        const dot = document.getElementById('syncDot');
+        const lbl = document.getElementById('syncLabel');
+        if(dot) dot.style.background='#ff8800';
+        if(lbl) lbl.textContent += ' ⚠️'+companies.length+'社未登録';
+      }
+    }
+  }catch(e){}
+}
+
+// ── 別紙1 PDF読み取り（AI） ──────────────────────────
+function openBessi1PdfImport(coId) {
+  document.getElementById('_pdfImportModal')?.remove();
+  const modal = document.createElement('div');
+  modal.id = '_pdfImportModal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9400;display:flex;align-items:center;justify-content:center;';
+  modal.innerHTML =
+    '<div style="background:var(--surf);border-radius:10px;padding:24px;width:560px;max-width:95vw;box-shadow:0 8px 32px rgba(0,0,0,.25);">'
+    + '<div style="font-size:16px;font-weight:900;color:#6a1b9a;margin-bottom:6px;">🤖 PDFから人材データ読み取り（AI）</div>'
+    + '<div style="font-size:12px;color:var(--tx3);margin-bottom:14px;">在留カード・名簿PDFをアップロードするとAIが自動で氏名・生年月日・性別・国籍・カード番号・在留資格を読み取ります。</div>'
+    + '<div style="background:#f3e5f5;border:1px solid #ce93d8;border-radius:6px;padding:10px 12px;font-size:12px;margin-bottom:12px;">'
+    + '<b>⚠️ 注意:</b> AI読み取りにはAnthropicのAPIキーが必要です。設定から登録してください。<br>'
+    + '読み取り結果は必ず確認してください（誤読の可能性あり）。'
+    + '</div>'
+    + '<label style="font-size:12px;font-weight:700;color:var(--tx2);">APIキー</label>'
+    + '<input id="_pdfApiKeyInput" type="password" placeholder="sk-ant-..." style="width:100%;padding:8px 10px;border:1.5px solid var(--bdr);border-radius:6px;font-size:12px;font-family:monospace;margin:4px 0 12px;box-sizing:border-box;" value="">'
+    + '<label style="font-size:12px;font-weight:700;color:var(--tx2);">PDFファイル（複数可）</label>'
+    + '<div id="_pdfDropZone" style="border:2px dashed #ce93d8;border-radius:8px;padding:20px;text-align:center;margin:6px 0 12px;cursor:pointer;background:#faf3ff;font-size:13px;color:#6a1b9a;">'
+    + 'ここにPDFをドラッグ＆ドロップ、またはクリックしてファイルを選択<br><span style="font-size:11px;color:var(--tx3);">在留カード・名簿・申請書など（複数PDF対応）</span>'
+    + '<input id="_pdfFileInput" type="file" accept=".pdf" multiple style="display:none;">'
+    + '</div>'
+    + '<div id="_pdfFileList" style="font-size:12px;color:var(--tx3);margin-bottom:10px;"></div>'
+    + '<div id="_pdfProgress" style="display:none;padding:10px;background:#f3e5f5;border-radius:6px;font-size:12px;margin-bottom:10px;"></div>'
+    + '<div style="display:flex;gap:8px;justify-content:flex-end;">'
+    + '<button id="_pdfCancelBtn" style="padding:8px 16px;border:1.5px solid var(--bdr);border-radius:6px;background:var(--surf2);font-family:inherit;font-size:13px;cursor:pointer;">キャンセル</button>'
+    + '<button id="_pdfReadBtn" style="padding:8px 20px;border:none;border-radius:6px;background:#6a1b9a;color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;">🤖 AIで読み取り開始</button>'
+    + '</div>'
+    + '</div>';
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+
+  // Restore saved API key
+  const savedKey = localStorage.getItem('kmt_anthropic_key') || '';
+  const keyInp = document.getElementById('_pdfApiKeyInput');
+  if (keyInp) keyInp.value = savedKey;
+
+  // File input & drop zone
+  const dropZone = document.getElementById('_pdfDropZone');
+  const fileInput = document.getElementById('_pdfFileInput');
+  const fileList  = document.getElementById('_pdfFileList');
+  let selectedFiles = [];
+
+  const updateFileList = () => {
+    fileList.innerHTML = selectedFiles.length === 0
+      ? ''
+      : '選択済: ' + selectedFiles.map(f => '<b>' + f.name + '</b>').join(', ');
+  };
+
+  if (dropZone) {
+    dropZone.onclick = () => fileInput && fileInput.click();
+    dropZone.ondragover = e => { e.preventDefault(); dropZone.style.background = '#ede7f6'; };
+    dropZone.ondragleave = () => { dropZone.style.background = '#faf3ff'; };
+    dropZone.ondrop = e => {
+      e.preventDefault(); dropZone.style.background = '#faf3ff';
+      selectedFiles = Array.from(e.dataTransfer.files).filter(f => f.type === 'application/pdf');
+      updateFileList();
+    };
+  }
+  if (fileInput) {
+    fileInput.onchange = () => {
+      selectedFiles = Array.from(fileInput.files);
+      updateFileList();
+    };
+  }
+
+  const cancelBtn = document.getElementById('_pdfCancelBtn');
+  if (cancelBtn) cancelBtn.onclick = () => modal.remove();
+
+  const readBtn = document.getElementById('_pdfReadBtn');
+  if (readBtn) readBtn.onclick = () => _runPdfAiRead(coId, selectedFiles);
+}
+
+async function _runPdfAiRead(coId, files) {
+  const co = cos.find(c => c.id === coId);
+  if (!co) return;
+
+  const apiKey = (document.getElementById('_pdfApiKeyInput')?.value || '').trim();
+  if (!apiKey) { showToast('❌ APIキーを入力してください', 3000); return; }
+  if (!files || files.length === 0) { showToast('❌ PDFファイルを選択してください', 3000); return; }
+
+  // Save API key
+  localStorage.setItem('kmt_anthropic_key', apiKey);
+
+  const progress = document.getElementById('_pdfProgress');
+  const readBtn  = document.getElementById('_pdfReadBtn');
+  if (readBtn) readBtn.disabled = true;
+  if (progress) { progress.style.display = 'block'; progress.textContent = '⏳ PDF読み取り中（' + files.length + 'ファイル）…'; }
+
+  const allRows = [];
+  const errors  = [];
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    if (progress) progress.textContent = '⏳ ' + (i+1) + '/' + files.length + ': ' + file.name + ' を読み取り中…';
+    try {
+      // Base64エンコード
+      const b64 = await new Promise((res, rej) => {
+        const r = new FileReader();
+        r.onload = () => res(r.result.split(',')[1]);
+        r.onerror = () => rej(new Error('ファイル読み込み失敗'));
+        r.readAsDataURL(file);
+      });
+
+      const prompt = '以下のPDFから外国人労働者の個人データを抽出してください。'
+        + ' 以下のJSON配列形式のみで返してください（前置き不要）:'
+        + ' [{"name":"氏名ローマ字","birth":"YYYY-MM-DD","sex":"男 or 女","kokuseki":"国籍","cardNo":"在留カード番号","gou":"特定技能1号 or 特定技能2号 or 技能実習"}]'
+        + ' 複数人いる場合はすべて含めてください。不明な項目は空文字にしてください。';
+
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-opus-4-5',
+          max_tokens: 2000,
+          messages: [{
+            role: 'user',
+            content: [
+              { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: b64 } },
+              { type: 'text', text: prompt }
+            ]
+          }]
+        })
+      });
+
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        throw new Error('API Error: ' + (err.error?.message || resp.status));
+      }
+
+      const data = await resp.json();
+      const text = (data.content || []).map(c => c.text || '').join('');
+      const jsonMatch = text.match(/\[[\s\S]*\]/);
+      if (!jsonMatch) throw new Error('AIの応答からデータを取得できませんでした');
+
+      const rows = JSON.parse(jsonMatch[0]);
+      allRows.push(...rows);
+    } catch(e) {
+      errors.push(file.name + ': ' + e.message);
+    }
+  }
+
+  if (progress) progress.style.display = 'none';
+  if (readBtn) readBtn.disabled = false;
+
+  if (allRows.length === 0) {
+    showToast('❌ データを読み取れませんでした。' + (errors.length > 0 ? errors[0] : ''), 5000);
+    return;
+  }
+
+  // 確認モーダルを表示
+  document.getElementById('_pdfImportModal')?.remove();
+  _showPdfConfirmModal(coId, allRows, errors);
+}
+
+function _showPdfConfirmModal(coId, rows, errors) {
+  document.getElementById('_pdfConfirmModal')?.remove();
+  const modal = document.createElement('div');
+  modal.id = '_pdfConfirmModal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9500;display:flex;align-items:center;justify-content:center;';
+
+  const rowsHtml = rows.map((r, i) =>
+    '<tr style="border-bottom:1px solid #e0e0e0;">'
+    + '<td style="padding:6px 8px;font-size:12px;">' + (i+1) + '</td>'
+    + '<td style="padding:6px 8px;font-size:12px;font-weight:700;">' + (r.name||'—') + '</td>'
+    + '<td style="padding:6px 8px;font-size:11px;">' + (r.birth||'—') + '</td>'
+    + '<td style="padding:6px 8px;font-size:11px;">' + (r.sex||'—') + '</td>'
+    + '<td style="padding:6px 8px;font-size:11px;">' + (r.kokuseki||'—') + '</td>'
+    + '<td style="padding:6px 8px;font-size:11px;font-family:monospace;">' + (r.cardNo||'—') + '</td>'
+    + '<td style="padding:6px 8px;font-size:11px;">' + (r.gou||'—') + '</td>'
+    + '</tr>'
+  ).join('');
+
+  const errHtml = errors.length > 0
+    ? '<div style="background:#fff3e0;border:1px solid #ffb74d;border-radius:4px;padding:8px;font-size:11px;color:#e65100;margin-bottom:10px;">⚠️ 読み取りエラー: ' + errors.join(' / ') + '</div>'
+    : '';
+
+  modal.innerHTML =
+    '<div style="background:var(--surf);border-radius:10px;padding:24px;width:700px;max-width:96vw;max-height:88vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.25);">'
+    + '<div style="font-size:16px;font-weight:900;color:#6a1b9a;margin-bottom:6px;">🤖 AI読み取り結果を確認</div>'
+    + '<div style="font-size:12px;color:var(--tx3);margin-bottom:12px;">内容を確認してから「取込む」を押してください。</div>'
+    + errHtml
+    + '<div style="overflow-x:auto;margin-bottom:14px;">'
+    + '<table style="width:100%;border-collapse:collapse;font-size:12px;">'
+    + '<thead><tr style="background:#f3e5f5;">'
+    + '<th style="padding:6px 8px;text-align:left;">No.</th><th style="padding:6px 8px;text-align:left;">氏名</th>'
+    + '<th style="padding:6px 8px;text-align:left;">生年月日</th><th style="padding:6px 8px;text-align:left;">性別</th>'
+    + '<th style="padding:6px 8px;text-align:left;">国籍</th><th style="padding:6px 8px;text-align:left;">在留カード</th>'
+    + '<th style="padding:6px 8px;text-align:left;">受入区分</th></tr></thead>'
+    + '<tbody>' + rowsHtml + '</tbody></table></div>'
+    + '<div style="font-size:11px;color:var(--tx3);margin-bottom:14px;">合計 ' + rows.length + '名 — 取込後も各行で編集できます</div>'
+    + '<div style="display:flex;gap:8px;justify-content:flex-end;">'
+    + '<button id="_pdfConfirmCancelBtn" style="padding:8px 16px;border:1.5px solid var(--bdr);border-radius:6px;background:var(--surf2);font-family:inherit;font-size:13px;cursor:pointer;">キャンセル</button>'
+    + '<button id="_pdfConfirmOkBtn" style="padding:8px 22px;border:none;border-radius:6px;background:#6a1b9a;color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;">✅ 取込む（' + rows.length + '名）</button>'
+    + '</div>'
+    + '</div>';
+
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+  document.getElementById('_pdfConfirmCancelBtn').onclick = () => modal.remove();
+  document.getElementById('_pdfConfirmOkBtn').onclick = () => {
+    modal.remove();
+    _processBessi1Rows(cos.find(c => c.id === coId), rows);
+  };
+}
+
+// ── 別紙1 CSV取込 ──────────────────────────────────
+function openBessi1CsvImport(coId) {
+  document.getElementById('_csvImportModal')?.remove();
+  const modal = document.createElement('div');
+  modal.id = '_csvImportModal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9400;display:flex;align-items:center;justify-content:center;';
+  modal.innerHTML =
+    '<div style="background:var(--surf);border-radius:10px;padding:24px;width:520px;max-width:95vw;box-shadow:0 8px 32px rgba(0,0,0,.25);">'
+    + '<div style="font-size:16px;font-weight:900;color:#00695c;margin-bottom:6px;">📂 CSVから一括取込</div>'
+    + '<div style="font-size:12px;color:var(--tx3);margin-bottom:12px;">GoogleスプレッドシートをCSVでエクスポートして取込めます。インターネット接続不要。</div>'
+    + '<div style="background:#e0f2f1;border:1px solid #80cbc4;border-radius:6px;padding:10px 12px;font-size:12px;margin-bottom:12px;">'
+    + '<b>CSVの準備方法:</b><br>'
+    + '① GoogleスプレッドシートのURLに <b>/export?format=csv&gid=1062479491</b> を追加してアクセス<br>'
+    + '② ダウンロードしたCSVをそのまま下にアップロード<br>'
+    + '<span style="color:#00695c;">または: スプレッドシートで ファイル → ダウンロード → CSV</span>'
+    + '</div>'
+    + '<div id="_csvDropZone" style="border:2px dashed #80cbc4;border-radius:8px;padding:20px;text-align:center;margin:6px 0 12px;cursor:pointer;background:#f0faf9;font-size:13px;color:#00695c;">'
+    + 'ここにCSVをドラッグ＆ドロップ、またはクリックして選択'
+    + '<input id="_csvFileInput" type="file" accept=".csv,text/csv" style="display:none;">'
+    + '</div>'
+    + '<div id="_csvFileInfo" style="font-size:12px;color:var(--tx3);margin-bottom:10px;min-height:20px;"></div>'
+    + '<div style="display:flex;gap:8px;justify-content:flex-end;">'
+    + '<button id="_csvCancelBtn" style="padding:8px 16px;border:1.5px solid var(--bdr);border-radius:6px;background:var(--surf2);font-family:inherit;font-size:13px;cursor:pointer;">キャンセル</button>'
+    + '<button id="_csvImportBtn" style="padding:8px 22px;border:none;border-radius:6px;background:#00695c;color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;">📂 取込む</button>'
+    + '</div>'
+    + '</div>';
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+
+  const dropZone = document.getElementById('_csvDropZone');
+  const fileInput = document.getElementById('_csvFileInput');
+  const fileInfo  = document.getElementById('_csvFileInfo');
+  let csvFile = null;
+
+  if (dropZone) {
+    dropZone.onclick = () => fileInput && fileInput.click();
+    dropZone.ondragover = e => { e.preventDefault(); dropZone.style.background = '#b2dfdb'; };
+    dropZone.ondragleave = () => { dropZone.style.background = '#f0faf9'; };
+    dropZone.ondrop = e => {
+      e.preventDefault(); dropZone.style.background = '#f0faf9';
+      const f = e.dataTransfer.files[0];
+      if (f) { csvFile = f; fileInfo.innerHTML = '選択: <b>' + f.name + '</b> (' + Math.round(f.size/1024) + ' KB)'; }
+    };
+  }
+  if (fileInput) {
+    fileInput.onchange = () => {
+      csvFile = fileInput.files[0];
+      if (csvFile) fileInfo.innerHTML = '選択: <b>' + csvFile.name + '</b> (' + Math.round(csvFile.size/1024) + ' KB)';
+    };
+  }
+
+  document.getElementById('_csvCancelBtn').onclick = () => modal.remove();
+  document.getElementById('_csvImportBtn').onclick = () => {
+    if (!csvFile) { showToast('❌ CSVファイルを選択してください', 3000); return; }
+    _parseCsvAndImport(coId, csvFile);
+    modal.remove();
+  };
+}
+
+function _parseCsvAndImport(coId, file) {
+  const co = cos.find(c => c.id === coId);
+  if (!co) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const text = e.target.result;
+      const lines = text.split(/[\r\n]+/).map(function(l){return l.trim();}).filter(function(l){return l.length>0;});
+      if (lines.length < 2) { showToast('❌ CSVにデータがありません', 3000); return; }
+
+      // ヘッダー解析
+      const parseCsvLine = (line) => {
+        const cols = []; let cur = ''; let inQ = false;
+        for (let i = 0; i < line.length; i++) {
+          if (line[i] === '"') { inQ = !inQ; continue; }
+          if (line[i] === ',' && !inQ) { cols.push(cur.trim()); cur = ''; continue; }
+          cur += line[i];
+        }
+        cols.push(cur.trim());
+        return cols;
+      };
+
+      const headers = parseCsvLine(lines[0]);
+      const findCol = (...kws) => { for(const k of kws){const i=headers.findIndex(h=>h.replace(/\s/g,'').includes(k.replace(/\s/g,'')));if(i>=0)return i;} return -1; };
+
+      // KMT人材管理シートの列名に合わせたマッピング
+      const iKaisha  = findCol('企業名','所属機関','会社名','勤務先','受入機関');
+      const iZai     = findCol('在職中','在職','在籍');
+      const iName    = findCol('人材名','氏名','名前','name','Name');
+      const iSex     = findCol('性別','sex','gender');
+      const iKoku    = findCol('国籍','nationality');
+      const iBirth   = findCol('生年月日','誕生日','birth');
+      const iCard    = findCol('在留カード番号','在留カード','カード番号','card');
+      const iZairyu  = findCol('在留資格','資格','visa','受入区分');
+
+      if (iName < 0) {
+        showToast('❌ 「人材名/氏名」列が見つかりません。CSVのヘッダー: ' + headers.slice(0,8).join(', '), 5000);
+        return;
+      }
+
+      const coNorm = co.name.replace(/^[\d\s]+/,'').replace(/（/g,'(').replace(/）/g,')').trim();
+      const mapGou = v => (!v ? '特定技能1号' : v.includes('2号')||v.includes('２号') ? '特定技能2号' : '特定技能1号');
+
+      const rows = [];
+      for (let i = 1; i < lines.length; i++) {
+        const cols = parseCsvLine(lines[i]);
+        const name = iName >= 0 ? (cols[iName]||'').trim() : '';
+        if (!name) continue;
+        if (iZai >= 0) { const z=(cols[iZai]||'').trim(); if(z&&z!=='○'&&z!=='〇'&&z!=='O') continue; }
+        if (iKaisha >= 0) {
+          const k=(cols[iKaisha]||'').replace(/（/g,'(').replace(/）/g,')').trim();
+          if (k && !k.includes(coNorm) && !coNorm.includes(k)) continue;
+        }
+        rows.push({
+          name,
+          birth: iBirth >= 0 ? (cols[iBirth]||'').trim() : '',
+          sex:   iSex   >= 0 ? (cols[iSex]  ||'男').trim() : '男',
+          kokuseki: iKoku  >= 0 ? (cols[iKoku] ||'').trim() : '',
+          cardNo:   iCard  >= 0 ? (cols[iCard] ||'').trim() : '',
+          gou: mapGou(iZairyu >= 0 ? (cols[iZairyu]||'').trim() : ''),
+        });
+      }
+
+      if (!rows.length) {
+        showToast('⚠️ 「' + co.name + '」に該当するデータが見つかりませんでした', 4000);
+        return;
+      }
+      _processBessi1Rows(co, rows);
+    } catch(err) {
+      showToast('❌ CSV解析エラー: ' + err.message, 5000);
+    }
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+// ── 別紙1 PDFデータ取込（ハードコード） ─────────────────
+function importBessi1FromPdfData(coId) {
+  const co = cos.find(c => c.id === coId);
+  if (!co) return;
+
+  // 企業名の正規化
+  const normalize = s => s
+    .replace(/^[\d\s]+/, '').replace(/（/g,'(').replace(/）/g,')')
+    .replace(/　/g,' ').replace(/株式会社/g,'(株)').replace(/有限会社/g,'(有)')
+    .replace(/\s+/g,' ').trim().toLowerCase();
+
+  const coNorm = normalize(co.name);
+
+  // PDF_JINZAI_DATAから企業を検索
+  let matched = null;
+  for (const [key, rows] of Object.entries(PDF_JINZAI_DATA)) {
+    const keyNorm = normalize(key);
+    if (keyNorm === coNorm || coNorm.includes(keyNorm) || keyNorm.includes(coNorm)) {
+      matched = rows;
+      break;
+    }
+  }
+
+  if (!matched || matched.length === 0) {
+    // 見つからない場合は名前の一部でも検索
+    const coShort = coNorm.replace(/[\(\)株有]/g,'').trim();
+    for (const [key, rows] of Object.entries(PDF_JINZAI_DATA)) {
+      const keyShort = normalize(key).replace(/[\(\)株有]/g,'').trim();
+      if (keyShort.includes(coShort) || coShort.includes(keyShort)) {
+        matched = rows;
+        break;
+      }
+    }
+  }
+
+  if (!matched || matched.length === 0) {
+    showToast('⚠️ PDFデータに「' + co.name + '」のデータが見つかりません。', 4000);
+    return;
+  }
+
+  // 確認モーダル表示
+  document.getElementById('_pdfDataConfirmModal')?.remove();
+  const modal = document.createElement('div');
+  modal.id = '_pdfDataConfirmModal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9500;display:flex;align-items:center;justify-content:center;';
+
+  const rowsHtml = matched.map((r,i) =>
+    '<tr style="border-bottom:1px solid #e8f5e9;">'
+    + '<td style="padding:5px 8px;font-size:12px;">' + (i+1) + '</td>'
+    + '<td style="padding:5px 8px;font-size:12px;font-weight:700;">' + r.name + '</td>'
+    + '<td style="padding:5px 8px;font-size:11px;">' + r.birth + '</td>'
+    + '<td style="padding:5px 8px;font-size:11px;">' + r.sex + '</td>'
+    + '<td style="padding:5px 8px;font-size:11px;">' + r.kokuseki + '</td>'
+    + '<td style="padding:5px 8px;font-size:11px;font-family:monospace;">' + r.cardNo + '</td>'
+    + '<td style="padding:5px 8px;font-size:11px;">' + r.gou + '</td>'
+    + '</tr>'
+  ).join('');
+
+  modal.innerHTML =
+    '<div style="background:var(--surf);border-radius:10px;padding:24px;width:700px;max-width:96vw;max-height:88vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.25);">'
+    + '<div style="font-size:16px;font-weight:900;color:#6a1b9a;margin-bottom:6px;">📋 PDFデータ確認</div>'
+    + '<div style="font-size:12px;color:var(--tx3);margin-bottom:12px;">以下のデータを別紙１に取込みます。内容を確認してください。</div>'
+    + '<div style="overflow-x:auto;margin-bottom:14px;">'
+    + '<table style="width:100%;border-collapse:collapse;">'
+    + '<thead><tr style="background:#f3e5f5;"><th style="padding:6px 8px;text-align:left;font-size:11px;">No.</th><th style="padding:6px 8px;text-align:left;font-size:11px;">氏名</th><th style="padding:6px 8px;text-align:left;font-size:11px;">生年月日</th><th style="padding:6px 8px;text-align:left;font-size:11px;">性別</th><th style="padding:6px 8px;text-align:left;font-size:11px;">国籍</th><th style="padding:6px 8px;text-align:left;font-size:11px;">在留カード</th><th style="padding:6px 8px;text-align:left;font-size:11px;">受入区分</th></tr></thead>'
+    + '<tbody>' + rowsHtml + '</tbody></table></div>'
+    + '<div style="font-size:11px;color:var(--tx3);margin-bottom:14px;">' + matched.length + '名 — 取込後も各行で編集できます</div>'
+    + '<div style="display:flex;gap:8px;justify-content:flex-end;">'
+    + '<button id="_pdfDataCancelBtn" style="padding:8px 16px;border:1.5px solid var(--bdr);border-radius:6px;background:var(--surf2);font-family:inherit;font-size:13px;cursor:pointer;">キャンセル</button>'
+    + '<button id="_pdfDataOkBtn" style="padding:8px 22px;border:none;border-radius:6px;background:#6a1b9a;color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;">✅ 取込む（' + matched.length + '名）</button>'
+    + '</div>'
+    + '</div>';
+
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+  document.getElementById('_pdfDataCancelBtn').onclick = () => modal.remove();
+  document.getElementById('_pdfDataOkBtn').onclick = () => {
+    modal.remove();
+    _processBessi1Rows(co, matched);
+  };
+}
+
+// ── 別紙1 Sheets インポート ──────────────────────────
+// 列マッピング (gid=1062479491 の人材管理シート想定)
+// 列B=人材名, 列E=生年月日, 列G=性別, 列H=国籍, 列I=在留カード番号, 列W=在留資格
+// ※ 実際の列は初回同期時に自動検出（ヘッダー行を走査）
+
+async function importBessi1FromSheets(coId) {
+  const co = cos.find(c => c.id === coId);
+  if (!co) return;
+
+  const JINZAI_SHEET_ID = '1aS266Pa4Dlyayjtp9tCxuNkTiPDdOUSSM3aVf8sHx0o';
+  const JINZAI_GID      = '1062479491';
+  const GAS_JINZAI_KEY  = 'kmt_jinzai_gas_url';
+
+  // GAS URL (人材専用) が設定されていればそちらを優先
+  const gasJinzaiUrl = localStorage.getItem(GAS_JINZAI_KEY) || '';
+
+  if (gasJinzaiUrl) {
+    // ── GAS経由で取得 ──
+    showToast('⏳ GAS経由でデータ取得中…', 2000);
+    try {
+      const resp = await fetch(gasJinzaiUrl + '?coName=' + encodeURIComponent(co.name), { cache: 'no-store' });
+      if (!resp.ok) throw new Error('GAS接続エラー (HTTP ' + resp.status + ')');
+      const data = await resp.json();
+      if (!data || !Array.isArray(data.rows)) throw new Error('GASからの応答が不正です');
+      _processBessi1Rows(co, data.rows);
+      return;
+    } catch(e) {
+      showToast('❌ GASエラー: ' + e.message, 5000);
+      return;
+    }
+  }
+
+  // ── 直接fetch試行 ──
+  showToast('⏳ Sheetsからデータ取得中…', 2000);
+
+  let rows = [], headers = [];
+  let fetchFailed = false;
+
+  try {
+    const tqAll = encodeURIComponent('SELECT *');
+    const gvizUrl = 'https://docs.google.com/spreadsheets/d/' + JINZAI_SHEET_ID +
+      '/gviz/tq?gid=' + JINZAI_GID + '&tq=' + tqAll + '&tqx=out:json';
+
+    const resp = await fetch(gvizUrl, { mode: 'cors', cache: 'no-store' });
+    if (resp.ok) {
+      const text = await resp.text();
+      const jsonStr = text.replace(/^[\s\S]*?google\.visualization\.Query\.setResponse\(/, '').replace(/\);\s*$/, '');
+      const data = JSON.parse(jsonStr);
+      if (data && data.table) {
+        headers = (data.table.cols || []).map(c => (c.label || '').trim());
+        rows = data.table.rows || [];
+      }
+    } else {
+      fetchFailed = true;
+    }
+  } catch (e) {
+    fetchFailed = true;
+    console.error('Bessi1 fetch error:', e);
+  }
+
+  // CORS失敗 → GAS設定モーダルを表示
+  if (fetchFailed || (!headers.length && !rows.length)) {
+    _showGasSetupModal(coId, GAS_JINZAI_KEY, JINZAI_SHEET_ID, JINZAI_GID);
+    return;
+  }
+
+  if (!headers.length && !rows.length) {
+    showToast('⚠️ シートデータが取得できませんでした', 4000);
+    return;
+  }
+
+  try {
+    // ── ヘッダーから列インデックスを自動検出 ──
+    const findCol = (...keywords) => {
+      for (const kw of keywords) {
+        const i = headers.findIndex(h => h.replace(/\s/g,'').includes(kw.replace(/\s/g,'')));
+        if (i >= 0) return i;
+      }
+      return -1;
+    };
+
+    // ヘッダーが空の場合（gviz が列ラベルを返さない場合）はCSVから取得
+    const hasHeaders = headers.some(h => h.length > 0);
+    if (!hasHeaders && rows.length > 0) {
+      // 最初の行をヘッダーとして使用
+      const firstRow = rows[0];
+      for (let i = 0; i < (firstRow.c||[]).length; i++) {
+        const v = firstRow.c[i] && firstRow.c[i].v ? String(firstRow.c[i].v).trim() : '';
+        headers[i] = v;
+      }
+      rows = rows.slice(1);
+    }
+
+    console.log('[Sheets取込] 検出ヘッダー:', headers.slice(0,15).join(' | '));
+
+    // KMT人材管理シートの列名（実際のヘッダーに合わせた優先順位）
+    const iKaisha  = findCol('企業名', '所属機関', '会社名', '勤務先', '受入機関', 'company');
+    const iZaishoku= findCol('在職中', '在職', '在籍', '雇用中', '就労中');
+    const iName    = findCol('人材名', '氏名', '名前', '姓名', 'name', 'NAME');
+    const iSex     = findCol('性別', 'sex', 'gender');
+    const iKoku    = findCol('国籍', '国籍・地域', 'nationality');
+    const iBirth   = findCol('生年月日', '誕生日', 'birth', 'DOB');
+    const iCard    = findCol('在留カード番号', '在留カード', 'カード番号', 'card', '在留番号');
+    const iZairyu  = findCol('在留資格', '資格', 'visa', '受入区分');
+
+    if (iName < 0) {
+      const hList = headers.slice(0,15).join(', ');
+      throw new Error('「人材名/氏名」列が見つかりません。\n検出されたヘッダー: ' + hList + '\n\n※ シートの1行目に列名があることを確認してください。');
+    }
+
+    // ── 受入区分マッピング ──
+    const mapGou = (v) => {
+      if (!v) return '特定技能1号';
+      if (v.includes('2号') || v.includes('２号')) return '特定技能2号';
+      if (v.includes('技能実習') || v.includes('実習')) return '技能実習';
+      return '特定技能1号';
+    };
+
+    // ── 企業名で絞り込み ──
+    const coNameNorm = co.name.replace(/^[\d\s]+/, '').trim();
+    const normalize = s => s.replace(/（/g,'(').replace(/）/g,')').replace(/　/g,' ')
+      .replace(/株式会社/g,'(株)').replace(/有限会社/g,'(有)').trim();
+    const coNorm = normalize(coNameNorm);
+
+    // ── 行をフィルタリング ──
+    const getVal = (row, idx) => {
+      if (idx < 0) return '';
+      const cell = row.c && row.c[idx];
+      if (!cell || cell.v === null || cell.v === undefined) return '';
+      return String(cell.v).trim();
+    };
+
+    const matched = [];
+    for (const row of rows) {
+      const nameVal = getVal(row, iName);
+      if (!nameVal) continue;
+
+      // 在職チェック（列があれば）
+      if (iZaishoku >= 0) {
+        const z = getVal(row, iZaishoku);
+        if (z && z !== '○' && z !== '〇' && z !== 'O' && z !== '◯') continue;
+      }
+
+      // 企業名で絞り込み（列があれば）
+      if (iKaisha >= 0) {
+        const kName = normalize(getVal(row, iKaisha));
+        if (kName && kName !== coNorm && !kName.includes(coNorm) && !coNorm.includes(kName)) continue;
+      }
+
+      matched.push({
+        name: nameVal,
+        birth: getVal(row, iBirth),
+        sex: getVal(row, iSex) || '男',
+        kokuseki: getVal(row, iKoku),
+        cardNo: getVal(row, iCard),
+        gou: mapGou(getVal(row, iZairyu)),
+      });
+    }
+
+    if (!matched.length) {
+      showToast('⚠️ 「' + co.name + '」に該当するデータが見つかりませんでした。', 4000);
+      return;
+    }
+
+    // ── 共通処理へ委譲 ──
+    _processBessi1Rows(co, matched);
+
+  } catch (e) {
+    showToast('❌ インポートエラー: ' + e.message, 6000);
+    console.error('Bessi1 import error:', e);
+  }
+}
+
+// ── 行データ処理（GAS・直接fetch共通） ──
+function _processBessi1Rows(co, importedRows) {
+  if (!co.bessi1) co.bessi1 = [];
+  const existing = co.bessi1;
+  let addedCount = 0, updatedCount = 0, newNames = [];
+
+  for (const item of importedRows) {
+    const existRow = existing.find(r =>
+      (item.cardNo && r.cardNo === item.cardNo) ||
+      (r.name && r.name.trim() === (item.name||'').trim())
+    );
+    if (existRow) {
+      let changed = false;
+      if (!existRow.birth && item.birth) { existRow.birth = item.birth; changed = true; }
+      if (!existRow.kokuseki && item.kokuseki) { existRow.kokuseki = item.kokuseki; changed = true; }
+      if (!existRow.cardNo && item.cardNo) { existRow.cardNo = item.cardNo; changed = true; }
+      if (changed) updatedCount++;
+    } else {
+      existing.push({
+        id: 'b1_' + Date.now() + '_' + Math.random().toString(36).slice(2,6),
+        name: item.name || '',
+        birth: item.birth || '',
+        sex: item.sex || '男',
+        kokuseki: item.kokuseki || '',
+        cardNo: item.cardNo || '',
+        gou: item.gou || '特定技能1号',
+        days: '', hoshu: '', hoshuM: '預貯金口座への振り込み',
+        shien: '自社支援', shienOrg: '', tanto: '', tel: '', biko: ''
+      });
+      addedCount++;
+      newNames.push(item.name);
+    }
+  }
+
+  sv();
+  renderBessi1(co);
+
+  let msg = '✅ インポート完了 — ';
+  if (addedCount > 0) msg += addedCount + '名追加';
+  if (updatedCount > 0) msg += (addedCount > 0 ? ' / ' : '') + updatedCount + '名更新';
+  if (addedCount === 0 && updatedCount === 0) msg = 'ℹ️ 変更なし（全員すでに登録済み）';
+  showToast(msg, 4000);
+
+  if (newNames.length > 0) {
+    showBessi1ImportResult(co.id, newNames);
+  }
+}
+
+// ── GAS設定モーダル ──
+function _showGasSetupModal(coId, storageKey, sheetId, gid) {
+  document.getElementById('_gasJinzaiModal')?.remove();
+  const modal = document.createElement('div');
+  modal.id = '_gasJinzaiModal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9300;display:flex;align-items:center;justify-content:center;';
+  modal.innerHTML =
+    '<div style="background:var(--surf);border-radius:10px;padding:24px;width:600px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.25);">'
+    + '<div style="font-size:16px;font-weight:900;color:#c62828;margin-bottom:6px;">⚠️ CORS制限 — Google Apps Script が必要です</div>'
+    + '<div style="font-size:12px;color:var(--tx3);margin-bottom:14px;">ブラウザのセキュリティ制限により直接Sheetsにアクセスできません。<br><b>以下の手順でGASを設定すると（5分）、次回から直接インポートできます。</b></div>'
+    + '<div style="background:#fff8e1;border:1px solid #ffe082;border-radius:6px;padding:10px 12px;font-size:12px;margin-bottom:12px;">'
+    + '<b>① スクリプト作成:</b> <a href="https://script.google.com/home/projects/create" target="_blank" style="color:#1565c0;">script.google.com</a> を開く → 新しいプロジェクト<br>'
+    + '<b>②</b> 下のコードを貼り付けて保存 (Ctrl+S)<br>'
+    + '<b>③ デプロイ:</b> 右上「デプロイ」→「新しいデプロイ」→ 種類:ウェブアプリ → アクセス:<b>全員</b> → デプロイ<br>'
+    + '<b>④</b> 表示されたURLをコピーして下の入力欄に貼り付け → 保存'
+    + '</div>'
+    + '<label style="font-size:12px;font-weight:700;color:var(--tx2);">GASコード（コピーして貼り付け）</label>'
+    + '<textarea id="_gasCodeArea" readonly style="width:100%;height:120px;font-family:monospace;font-size:10px;border:1px solid var(--bdr);border-radius:4px;padding:8px;margin:4px 0 12px;resize:none;background:#f8f8f8;box-sizing:border-box;" onclick="this.select();">（読み込み中...）</textarea>'
+    + '<label style="font-size:12px;font-weight:700;color:var(--tx2);">デプロイ後のURL</label>'
+    + '<input id="_gasJinzaiUrlInput" type="text" placeholder="https://script.google.com/macros/s/AKfy.../exec"'
+    + ' style="width:100%;padding:8px 10px;border:1.5px solid var(--bdr);border-radius:6px;font-size:12px;font-family:inherit;margin:4px 0 12px;box-sizing:border-box;" value="">'
+    + '<div style="display:flex;gap:8px;justify-content:flex-end;">'
+    + '<button id="_gasJinzaiCancelBtn" style="padding:8px 16px;border:1.5px solid var(--bdr);border-radius:6px;background:var(--surf2);font-family:inherit;font-size:13px;cursor:pointer;">キャンセル</button>'
+    + '<button id="_gasSaveBtn" style="padding:8px 20px;border:none;border-radius:6px;background:#1565c0;color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;">保存してインポート →</button>'
+    + '</div>'
+    + '</div>';
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+  // JS で動的に設定（テンプレートリテラルのネスト回避）
+  const ta = document.getElementById('_gasCodeArea');
+  if (ta) ta.value = _buildGasCode(sheetId, gid);
+  const inp = document.getElementById('_gasJinzaiUrlInput');
+  if (inp) inp.value = localStorage.getItem(storageKey) || '';
+  const btn = document.getElementById('_gasSaveBtn');
+  if (btn) btn.onclick = function(){ _saveGasJinzaiUrl(storageKey, coId); };
+  const cancelBtn = document.getElementById('_gasJinzaiCancelBtn');
+  if (cancelBtn) cancelBtn.onclick = function(){ document.getElementById('_gasJinzaiModal').remove(); };
+}
+function _buildGasCode(sheetId, gid) {
+  return 'function doGet(e) {\n'
+    + '  const ss = SpreadsheetApp.openById(\'' + sheetId + '\');\n'
+    + '  const sheet = ss.getSheets().find(s => s.getSheetId() == ' + gid + ')\n'
+    + '             || ss.getActiveSheet();\n'
+    + '  const data = sheet.getDataRange().getValues();\n'
+    + '  if (data.length < 2) return jsonResp({ rows: [] });\n'
+    + '  const headers = data[0].map(h => String(h).trim());\n'
+    + '  const find = (...kw) => { for(const k of kw){const i=headers.findIndex(h=>h.includes(k));if(i>=0)return i;} return -1; };\n'
+    + '  const iName=find(\'人材名\',\'氏名\',\'名前\'); const iBirth=find(\'生年月日\');\n'
+    + '  const iSex=find(\'性別\'); const iKoku=find(\'国籍\');\n'
+    + '  const iCard=find(\'在留カード\',\'カード番号\'); const iZairyu=find(\'在留資格\',\'資格\',\'受入\');\n'
+    + '  const iKaisha=find(\'所属機関\',\'会社名\',\'企業名\',\'勤務先\'); const iZai=find(\'在職\',\'在籍\');\n'
+    + '  const coName = (e.parameter.coName||\'\').trim();\n'
+    + '  const norm = s => s.replace(/（/g,\'(\').replace(/）/g,\')\').replace(/\\u3000/g,\' \').replace(/株式会社/g,\'(株)\').replace(/有限会社/g,\'(有)\').trim();\n'
+    + '  const coNorm = norm(coName.replace(/^[\\d\\s]+/,\'\'));\n'
+    + '  const rows = [];\n'
+    + '  for (let i=1;i<data.length;i++) {\n'
+    + '    const r=data[i]; const name=iName>=0?String(r[iName]||\'\').trim():\'\';\n'
+    + '    if(!name) continue;\n'
+    + '    if(iZai>=0){const z=String(r[iZai]||\'\').trim();if(z&&z!==\'○\'&&z!==\'〇\'&&z!==\'O\'&&z!==\'◯\') continue;}\n'
+    + '    if(iKaisha>=0 && coName){const k=norm(String(r[iKaisha]||\'\').trim());if(k&&k!==coNorm&&!k.includes(coNorm)&&!coNorm.includes(k)) continue;}\n'
+    + '    const zairyu=iZairyu>=0?String(r[iZairyu]||\'\').trim():\'\';\n'
+    + '    rows.push({name,birth:iBirth>=0?String(r[iBirth]||\'\').trim():\'\',sex:iSex>=0?String(r[iSex]||\'男\').trim():\'男\',kokuseki:iKoku>=0?String(r[iKoku]||\'\').trim():\'\',cardNo:iCard>=0?String(r[iCard]||\'\').trim():\'\',gou:zairyu.includes(\'2号\')||zairyu.includes(\'２号\')?\' 特定技能2号\':\'特定技能1号\'});\n'
+    + '  }\n'
+    + '  return jsonResp({ rows });\n'
+    + '}\n'
+    + 'function jsonResp(obj) {\n'
+    + '  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);\n'
+    + '}';
+}
+
+function _saveGasJinzaiUrl(storageKey, coId) {
+  const url = (document.getElementById('_gasJinzaiUrlInput')?.value || '').trim();
+  if (!url || !url.startsWith('https://script.google.com')) {
+    showToast('❌ 正しいGAS URLを入力してください', 3000); return;
+  }
+  localStorage.setItem(storageKey, url);
+  document.getElementById('_gasJinzaiModal')?.remove();
+  showToast('✅ GAS URL保存 — 再インポートします…', 2000);
+  setTimeout(() => importBessi1FromSheets(coId), 800);
+}
+
+// インポート結果モーダル
+function showBessi1ImportResult(coId, newNames) {
+  document.getElementById('_b1ImportModal')?.remove();
+  const modal = document.createElement('div');
+  modal.id = '_b1ImportModal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9200;display:flex;align-items:center;justify-content:center;';
+  const list = newNames.map(n => '<li style="padding:5px 0;border-bottom:1px solid #e8f5e9;font-size:13px;">👤 '+n+'</li>').join('');
+  modal.innerHTML = '<div style="background:#fff;border-radius:10px;padding:24px;width:480px;max-width:95vw;box-shadow:0 8px 32px rgba(0,0,0,.2);max-height:80vh;overflow-y:auto;">'
+    + '<div style="font-size:16px;font-weight:900;color:#1b5e20;margin-bottom:4px;">✅ Sheetsインポート完了</div>'
+    + '<div style="font-size:12px;color:#666;margin-bottom:14px;">以下の人材が別紙１に新規追加されました。<br>年間活動日数・報酬などは手動で入力してください。</div>'
+    + '<div style="background:#f1f8e9;border:1px solid #a5d6a7;border-radius:6px;padding:8px 12px;margin-bottom:16px;"><ul style="list-style:none;margin:0;padding:0;">'+list+'</ul></div>'
+    + '<div style="font-size:11px;color:#888;margin-bottom:14px;">合計 '+newNames.length+'名追加</div>'
+    + '<div style="display:flex;justify-content:flex-end;"><button id="_b1ImportOkBtn" style="padding:8px 24px;border:none;border-radius:6px;background:#2e7d32;color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;">OK</button></div>'
+    + '</div>';
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+  const okBtn = document.getElementById('_b1ImportOkBtn');
+  if (okBtn) okBtn.onclick = function(){ document.getElementById('_b1ImportModal').remove(); };
+}
+
+// ── 定期届出完了 機能 ──────────────────────────────
+function buildKanryoBar(co){
+  const k = co.teiki_kanryo;
+  const isAdmin = currentUser&&(currentUser.role==='全体管理者'||currentUser.role==='管理者');
+  if(k && k.done){
+    const resetBtn = isAdmin
+      ? `<button onclick="resetTeikiKanryo('${co.id}')" style="padding:4px 10px;border:1px solid #cc0000;border-radius:4px;background:#fff;color:#cc0000;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;">🔄 取消（管理者）</button>`
+      : '';
+    return '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:1;">'
+      +'<span style="background:#1b5e20;color:#fff;padding:6px 14px;border-radius:6px;font-size:13px;font-weight:900;">✅ 定期届出完了</span>'
+      +'<span style="font-size:12px;color:#555;">届出日：<strong>'+k.date+'</strong>　担当：<strong>'+k.user+'</strong></span>'
+      +resetBtn
+      +'</div>';
+  }
+  return `<button onclick="setTeikiKanryo('${co.id}')"` 
+    +' style="padding:10px 24px;background:#d32f2f;color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 3px 10px rgba(211,47,47,.4);">'
+    +'🏛️ 定期届出完了'
+    +'</button>'
+    +'<span style="font-size:12px;color:#888;">書類が整ったらクリックしてください。届出日・担当者名が記録されます。</span>';
+}
+
+function buildKanryoBadge(co){
+  const k = co.teiki_kanryo;
+  if(k && k.done){
+    return '<div style="display:flex;flex-direction:column;gap:2px;">'
+      +'<span style="display:inline-block;padding:3px 8px;background:#1b5e20;color:#fff;border-radius:4px;font-size:11px;font-weight:900;white-space:nowrap;">✅ 届出済</span>'
+      +'<div style="font-size:10px;color:var(--tx3);">'+k.date+'</div>'
+      +'<div style="font-size:10px;color:var(--tx3);">'+k.user+'</div>'
+      +'</div>';
+  }
+  return '<span style="display:inline-block;padding:3px 8px;background:#ffebee;color:#c62828;border:1px solid #ef9a9a;border-radius:4px;font-size:11px;font-weight:900;white-space:nowrap;">未届出</span>';
+}
+
+function setTeikiKanryo(coId){
+  const co = cos.find(c=>c.id===coId);
+  if(!co) return;
+  if(co.teiki_kanryo && co.teiki_kanryo.done){
+    showToast('すでに定期届出完了済みです',2000); return;
+  }
+  const now = new Date();
+  const dateStr = now.getFullYear()+'/'+(now.getMonth()+1).toString().padStart(2,'0')+'/'+now.getDate().toString().padStart(2,'0');
+  const userName = currentUser?.nameJa || currentUser?.name || '不明';
+  co.teiki_kanryo = {done:true, date:dateStr, user:userName, ts:now.getTime()};
+  sv();
+  // 再描画
+  const selCo2=cos.find(c=>c.id===selId);
+  if(selCo2) renderShorui(selCo2);
+  renderDash();
+  renderDashTable();
+  showToast('✅ 定期届出完了を記録しました（'+dateStr+'）',3000);
+}
+
+function resetTeikiKanryo(coId){
+  const co = cos.find(c=>c.id===coId);
+  if(!co) return;
+  if(!confirm('定期届出完了を取り消しますか？')) return;
+  delete co.teiki_kanryo;
+  sv();
+  const selCo2=cos.find(c=>c.id===selId);
+  if(selCo2) renderShorui(selCo2);
+  renderDash();
+  renderDashTable();
+  showToast('🔄 定期届出完了を取り消しました',3000);
 }
 
 function setSyncState(state, label){
@@ -1448,17 +2363,7 @@ function doLogin(){
   err.style.display='none';
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('appScreen').style.display='block';
-  const _hdrIconEl=document.getElementById('hdrUserIcon');
-  if(_hdrIconEl){
-    const _effIcon=s.icon||'';
-    if(_effIcon.startsWith('data:')){
-      _hdrIconEl.innerHTML=`<img src="${_effIcon}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">`;
-      _hdrIconEl.style.fontSize='0';
-    } else {
-      _hdrIconEl.textContent=_effIcon||s.nameJa.charAt(0)||'👤';
-      _hdrIconEl.style.fontSize='22px';
-    }
-  }
+  updateHdrIcon(document.getElementById('hdrUserIcon'), s);
   document.getElementById('hdrUserName').textContent = s.nameJa;
   document.getElementById('hdrUserRole').textContent = s.role;
   const gaBtn=document.getElementById('btnGlobalAdmin');
@@ -1477,6 +2382,8 @@ function doLogin(){
   } else {
     setSyncState('idle','Sheets未設定');
   }
+  // 前回の未登録企業通知をチェック
+  setTimeout(checkPendingNewCompanies, 1000);
   // ログイン後はダッシュボードを最初に表示
   showScreen('dash');
 }
@@ -3395,32 +4302,13 @@ function renderDashTable(){
         </div>
         <div style="font-size:10px;color:var(--tx3);margin-top:2px;">${pg.done}/${pg.total} 完了</div>
       </td>
-      <td>
-        <div style="display:flex;align-items:center;gap:7px;">
-          <div class="pbar-s" style="width:90px;height:8px;">
-            <div class="pfill-s" style="width:${dp}%;background:${dp>=75?'var(--grn)':dp>0?'var(--org)':'var(--bdr)'}"></div>
-          </div>
-          <span style="font-size:13px;font-weight:800;color:${dp>=75?'var(--grn2)':dp>0?'var(--org)':'var(--tx3)'};">${dp}%</span>
-        </div>
-      </td>
+      <td style="text-align:center;">${buildKanryoBadge(co)}</td>
       <td style="text-align:center;">${kjBadge}</td>
       <td>
         <div style="font-size:12px;font-weight:600;color:var(--tx2);">${ski}</div>
       </td>
       <td>
         <div style="font-size:12px;font-weight:600;color:var(--tx2);">${ssm}</div>
-      </td>
-      <td>
-        <div style="display:flex;gap:5px;flex-wrap:wrap;">
-          <button onclick="showScreen('main');setTimeout(()=>{selCo('${co.id}');setTimeout(()=>switchTab('${co.id}','todoke'),80);},60)"
-            style="padding:5px 10px;background:var(--grn);color:#fff;border:none;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;">
-            📝 データ入力
-          </button>
-          <button onclick="exportAllSheets('${co.id}')"
-            style="padding:5px 10px;background:#1a5276;color:#fff;border:none;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;">
-            📥 Excel
-          </button>
-        </div>
       </td>
     </tr>`;
   });
@@ -3448,13 +4336,12 @@ function renderDashTable(){
   html+='<th style="min-width:60px;text-align:center;">人数</th>';
   html+='<th style="min-width:90px;">ステータス</th>';
   html+='<th style="min-width:140px;">書類確認進捗</th>';
-  html+='<th style="min-width:110px;">データ入力</th>';
+  html+='<th style="min-width:110px;">定期届出</th>';
   html+='<th style="min-width:80px;text-align:center;">一定の基準</th>';
   html+='<th style="min-width:80px;">企業担当</th>';
   html+='<th style="min-width:80px;">総務担当</th>';
-  html+='<th style="min-width:130px;">操作</th>';
   html+='</tr></thead>';
-  html+='<tbody>'+(rows||'<tr><td colspan="10" style="text-align:center;padding:28px;color:var(--tx3);font-size:14px;">'+(total===0?'企業データがありません':'検索条件に一致する企業がありません')+'</td></tr>')+'</tbody>';
+  html+='<tbody>'+(rows||'<tr><td colspan="9" style="text-align:center;padding:28px;color:var(--tx3);font-size:14px;">'+(total===0?'企業データがありません':'検索条件に一致する企業がありません')+'</td></tr>')+'</tbody>';
   html+='</table></div>';
   html+='<div style="height:28px;"></div>';
   area.innerHTML=html;
@@ -3516,6 +4403,9 @@ function renderBessi1(co){
   <div class="action-bar" style="padding:8px 16px;">
     <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap;">
       <button class="btn btn-pr btn-sm" onclick="addBessi1Row('${co.id}')">＋ 外国人を追加</button>
+      <button class="btn btn-pr btn-sm" onclick="importBessi1FromSheets('${co.id}')" style="background:#1565c0;border-color:#1565c0;" title="人材管理スプレッドシートから取込">📊 Sheetsから取込</button>
+      <button class="btn btn-pr btn-sm" onclick="importBessi1FromPdfData('${co.id}')" style="background:#6a1b9a;border-color:#6a1b9a;" title="PDFから読み取ったデータを取込">📋 PDFデータ取込</button>
+      <button class="btn btn-pr btn-sm" onclick="openBessi1CsvImport('${co.id}')" style="background:#00695c;border-color:#00695c;" title="CSVファイルから一括取込">📂 CSVから取込</button>
       <button class="btn-excel" onclick="exportBessi1('${co.id}')">📥 別紙１ Excel出力</button>
     </div>
   </div>
@@ -4436,6 +5326,10 @@ function renderShorui(co){
     ℹ️ <strong>ステータス・ファイル・メモは全ユーザーが編集できます。</strong>　必要区分（必須／条件付／必要なし）の変更は管理者のみ可能。
   </div>
   <!-- サマリ -->
+  <!-- 定期届出完了ボタン -->
+  <div id="teiki_kanryo_bar_${co.id}" style="padding:12px 16px;background:#fff3e0;border-bottom:2px solid #ff9800;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+    ${buildKanryoBar(co)}
+  </div>
   <div class="shr-summary">
     <div class="shr-sum-item">
       <div class="shr-sum-v" style="color:var(--tx3);" id="shr_cnt_${co.id}_none">${allNone}</div>
@@ -6444,17 +7338,7 @@ function openAdminMenu(){
           const updatedUser=getStaff(uid);
           if(updatedUser){
             currentUser=updatedUser;
-            const ic=updatedUser.icon||'';
-            const hdrEl=document.getElementById('hdrUserIcon');
-            if(hdrEl){
-              if(ic.startsWith('data:')){
-                hdrEl.innerHTML=`<img src="${ic}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">`;
-                hdrEl.style.fontSize='0';
-              } else {
-                hdrEl.textContent=ic||updatedUser.nameJa.charAt(0)||'👤';
-                hdrEl.style.fontSize='22px';
-              }
-            }
+            updateHdrIcon(document.getElementById('hdrUserIcon'), updatedUser);
             document.getElementById('hdrUserName').textContent=updatedUser.nameJa;
             document.getElementById('hdrUserRole').textContent=updatedUser.role;
           }
@@ -6835,18 +7719,8 @@ function openMyProfileEdit(){
     const refreshed=getStaff(uid);
     if(refreshed) currentUser=refreshed;
     // Update navbar
+    updateHdrIcon(document.getElementById('hdrUserIcon'), currentUser);
     document.getElementById('hdrUserName').textContent=currentUser.nameJa;
-    const hdrEl=document.getElementById('hdrUserIcon');
-    if(hdrEl){
-      const ic=currentUser.icon||'';
-      if(ic.startsWith('data:')){
-        hdrEl.innerHTML=`<img src="${ic}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">`;
-        hdrEl.style.fontSize='0';
-      } else {
-        hdrEl.textContent=ic||currentUser.nameJa.charAt(0);
-        hdrEl.style.fontSize='22px';
-      }
-    }
     document.getElementById('myprofile_overlay')?.remove();
     renderMyPage();
     alert('プロフィールを更新しました ✅');
@@ -8109,17 +8983,7 @@ function tryAutoLogin(){
     currentUser=s;
     document.getElementById('loginScreen').style.display='none';
     document.getElementById('appScreen').style.display='block';
-    const _hdrIconEl=document.getElementById('hdrUserIcon');
-    if(_hdrIconEl){
-      const _effIcon=s.icon||'';
-      if(_effIcon.startsWith('data:')){
-        _hdrIconEl.innerHTML='<img src="'+_effIcon+'" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">';
-        _hdrIconEl.style.fontSize='0';
-      } else {
-        _hdrIconEl.textContent=_effIcon||s.nameJa.charAt(0)||'👤';
-        _hdrIconEl.style.fontSize='22px';
-      }
-    }
+    updateHdrIcon(document.getElementById('hdrUserIcon'), s);
     document.getElementById('hdrUserName').textContent=s.nameJa;
     document.getElementById('hdrUserRole').textContent=s.role;
     const gaBtn=document.getElementById('btnGlobalAdmin');
