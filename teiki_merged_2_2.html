@@ -275,7 +275,46 @@ textarea{resize:vertical;min-height:48px;}
 .tab-panel{display:none;}
 .tab-panel.active{display:block;}
 
+/* ─── 掲示板 ─── */
+.board-wrap{max-width:900px;margin:0 auto;}
+.board-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;}
+.board-title{font-size:22px;font-weight:900;color:var(--grn2);}
+.board-toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.board-search{padding:8px 12px;border:1.5px solid var(--bdr);border-radius:var(--r);font-size:13px;font-family:inherit;outline:none;width:200px;}
+.board-search:focus{border-color:var(--grn);}
+.board-filter-sel{padding:7px 10px;border:1.5px solid var(--bdr);border-radius:var(--r);font-size:12px;font-family:inherit;outline:none;background:var(--surf);cursor:pointer;}
+.note-card{background:var(--surf);border:1.5px solid var(--bdr);border-radius:10px;padding:18px 20px;margin-bottom:14px;transition:box-shadow .15s;position:relative;}
+.note-card:hover{box-shadow:0 3px 12px rgba(0,0,0,.1);}
+.note-card.archived{opacity:.55;background:var(--bg2);border-style:dashed;}
+.note-card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px;}
+.note-author-badge{display:flex;align-items:center;gap:8px;}
+.note-author-icon{width:32px;height:32px;border-radius:50%;background:var(--grn);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0;}
+.note-author-name{font-size:13px;font-weight:700;color:var(--grn2);}
+.note-date{font-size:11px;color:var(--tx3);}
+.note-actions{display:flex;gap:6px;flex-shrink:0;}
+.note-body{font-size:14px;line-height:1.7;color:var(--tx1);white-space:pre-wrap;word-break:break-word;}
+.note-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+.note-tag{padding:2px 9px;border-radius:10px;font-size:11px;font-weight:700;background:var(--grn3);color:var(--grn2);border:1px solid var(--grn4);}
+.note-edit-history{margin-top:10px;padding:8px 12px;background:var(--bg2);border-radius:6px;font-size:11px;color:var(--tx3);}
+.note-edit-row{padding:2px 0;border-bottom:1px solid var(--bdr);}
+.note-edit-row:last-child{border-bottom:none;}
+.note-form{background:var(--surf);border:2px solid var(--grn);border-radius:10px;padding:20px;margin-bottom:20px;}
+.note-textarea{width:100%;min-height:100px;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:var(--r);font-size:14px;font-family:inherit;resize:vertical;outline:none;box-sizing:border-box;line-height:1.6;}
+.note-textarea:focus{border-color:var(--grn);}
+/* ─── 活動ログ ─── */
+.log-wrap{max-width:1000px;margin:0 auto;}
+.log-row{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;border-bottom:1px solid var(--bdr);font-size:13px;transition:background .1s;}
+.log-row:hover{background:var(--grn3);}
+.log-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.log-meta{flex:1;min-width:0;}
+.log-user{font-weight:700;color:var(--grn2);}
+.log-action{color:var(--tx1);}
+.log-time{font-size:11px;color:var(--tx3);white-space:nowrap;flex-shrink:0;}
 /* ─── 届出入力 GRID TABLE ─── */
+.teiki-scroll-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;}
+/* 全テーブルのモバイルスクロール */
+.dash-tbl-wrap,.b1-tbl-wrap,.arch-tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;}
+.dash-tbl,.b1-tbl{min-width:600px;}
 .todoke-wrap{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;}
 .todoke-section{border-bottom:2px solid var(--grn4);}
 .todoke-section:last-child{border-bottom:none;}
@@ -382,7 +421,7 @@ textarea{resize:vertical;min-height:48px;}
 .dash-title{font-size:19px;font-weight:900;color:var(--grn2);display:flex;align-items:center;gap:8px;}
 .dash-sub{font-size:12px;color:var(--tx3);background:var(--grn3);padding:4px 12px;border-radius:999px;border:1px solid var(--grn4);}
 .dash-kpi-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;
+  display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:22px;
 }
 .dash-kpi{
   background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);
@@ -896,6 +935,266 @@ textarea{resize:vertical;min-height:48px;}
 
 details[open] > summary > span:first-child { transform: rotate(90deg); display: inline-block; transition: transform .2s; }
 details > summary > span:first-child { display: inline-block; transition: transform .2s; }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — MOBILE (max-width: 768px)
+   ═══════════════════════════════════════════ */
+
+/* ── モバイル: ヘッダー ── */
+/* ════════════════════════════════════════════
+   RESPONSIVE — TABLET (max-width: 900px)
+════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .hdr-s { display: none; }
+  .sb { width: 220px; min-width: 220px; }
+  #adminBtnGroup button { font-size: 11px; padding: 5px 8px; }
+}
+
+/* ════════════════════════════════════════════
+   RESPONSIVE — SMARTPHONE (max-width: 768px)
+════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* ── 全般 ── */
+  * { box-sizing: border-box; }
+  body { overflow-x: hidden; }
+
+  /* ── ヘッダー ── */
+  .hdr {
+    padding: 6px 10px;
+    gap: 6px;
+    flex-wrap: nowrap;
+  }
+  .hdr-l { gap: 6px; flex-shrink: 0; }
+  .logo { width: 30px; height: 30px; font-size: 13px; border-radius: 6px; flex-shrink: 0; }
+  .hdr-t { font-size: 13px; white-space: nowrap; }
+  .hdr-s { display: none; }
+  .hdr-user { gap: 5px; }
+  .hdr-user-icon { width: 28px; height: 28px; font-size: 10px; flex-shrink: 0; }
+  .hdr-user-name { font-size: 11px; max-width: 72px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .hdr-user-role { display: none; }
+  #adminBtnGroup { display: none !important; }
+  #syncBadge { font-size: 10px; padding: 3px 6px; }
+  .btn-logout { padding: 4px 7px; font-size: 10px; }
+
+  /* ── ボトムナビゲーション ── */
+  .hdr-center-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--surf);
+    border-top: 2px solid var(--grn);
+    padding: 2px 0 env(safe-area-inset-bottom, 4px);
+    display: flex !important;
+    justify-content: space-around;
+    align-items: stretch;
+    z-index: 200;
+    box-shadow: 0 -2px 10px rgba(0,0,0,.12);
+    gap: 0;
+  }
+  .center-nav-btn {
+    flex: 1;
+    padding: 5px 2px 6px;
+    font-size: 9px;
+    font-weight: 700;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    text-align: center;
+    min-width: 0;
+    white-space: normal;
+    line-height: 1.2;
+    border: none;
+    border-right: 1px solid var(--bdr);
+    background: transparent;
+    color: var(--tx3);
+    min-height: 48px;
+  }
+  .center-nav-btn:last-child { border-right: none; }
+  .center-nav-btn.active {
+    background: var(--grn3);
+    color: var(--grn2);
+    border-top: 2px solid var(--grn);
+    box-shadow: none;
+  }
+
+  /* ── アプリスクリーン余白 ── */
+  #appScreen { padding-bottom: 56px; }
+
+  /* ── レイアウト ── */
+  .lay {
+    flex-direction: column;
+    height: auto;
+    min-height: calc(100vh - 50px);
+    padding-bottom: 56px;
+  }
+
+  /* ── サイドバー → 折りたたみ ── */
+  .sb {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto;
+    max-height: none;
+    border-right: none;
+    border-bottom: 2px solid var(--bdr);
+    overflow: visible;
+  }
+  .sb-top { padding: 8px; }
+  .btn-add { font-size: 13px; padding: 9px 12px; }
+  .sb-filter { padding: 6px 8px; }
+  .co-list { max-height: 35vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .co-card { padding: 7px 9px; }
+
+  /* ── メインエリア ── */
+  .main { padding: 10px 8px; gap: 8px; }
+
+  /* ── 詳細ヘッダー ── */
+  .dhdr { flex-direction: column; gap: 8px; padding: 10px 12px; }
+  .dn { font-size: 15px; }
+  .dhdr > div:last-child { display: flex; flex-wrap: wrap; gap: 6px; width: 100%; }
+  .dhdr > div:last-child button { font-size: 12px; padding: 5px 10px; }
+
+  /* ── タブナビ → 横スクロール ── */
+  .tab-nav {
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 1px;
+    padding-bottom: 1px;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn { padding: 8px 11px; font-size: 12px; white-space: nowrap; flex-shrink: 0; }
+
+  /* ── テーブル全般 → 横スクロール ── */
+  .bessi1-table-wrap,
+  .teiki-table-wrap,
+  .card table,
+  .main table,
+  #dashScreen table,
+  #boardScreen table,
+  #archiveScreen table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* ── 別紙1 ツールバー ── */
+  .bessi1-toolbar,
+  [class*="toolbar"] {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .bessi1-toolbar button,
+  [class*="toolbar"] button {
+    font-size: 11px;
+    padding: 6px 8px;
+    white-space: nowrap;
+  }
+
+  /* ── ダッシュボード ── */
+  #dashScreen { padding: 10px 8px !important; }
+  .dash-header { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .dash-stat-row { flex-wrap: wrap; gap: 8px; }
+  .g2 { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .g4 { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .kpi-v { font-size: 18px; }
+  .staff-body { grid-template-columns: 1fr; gap: 8px; }
+  .dash-kpi-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .dash-kpi-v { font-size: 22px; }
+  .dash-kpi { padding: 12px 14px; }
+  .dash-kpi-v { font-size: 22px; }
+
+  /* ── 掲示板 ── */
+  #boardScreen { padding: 10px 8px !important; }
+  .board-wrap { padding: 0; }
+  .board-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .board-title { font-size: 18px; }
+  .board-toolbar { width: 100%; flex-direction: column; gap: 6px; }
+  .board-search { width: 100%; font-size: 16px; }
+  .board-filter-sel { width: 100%; font-size: 16px; }
+  .note-form { padding: 12px; }
+  .note-card { padding: 12px; }
+  .note-card-header { flex-direction: column; gap: 8px; }
+  .note-actions { flex-wrap: wrap; gap: 5px; width: 100%; }
+  .note-actions button { flex: 1; min-width: 80px; font-size: 12px; }
+  .note-body { font-size: 13px; }
+
+  /* ── 活動ログ ── */
+  #logScreen { padding: 10px 8px !important; }
+  .log-wrap { padding: 0; }
+  .log-row { flex-wrap: wrap; gap: 4px; padding: 8px 10px; }
+  .log-time { width: 100%; text-align: right; font-size: 10px; }
+
+  /* ── マイページ ── */
+  #myScreen { padding: 10px 8px !important; }
+  .my-header { flex-direction: column; gap: 8px; }
+
+  /* ── アーカイブ ── */
+  #archiveScreen { padding: 10px 8px !important; }
+
+  /* ── モーダル ── */
+  [id$="_overlay"] {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+  [id$="_overlay"] > div {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin: 0 !important;
+    border-radius: 16px 16px 0 0 !important;
+    max-height: 92vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .modal-inner {
+    width: 96vw !important;
+    max-width: 96vw !important;
+    max-height: 88vh;
+    overflow-y: auto;
+    border-radius: 12px !important;
+  }
+
+  /* ── フォーム入力 iOSズーム防止 ── */
+  input[type="text"],
+  input[type="date"],
+  input[type="number"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+  .g2.form { grid-template-columns: 1fr; }
+  .g3.form { grid-template-columns: 1fr; }
+
+  /* ── ログインカード ── */
+  .login-wrap { padding: 16px; }
+  .login-card { width: 96vw; max-width: 420px; padding: 20px 16px; }
+  .login-card-hdr { padding: 14px 16px; }
+
+  /* ── 絞り込みパネル ── */
+  #sbFilterBody { max-height: none !important; }
+}
+
+/* ════════════════════════════════════════════
+   RESPONSIVE — 超小型 (max-width: 390px)
+════════════════════════════════════════════ */
+@media (max-width: 390px) {
+  .center-nav-btn { font-size: 8px; }
+  .hdr-t { font-size: 12px; }
+  .hdr-user-name { max-width: 55px; }
+  .g2 { grid-template-columns: 1fr; }
+  .g4 { grid-template-columns: 1fr 1fr; }
+  .note-actions button { font-size: 11px; padding: 5px 6px; }
+  .tab-btn { font-size: 11px; padding: 7px 9px; }
+}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
@@ -957,10 +1256,17 @@ details > summary > span:first-child { display: inline-block; transition: transf
     <div class="hdr-center-nav">
       <button class="center-nav-btn" id="navDash" onclick="showScreen('dash')">📊 ダッシュボード</button>
       <button class="center-nav-btn" id="navMain" onclick="showScreen('main')">📋 企業管理</button>
+      <button class="center-nav-btn" id="navBoard" onclick="showScreen('board')" style="position:relative;">
+        📝 掲示板
+        <span id="boardBadge" style="display:none;position:absolute;top:-6px;right:-6px;background:#1565c0;color:#fff;border-radius:10px;padding:0 6px;font-size:10px;font-weight:800;min-width:16px;text-align:center;line-height:18px;"></span>
+      </button>
       <button class="center-nav-btn" id="navMy" onclick="showScreen('my')">👤 マイページ</button>
       <button class="center-nav-btn" id="navArchive" onclick="showScreen('archive')" style="display:none;position:relative;">
         📦 アーカイブ
         <span id="archiveBadge" style="display:none;position:absolute;top:-6px;right:-6px;background:#e65100;color:#fff;border-radius:10px;padding:0 6px;font-size:10px;font-weight:800;min-width:16px;text-align:center;line-height:18px;"></span>
+      </button>
+      <button class="center-nav-btn" id="navLog" onclick="showScreen('log')" style="display:none;">
+        📊 活動ログ
       </button>
     </div>
     <!-- 右：ユーザー情報 -->
@@ -1057,7 +1363,7 @@ details > summary > span:first-child { display: inline-block; transition: transf
           </div>
         </div>
       </div>
-      <div class="co-list" id="coList"></div>
+      <div class="sb-list-wrap"><div class="co-list" id="coList"></div></div>
 
     </div>
     <div class="main" id="main">
@@ -1071,6 +1377,8 @@ details > summary > span:first-child { display: inline-block; transition: transf
   </div>
 
 <!-- アーカイブ画面 (管理者以上) -->
+<div id="boardScreen" style="display:none;padding:24px 28px;max-width:1200px;margin:0 auto;min-height:calc(100vh - 70px);padding-bottom:70px;"></div>
+<div id="logScreen" style="display:none;padding:24px 28px;max-width:1200px;margin:0 auto;min-height:calc(100vh - 70px);padding-bottom:70px;"></div>
 <div id="archiveScreen" style="display:none;padding:24px 28px;max-width:100%;background:var(--bg2);min-height:calc(100vh - 70px);">
   <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
     <div style="font-size:28px;">📦</div>
@@ -2381,6 +2689,8 @@ function doLogin(){
   const amBtn=document.getElementById('btnAdminMenu');
   if(amBtn) amBtn.style.display=(s.role==='管理者'||s.role==='全体管理者')?'inline-block':'none';
   const navArc=document.getElementById('navArchive');
+  const navLog=document.getElementById('navLog');
+  if(navLog) navLog.style.display=(s.role==='全体管理者')?'inline-flex':'none';
   if(navArc) navArc.style.display=(s.role==='管理者'||s.role==='全体管理者')?'inline-flex':'none';
   renderArchiveBadge();
   load(); renderList(); populateFilterStaff();
@@ -4113,15 +4423,21 @@ function showScreen(sc){
   document.getElementById('navMy').classList.toggle('active',sc==='my');
   document.getElementById('navDash').classList.toggle('active',sc==='dash');
   document.getElementById('navArchive')?.classList.toggle('active',sc==='archive');
+  document.getElementById('navBoard')?.classList.toggle('active',sc==='board');
+  document.getElementById('navLog')?.classList.toggle('active',sc==='log');
   // panels
   const lay=document.querySelector('.lay');
   const dash=document.getElementById('dashScreen');
   const my=document.getElementById('myScreen');
   const arc=document.getElementById('archiveScreen');
+  const board=document.getElementById('boardScreen');
+  const log=document.getElementById('logScreen');
   if(lay) lay.style.display=sc==='main'?'flex':'none';
   if(dash){dash.style.display=sc==='dash'?'block':'none';if(sc==='dash')renderDash();}
   if(my){my.style.display=sc==='my'?'block':'none';if(sc==='my')renderMyPage();}
   if(arc){arc.style.display=sc==='archive'?'block':'none';if(sc==='archive')renderArchiveScreen();}
+  if(board){board.style.display=sc==='board'?'block':'none';if(sc==='board')renderBoardScreen();}
+  if(log){log.style.display=sc==='log'?'block':'none';if(sc==='log')renderLogScreen();}
 }
 
 // ═══════════════════════════════════════════
@@ -4325,19 +4641,44 @@ function renderDashTable(){
 
   let html='';
   const kijunOk=cos.filter(c=>isKijun(c)).length;
+  const teikiDone=cos.filter(c=>c.teiki_kanryo&&c.teiki_kanryo.done).length;
+  const teikiPct=total>0?Math.round(teikiDone/total*100):0;
   html+='<div class="dash-kpi-grid">';
   html+='<div class="dash-kpi"><div class="dash-kpi-l">🏢 管理企業数</div>';
   html+='<div class="dash-kpi-v">'+total+'</div>';
   html+='<div class="dash-kpi-s">社（届出対象）</div></div>';
+  var kijunNg = cos.filter(function(c){
+    if(isKijun(c)) return false;
+    var kc=c.kc||{};
+    return Object.values(kc).some(function(v){return v;}) || c.np || c.dr;
+  }).length;
+  var kijunUn = total - kijunOk - kijunNg;
+  html+='<div class="dash-kpi" style="border-left-color:var(--org);">';
+  html+='<div class="dash-kpi-l">⚖️ 一定の基準</div>';
+  html+='<div class="dash-kpi-v" style="color:var(--org);">'+kijunOk+'</div>';
+  html+='<div class="dash-kpi-s">';
+  html+='<span style="color:#2e7d32;font-weight:700;">該当 '+kijunOk+'社</span>';
+  html+=' / ';
+  html+='<span style="color:#c62828;font-weight:700;">不該当 '+kijunNg+'社</span>';
+  html+='<br>';
+  html+='<span style="color:#e65100;display:block;text-align:center;">未確認 '+kijunUn+'社</span>';
+  html+='</div>';
+  html+='</div>';
   html+='<div class="dash-kpi" style="border-left-color:'+(allDone===total&&total>0?'var(--grn)':'var(--org)')+'"><div class="dash-kpi-l">✅ 書類確認 完了</div>';
   html+='<div class="dash-kpi-v" style="color:'+(allDone===total&&total>0?'var(--grn2)':'var(--org)')+'">'+allDone+'</div>';
   html+='<div class="dash-kpi-s">社 完了　/ 残り '+(total-allDone)+' 社</div></div>';
-  html+='<div class="dash-kpi" style="border-left-color:'+(kijunOk===total&&total>0?'var(--grn)':'var(--org)')+'"><div class="dash-kpi-l">⚖️ 一定の基準 該当</div>';
-  html+='<div class="dash-kpi-v" style="color:'+(kijunOk>0?'var(--grn2)':'var(--org)')+'">'+kijunOk+'</div>';
-  html+='<div class="dash-kpi-s">社 該当　/ 未確認 '+(total-kijunOk)+' 社</div></div>';
   html+='<div class="dash-kpi" style="border-left-color:'+(avgPct===100?'var(--grn)':'var(--org)')+'"><div class="dash-kpi-l">📊 全体進捗（平均）</div>';
   html+='<div class="dash-kpi-v" style="color:'+(avgPct===100?'var(--grn2)':'var(--org)')+'">'+avgPct+'<span style="font-size:18px;">%</span></div>';
-  html+='<div class="dash-kpi-s">書類チェック完了率</div></div></div>';
+  html+='<div class="dash-kpi-s">書類チェック完了率</div></div>';
+  html+='<div class="dash-kpi" style="border-left-color:'+(teikiDone===total&&total>0?'#1b5e20':'#1565c0')+';background:'+(teikiDone===total&&total>0?'#e8f5e9':'#e3f2fd')+';border:1px solid '+(teikiDone===total&&total>0?'#a5d6a7':'#90caf9')+';">';
+  html+='<div class="dash-kpi-l" style="color:'+(teikiDone===total&&total>0?'#1b5e20':'#1565c0')+'">📬 届出提出状況</div>';
+  html+='<div class="dash-kpi-v" style="color:'+(teikiDone===total&&total>0?'#1b5e20':'#1565c0')+'">'+teikiDone+'<span style="font-size:16px;font-weight:700;"> 社</span></div>';
+  html+='<div class="dash-kpi-s">提出完了 / 残り '+(total-teikiDone)+' 社</div>';
+  html+='<div style="margin-top:8px;">';
+  html+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;"><span style="font-size:11px;color:var(--tx3);">完了率</span><span style="font-size:13px;font-weight:900;color:'+(teikiPct===100?'#1b5e20':'#1565c0')+'">'+teikiPct+'%</span></div>';
+  html+='<div style="height:7px;background:rgba(0,0,0,.08);border-radius:8px;overflow:hidden;"><div style="height:100%;width:'+teikiPct+'%;background:'+(teikiPct===100?'#2e7d32':'#1565c0')+';border-radius:8px;transition:width .6s;"></div></div>';
+  html+='</div></div>';
+  html+='</div>';
   html+='</div>';
   // Table
   html+='<div class="dash-tw"><table class="dash-tbl"><thead><tr>';
@@ -4364,6 +4705,7 @@ const KOKU=['インドネシア','ベトナム','フィリピン','中国','タ�
 function selO(list,v){return list.map(o=>`<option value="${o}"${o===v?' selected':''}>${o}</option>`).join('');}
 function addBessi1Row(coId){
   const co=cos.find(c=>c.id===coId);if(!co)return;
+  logActivity('add','「'+co.name+'」に外国人を追加（別紙1）','bessi1',coId);
   if(!co.bessi1)co.bessi1=[];
   co.bessi1.push({id:'b1_'+Date.now(),name:'',birth:'',sex:'男',kokuseki:'',cardNo:'',gou:'特定技能1号',days:'',hoshu:'',hoshuM:'預貯金口座への振り込み',shien:'自社支援',shienOrg:'',tanto:'',tel:'',biko:''});
   sv();renderBessi1(cos.find(c=>c.id===coId));
@@ -7742,6 +8084,305 @@ function openMyProfileEdit(){
 // アーカイブ画面
 // ═══════════════════════════════════════════
 function showArchiveScreen(){ showScreen('archive'); }
+// ═══════════════════════════════════════════
+// 掲示板 (BULLETIN BOARD)
+// ═══════════════════════════════════════════
+const BOARD_KEY = 'kmt_board_notes';
+function getBoardNotes(){ try{ return JSON.parse(localStorage.getItem(BOARD_KEY)||'[]'); }catch(e){ return []; } }
+function saveBoardNotes(notes){ localStorage.setItem(BOARD_KEY, JSON.stringify(notes)); }
+
+// ── 活動ログ ──
+const ACTIVITY_KEY = 'kmt_activity_log';
+function getActivityLog(){ try{ return JSON.parse(localStorage.getItem(ACTIVITY_KEY)||'[]'); }catch(e){ return []; } }
+function saveActivityLog(logs){ localStorage.setItem(ACTIVITY_KEY, JSON.stringify(logs.slice(0,2000))); }
+function logActivity(action, detail, targetType, targetId){
+  if(!currentUser) return;
+  const logs = getActivityLog();
+  logs.unshift({ id:'log_'+Date.now(), ts:Date.now(), date:new Date().toLocaleString('ja-JP'),
+    userId:currentUser.id, userName:currentUser.nameJa, userRole:currentUser.role,
+    action, detail, targetType, targetId });
+  saveActivityLog(logs);
+}
+
+function addBoardNote(text, pinned){
+  if(!currentUser) return null;
+  const notes = getBoardNotes();
+  const note = { id:'note_'+Date.now()+'_'+Math.random().toString(36).slice(2,6), text:text.trim(),
+    pinned:!!pinned, archived:false, authorId:currentUser.id, authorName:currentUser.nameJa,
+    authorIcon:currentUser.icon||'', createdAt:Date.now(),
+    createdDate:new Date().toLocaleString('ja-JP'), editHistory:[] };
+  notes.unshift(note);
+  saveBoardNotes(notes);
+  logActivity('create','ノートを追加: '+text.slice(0,30)+(text.length>30?'...':''),'note',note.id);
+  return note;
+}
+
+function editBoardNote(noteId, newText){
+  if(!currentUser) return;
+  var isAdmin = currentUser.role==='全体管理者'||currentUser.role==='管理者';
+  if(!isAdmin){ showToast('❌ 編集は管理者のみ可能です',3000); return; }
+  var notes = getBoardNotes();
+  var note = null;
+  for(var i=0;i<notes.length;i++){ if(notes[i].id===noteId){ note=notes[i]; break; } }
+  if(!note) return;
+  note.editHistory = note.editHistory||[];
+  note.editHistory.push({
+    editorId: currentUser.id,
+    editorName: currentUser.nameJa,
+    editorRole: currentUser.role,
+    editedAt: Date.now(),
+    editedDate: new Date().toLocaleString('ja-JP'),
+    prevText: note.text
+  });
+  note.text = newText.trim();
+  note.lastEditedAt = Date.now();
+  note.lastEditedBy = currentUser.nameJa;
+  note.lastEditedRole = currentUser.role;
+  note.lastEditedDate = new Date().toLocaleString('ja-JP');
+  saveBoardNotes(notes);
+  logActivity('edit', 'ノート編集保存: '+newText.slice(0,30)+(newText.length>30?'...':''), 'note', noteId);
+  showToast('✅ 編集を保存しました（'+currentUser.nameJa+'）', 2500);
+  renderBoardScreen();
+}
+
+function archiveBoardNote(noteId){
+  if(!currentUser) return;
+  const notes = getBoardNotes();
+  const note = notes.find(n=>n.id===noteId);
+  if(!note) return;
+  note.archived=true; note.archivedAt=Date.now(); note.archivedBy=currentUser.nameJa;
+  saveBoardNotes(notes);
+  logActivity('archive','ノートをアーカイブ: '+note.text.slice(0,30),'note',noteId);
+  renderBoardScreen(); showToast('📦 アーカイブしました',2000);
+}
+
+function restoreBoardNote(noteId){
+  if(!currentUser||currentUser.role!=='全体管理者'){ showToast('❌ 全体管理者のみ可能です',3000); return; }
+  const notes = getBoardNotes();
+  const note = notes.find(n=>n.id===noteId);
+  if(!note) return;
+  note.archived=false; delete note.archivedAt; delete note.archivedBy;
+  saveBoardNotes(notes);
+  logActivity('restore','ノートを復元','note',noteId);
+  renderBoardScreen(); showToast('✅ 復元しました',2000);
+}
+
+function deleteBoardNote(noteId){
+  if(!currentUser||currentUser.role!=='全体管理者'){ showToast('❌ 全体管理者のみ可能です',3000); return; }
+  if(!confirm('このノートを完全に削除しますか？元に戻せません。')) return;
+  saveBoardNotes(getBoardNotes().filter(n=>n.id!==noteId));
+  logActivity('delete','ノートを完全削除','note',noteId);
+  renderBoardScreen(); showToast('🗑️ 削除しました',2000);
+}
+
+let _boardSearch='',_boardSort='new',_boardShowArchived=false,_boardStaffFilter='';
+
+function renderBoardScreen(){
+  const el=document.getElementById('boardScreen');
+  if(!el||!currentUser) return;
+  const isAdmin=currentUser.role==='全体管理者'||currentUser.role==='管理者';
+  const isSuperAdmin=currentUser.role==='全体管理者';
+  let notes=getBoardNotes();
+  if(_boardSearch){ const q=_boardSearch.toLowerCase(); notes=notes.filter(n=>n.text.toLowerCase().includes(q)||n.authorName.toLowerCase().includes(q)); }
+  if(_boardStaffFilter) notes=notes.filter(n=>n.authorId===_boardStaffFilter);
+  if(_boardShowArchived) notes=notes.filter(n=>n.archived);
+  else notes=notes.filter(n=>!n.archived);
+  if(_boardSort==='new') notes.sort((a,b)=>b.createdAt-a.createdAt);
+  else if(_boardSort==='old') notes.sort((a,b)=>a.createdAt-b.createdAt);
+  else if(_boardSort==='edited') notes.sort((a,b)=>(b.lastEditedAt||b.createdAt)-(a.lastEditedAt||a.createdAt));
+  const pinned=notes.filter(n=>n.pinned&&!n.archived);
+  const rest=notes.filter(n=>!n.pinned||n.archived);
+  const sorted=[...pinned,...rest];
+  const allNotes=getBoardNotes();
+  const staffMap={};
+  allNotes.forEach(n=>{ staffMap[n.authorId]=n.authorName; });
+  const staffOpts='<option value="">すべての担当者</option>'+Object.entries(staffMap).map(([id,nm])=>'<option value="'+id+'"'+(_boardStaffFilter===id?' selected':'')+'>'+nm+'</option>').join('');
+  const noteCount=getBoardNotes().filter(n=>!n.archived).length;
+  const archCount=getBoardNotes().filter(n=>n.archived).length;
+  el.innerHTML='<div class="board-wrap">'
+    +'<div class="board-header"><div><div class="board-title">📝 掲示板</div>'
+    +'<div style="font-size:12px;color:var(--tx3);margin-top:2px;">'+noteCount+'件のノート'+(archCount>0?' / アーカイブ'+archCount+'件':'')+'</div></div>'
+    +'<div class="board-toolbar">'
+    +'<input class="board-search" placeholder="🔍 検索…" value="'+(_boardSearch||'')+'" oninput="_boardSearch=this.value;renderBoardScreen()">'
+    +'<select class="board-filter-sel" onchange="_boardStaffFilter=this.value;renderBoardScreen()">'+staffOpts+'</select>'
+    +'<select class="board-filter-sel" onchange="_boardSort=this.value;renderBoardScreen()">'
+    +'<option value="new"'+(_boardSort==='new'?' selected':'')+'>🕐 最新順</option>'
+    +'<option value="old"'+(_boardSort==='old'?' selected':'')+'>🕑 古い順</option>'
+    +'<option value="edited"'+(_boardSort==='edited'?' selected':'')+'>✏️ 編集順</option>'
+    +'</select>'
+    +(isSuperAdmin?'<button class="btn btn-sm" style="background:'+(_boardShowArchived?'var(--org)':'var(--bg2)')+';border:1.5px solid var(--bdr);font-size:12px;padding:6px 12px;cursor:pointer;border-radius:var(--r);font-family:inherit;" onclick="_boardShowArchived=!_boardShowArchived;renderBoardScreen()">📦 '+(_boardShowArchived?'通常に戻る':'アーカイブ表示')+'</button>':'')
+    +'</div></div>'
+    +'<div class="note-form">'
+    +'<div style="font-size:13px;font-weight:800;color:var(--grn2);margin-bottom:8px;">＋ 新しいノートを追加</div>'
+    +'<textarea class="note-textarea" id="boardNewNoteText" placeholder="自由にメモ・お知らせ・情報を入力してください…"></textarea>'
+    +'<div style="display:flex;gap:8px;align-items:center;margin-top:8px;justify-content:space-between;">'
+    +(isAdmin?'<label style="font-size:12px;color:var(--tx3);display:flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" id="boardPinCheck"> 📌 ピン留め</label>':'<span></span>')
+    +'<button onclick="_submitNewNote()" style="padding:8px 22px;border:none;border-radius:var(--r);background:var(--grn);color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;">投稿する</button>'
+    +'</div></div>'
+    +(sorted.length===0?'<div style="text-align:center;padding:40px;color:var(--tx3);font-size:14px;">ノートはまだありません</div>':'')
+    +sorted.map(n=>_renderNoteCard(n,isAdmin,isSuperAdmin)).join('')
+    +'</div>';
+  // Event delegation — persistent, attached once on first render
+  if(!window._boardListenerAttached){
+    window._boardListenerAttached = true;
+    var bw = document.getElementById('boardScreen');
+    if(bw){
+      bw.addEventListener('click', function(e){
+        var btn = e.target.closest('button');
+        if(!btn) return;
+        var nid = btn.getAttribute('data-id');
+        if(btn.classList.contains('nb-edit') && nid) _openNoteEdit(nid);
+        else if(btn.classList.contains('nb-arch') && nid) archiveBoardNote(nid);
+        else if(btn.classList.contains('nb-rest') && nid) restoreBoardNote(nid);
+        else if(btn.classList.contains('nb-del') && nid) deleteBoardNote(nid);
+        else if(btn.classList.contains('nb-cancel-edit')) renderBoardScreen();
+        else if(btn.classList.contains('nb-save-edit') && nid) _saveNoteEdit(nid);
+        else if(btn.classList.contains('nb-submit')) _submitNewNote();
+      });
+    }
+  }
+}
+
+function _renderNoteCard(note, isAdmin, isSuperAdmin) {
+  var nid = note.id;
+  var initials = note.authorName ? note.authorName.slice(0,2) : '?';
+  var editHist = '';
+  if (note.editHistory && note.editHistory.length > 0) {
+    var histRows = note.editHistory.slice().reverse().map(function(e){
+      var roleTag = e.editorRole ? ' <span style="padding:1px 6px;border-radius:8px;font-size:10px;background:#e8f5e9;color:#2e7d32;">'+e.editorRole+'</span>' : '';
+      return '<div class="note-edit-row" style="display:flex;align-items:center;gap:6px;padding:4px 0;">'
+        + '<span style="font-size:10px;color:var(--tx3);white-space:nowrap;">'+e.editedDate+'</span>'
+        + '<span style="font-weight:700;font-size:12px;">'+e.editorName+'</span>'
+        + roleTag
+        + '</div>';
+    }).join('');
+    editHist = '<div class="note-edit-history">'
+      + '<div style="font-size:11px;font-weight:700;color:var(--tx2);margin-bottom:6px;">✏️ 編集履歴（'+note.editHistory.length+'回）</div>'
+      + histRows + '</div>';
+  }
+  var archivedBanner = '';
+  if (note.archived) {
+    archivedBanner = '<div style="font-size:11px;color:var(--org);font-weight:700;margin-bottom:6px;">📦 アーカイブ済 — '
+      + note.archivedBy + ' (' + new Date(note.archivedAt).toLocaleString('ja-JP') + ')</div>';
+  }
+  var pinBadge = (note.pinned && !note.archived)
+    ? '<span style="background:#fff3e0;color:#e65100;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;margin-left:6px;">📌 ピン</span>' : '';
+  var escText = note.text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  var btnStyle = 'padding:5px 12px;border-radius:var(--r);font-size:12px;cursor:pointer;font-family:inherit;';
+  var editBtn = (!note.archived && isAdmin)
+    ? '<button class="nb-edit" data-id="'+nid+'" style="'+btnStyle+'border:1.5px solid var(--bdr);background:var(--surf2);">✏️ 編集</button>' : '';
+  var archBtn = (!note.archived)
+    ? '<button class="nb-arch" data-id="'+nid+'" style="'+btnStyle+'border:1.5px solid #ffe082;background:#fff8e1;">📦 アーカイブ</button>' : '';
+  var restBtn = (note.archived && isSuperAdmin)
+    ? '<button class="nb-rest" data-id="'+nid+'" style="'+btnStyle+'border:1.5px solid var(--grn4);background:var(--grn3);">↩️ 復元</button>' : '';
+  var delBtn = (note.archived && isSuperAdmin)
+    ? '<button class="nb-del" data-id="'+nid+'" style="'+btnStyle+'border:1.5px solid #ffcdd2;background:#ffebee;color:var(--red);">🗑️ 削除</button>' : '';
+  return '<div class="note-card' + (note.archived ? ' archived' : '') + '" id="ncard_'+nid+'">'
+    + archivedBanner
+    + '<div class="note-card-header">'
+    + '<div class="note-author-badge"><div class="note-author-icon">'+initials+'</div>'
+    + '<div><div class="note-author-name">'+note.authorName+pinBadge+'</div>'
+    + '<div class="note-date">'+note.createdDate
+    + (note.lastEditedBy ? ' &nbsp;|&nbsp; ✏️ 最終編集：<strong>'+note.lastEditedBy+'</strong> ('+note.lastEditedDate+')' : '')
+    + '</div>'
+    + '</div></div>'
+    + '<div class="note-actions">'+editBtn+archBtn+restBtn+delBtn+'</div>'
+    + '</div>'
+    + '<div class="note-body" id="nbody_'+nid+'">'+escText+'</div>'
+    + editHist + '</div>';
+}
+
+function _submitNewNote(){
+  const ta = document.getElementById('boardNewNoteText');
+  const pc = document.getElementById('boardPinCheck');
+  if(!ta || !ta.value.trim()){ showToast('⚠️ 内容を入力してください',2000); return; }
+  addBoardNote(ta.value, pc && pc.checked);
+  ta.value = '';
+  if(pc) pc.checked = false;
+  renderBoardScreen();
+  showToast('✅ 投稿しました',2000);
+}
+
+function _openNoteEdit(noteId){
+  var notes = getBoardNotes();
+  var note = null;
+  for(var i=0;i<notes.length;i++){ if(notes[i].id===noteId){ note=notes[i]; break; } }
+  if(!note) return;
+  var body = document.getElementById('nbody_'+noteId);
+  if(!body) return;
+  body.innerHTML = '<textarea class="note-textarea" id="nea_'+noteId+'">' + note.text + '</textarea>'
+    + '<div style="display:flex;gap:6px;margin-top:6px;justify-content:flex-end;">'
+    + '<button class="nb-cancel-edit" style="padding:5px 14px;border:1.5px solid var(--bdr);border-radius:var(--r);background:var(--surf2);font-size:12px;cursor:pointer;font-family:inherit;">キャンセル</button>'
+    + '<button class="nb-save-edit" data-id="'+noteId+'" style="padding:5px 14px;border:none;border-radius:var(--r);background:var(--grn);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">保存</button>'
+    + '</div>';
+}
+
+function _saveNoteEdit(noteId){
+  var ta = document.getElementById('nea_'+noteId);
+  if(!ta || !ta.value.trim()){ showToast('⚠️ 内容が空です',2000); return; }
+  editBoardNote(noteId, ta.value);
+}
+
+// ═══════════════════════════════════════════
+// 活動ログ — 全体管理者専用
+// ═══════════════════════════════════════════
+let _logSearch='',_logUserFilter='',_logDateFrom='',_logDateTo='',_logActionFilter='';
+
+function renderLogScreen(){
+  const el=document.getElementById('logScreen');
+  if(!el||!currentUser) return;
+  if(currentUser.role!=='全体管理者'){
+    el.innerHTML='<div style="text-align:center;padding:60px;color:var(--tx3);">⛔ 全体管理者のみアクセス可能です</div>';
+    return;
+  }
+  let logs=getActivityLog();
+  if(_logSearch){ const q=_logSearch.toLowerCase(); logs=logs.filter(l=>l.detail.toLowerCase().includes(q)||l.userName.toLowerCase().includes(q)); }
+  if(_logUserFilter) logs=logs.filter(l=>l.userId===_logUserFilter);
+  if(_logActionFilter) logs=logs.filter(l=>l.action===_logActionFilter);
+  if(_logDateFrom){ const from=new Date(_logDateFrom).getTime(); logs=logs.filter(l=>l.ts>=from); }
+  if(_logDateTo){ const to=new Date(_logDateTo).getTime()+86400000; logs=logs.filter(l=>l.ts<=to); }
+  const allLogs=getActivityLog();
+  const userMap={};
+  allLogs.forEach(l=>{ userMap[l.userId]=l.userName; });
+  const userOpts='<option value="">全ユーザー</option>'+Object.entries(userMap).map(([id,nm])=>'<option value="'+id+'"'+(_logUserFilter===id?' selected':'')+'>'+nm+'</option>').join('');
+  const actionColors={create:'#e8f5e9,#2e7d32',edit:'#e3f2fd,#1565c0',archive:'#fff8e1,#e65100',restore:'#f3e5f5,#7b1fa2',delete:'#ffebee,#c62828',save:'#e8f5e9,#2e7d32',add:'#e8f5e9,#2e7d32'};
+  const actionLabels={create:'追加',edit:'編集',archive:'アーカイブ',restore:'復元',delete:'削除',save:'保存',add:'登録'};
+  const getAC=(a)=>(actionColors[a]||'#f5f5f5,#333').split(',');
+  const logRows=logs.length===0
+    ?'<div style="text-align:center;padding:40px;color:var(--tx3);">ログがありません</div>'
+    :logs.map(l=>{
+      const [bg,tc]=getAC(l.action);
+      const al=actionLabels[l.action]||l.action;
+      return '<div class="log-row">'
+        +'<div class="log-icon" style="background:'+bg+';color:'+tc+';font-size:11px;font-weight:900;">'+al.slice(0,2)+'</div>'
+        +'<div class="log-meta"><span class="log-user">'+l.userName+'</span>'
+        +'<span style="margin:0 6px;color:var(--tx3);">•</span>'
+        +'<span style="display:inline-block;padding:1px 8px;border-radius:10px;font-size:11px;font-weight:700;background:'+bg+';color:'+tc+';">'+al+'</span>'
+        +'<span style="margin:0 6px;color:var(--tx3);">•</span>'
+        +'<span class="log-action">'+l.detail+'</span></div>'
+        +'<div class="log-time">'+l.date+'</div></div>';
+    }).join('');
+  el.innerHTML='<div class="log-wrap">'
+    +'<div class="board-header"><div><div class="board-title">📊 活動ログ</div>'
+    +'<div style="font-size:12px;color:var(--tx3);margin-top:2px;">全ユーザーの操作履歴 — 最新2,000件</div></div>'
+    +'<div class="board-toolbar">'
+    +'<input class="board-search" placeholder="🔍 検索…" value="'+(_logSearch||'')+'" oninput="_logSearch=this.value;renderLogScreen()">'
+    +'<select class="board-filter-sel" onchange="_logUserFilter=this.value;renderLogScreen()">'+userOpts+'</select>'
+    +'<select class="board-filter-sel" onchange="_logActionFilter=this.value;renderLogScreen()">'
+    +'<option value="">すべての操作</option>'
+    +'<option value="create">追加</option><option value="edit">編集</option>'
+    +'<option value="archive">アーカイブ</option><option value="save">保存</option><option value="delete">削除</option>'
+    +'</select>'
+    +'<input type="date" class="board-filter-sel" value="'+(_logDateFrom||'')+'" onchange="_logDateFrom=this.value;renderLogScreen()" title="開始日">'
+    +'<input type="date" class="board-filter-sel" value="'+(_logDateTo||'')+'" onchange="_logDateTo=this.value;renderLogScreen()" title="終了日">'
+    +'<button onclick="_logSearch=\'\';_logUserFilter=\'\';_logActionFilter=\'\';_logDateFrom=\'\';_logDateTo=\'\';renderLogScreen()" style="padding:6px 12px;border:1.5px solid var(--bdr);border-radius:var(--r);font-size:12px;cursor:pointer;background:var(--surf2);font-family:inherit;">✕ リセット</button>'
+    +'</div></div>'
+    +'<div style="background:var(--surf);border:1.5px solid var(--bdr);border-radius:10px;overflow:hidden;">'
+    +logRows+'</div>'
+    +'<div style="text-align:center;padding:12px;font-size:12px;color:var(--tx3);">表示件数: '+logs.length+'件</div>'
+    +'</div>';
+}
+
 function hideArchiveScreen(){ showScreen('main'); }
 
 function renderArchiveScreen(){
@@ -8167,15 +8808,18 @@ function toggleSbFilter(){
 }
 
 function initSbFilter(){
-  const saved = localStorage.getItem('kmt_filter_open');
-  // Default: open
-  if (saved === '0') {
-    const body = document.getElementById('sbFilterBody');
-    const arrow = document.getElementById('sbFilterArrow');
+  var saved = localStorage.getItem('kmt_filter_open');
+  // Default: open on desktop, closed on mobile
+  var isMobile = window.innerWidth <= 768;
+  if (saved === '0' || (isMobile && saved === null)) {
+    var body = document.getElementById('sbFilterBody');
+    var arrow = document.getElementById('sbFilterArrow');
     if (body) body.classList.add('collapsed');
     if (arrow) arrow.style.transform = 'rotate(180deg)';
   }
 }
+
+function isMobileView(){ return window.innerWidth <= 768; }
 
 function clearFilters(){
   kijunFilter='all';
@@ -8730,6 +9374,8 @@ function switchTab(coId,tab){
 
 
 function saveTabData(coId, tab){
+  const _co=cos.find(c=>c.id===coId);
+  if(_co) logActivity('save','「'+_co.name+'」'+tab+'タブを保存','company',coId);
   const co=cos.find(c=>c.id===coId);
   if(!co)return;
   // Check for pending shien changes
